@@ -1,4 +1,4 @@
-import type { Block } from 'payload'
+import type { Block, Field } from 'payload'
 
 import { NOMBRES_ICONO } from '../fields/iconos'
 import { UNIDADES } from '../fields/unidad'
@@ -9,6 +9,26 @@ import { traducible } from '../lib/localizacion'
  * un catalogo de 30 bloques termina en paginas inconsistentes.
  * Conviene agregar bloques cuando el diseno los pida, no antes.
  */
+
+/** Botones de un hero: hasta dos, primario + secundario. Compartido hero/perfil. */
+const campoAcciones: Field = {
+  name: 'acciones',
+  type: 'array',
+  maxRows: 2,
+  fields: [
+    { name: 'texto', type: 'text', required: true },
+    { name: 'enlace', type: 'text', required: true },
+    {
+      name: 'estilo',
+      type: 'select',
+      defaultValue: 'primario',
+      options: [
+        { label: 'Primario', value: 'primario' },
+        { label: 'Secundario', value: 'secundario' },
+      ],
+    },
+  ],
+}
 
 export const BloqueHero: Block = {
   slug: 'hero',
@@ -25,17 +45,33 @@ export const BloqueHero: Block = {
     traducible({ name: 'titulo', type: 'text', required: true }),
     traducible({ name: 'bajada', type: 'textarea' }),
     { name: 'imagenFondo', type: 'upload', relationTo: 'media' },
+    campoAcciones,
+  ],
+}
+
+export const BloquePerfil: Block = {
+  slug: 'perfil',
+  labels: { singular: 'Perfil', plural: 'Perfiles' },
+  fields: [
+    traducible({
+      name: 'antetitulo',
+      type: 'text',
+      admin: { description: 'Linea corta sobre el nombre, en mayusculas. Ej: FUNDADOR Y CONSULTOR PRINCIPAL.' },
+    }),
+    traducible({ name: 'nombre', type: 'text', required: true }),
+    traducible({ name: 'subtitulo', type: 'text', admin: { description: 'Cargo o titulo profesional.' } }),
+    traducible({ name: 'texto', type: 'textarea' }),
+    { name: 'foto', type: 'upload', relationTo: 'media' },
+    campoAcciones,
     {
-      name: 'acciones',
+      name: 'estadisticas',
       type: 'array',
-      maxRows: 2,
+      maxRows: 3,
+      labels: { singular: 'Dato', plural: 'Datos' },
+      admin: { description: 'Se muestran sobre la foto. Ej: EXPERIENCIA / 20+ anios.' },
       fields: [
-        { name: 'texto', type: 'text', required: true },
-        { name: 'enlace', type: 'text', required: true },
-        { name: 'estilo', type: 'select', defaultValue: 'primario', options: [
-          { label: 'Primario', value: 'primario' },
-          { label: 'Secundario', value: 'secundario' },
-        ] },
+        { name: 'etiqueta', type: 'text', required: true },
+        { name: 'valor', type: 'text', required: true },
       ],
     },
   ],
@@ -141,6 +177,43 @@ export const BloquePropuesta: Block = {
   ],
 }
 
+export const BloquePresencia: Block = {
+  slug: 'presencia',
+  labels: { singular: 'Presencia geografica', plural: 'Presencia geografica' },
+  fields: [
+    traducible({ name: 'titulo', type: 'text' }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+    {
+      name: 'antetitulo',
+      type: 'text',
+      admin: { description: 'Linea corta sobre el titulo, en mayusculas. Ej: PRESENCIA INDUSTRIAL.' },
+    },
+    {
+      name: 'paises',
+      type: 'array',
+      labels: { singular: 'Pais', plural: 'Paises' },
+      fields: [
+        { name: 'pais', type: 'text', required: true },
+        {
+          name: 'plantas',
+          type: 'array',
+          fields: [
+            { name: 'nombre', type: 'text', required: true },
+            traducible({ name: 'descripcion', type: 'textarea', required: true }),
+            {
+              name: 'insignia',
+              type: 'checkbox',
+              label: 'Proyecto insignia',
+              defaultValue: false,
+              admin: { description: 'Resalta la tarjeta con un acento.' },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
 export const BloqueCTA: Block = {
   slug: 'cta',
   labels: { singular: 'Llamado a la accion', plural: 'Llamados a la accion' },
@@ -194,10 +267,12 @@ export const BloqueEquipo: Block = {
 
 export const BLOQUES_PAGINA = [
   BloqueHero,
+  BloquePerfil,
   BloqueContenido,
   BloqueDestacados,
   BloqueUnidades,
   BloquePropuesta,
+  BloquePresencia,
   BloqueCTA,
   BloqueLogos,
   BloqueFaq,

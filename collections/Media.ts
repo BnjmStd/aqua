@@ -21,6 +21,32 @@ export const Media: CollectionConfig = {
     update: soloAutenticados,
     delete: soloAutenticados,
   },
+  hooks: {
+    /**
+     * Payload arma las URLs de archivo como absolutas (con base en
+     * `serverURL`). `next/image` trata ese host como remoto y lo rechaza
+     * salvo que se declare en `images.remotePatterns` por entorno. Como los
+     * archivos se sirven same-origin en `/api/media/file/`, devolvemos rutas
+     * relativas: el optimizador las toma sin configuracion y funciona igual
+     * en local, preview y produccion.
+     */
+    afterRead: [
+      ({ doc }) => {
+        const aRelativa = (u: unknown) =>
+          typeof u === 'string' ? u.replace(/^https?:\/\/[^/]+/i, '') : u
+        doc.url = aRelativa(doc.url)
+        doc.thumbnailURL = aRelativa(doc.thumbnailURL)
+        if (doc.sizes && typeof doc.sizes === 'object') {
+          for (const tamano of Object.values(doc.sizes)) {
+            if (tamano && typeof tamano === 'object') {
+              ;(tamano as { url?: unknown }).url = aRelativa((tamano as { url?: unknown }).url)
+            }
+          }
+        }
+        return doc
+      },
+    ],
+  },
   fields: [
     traducible({
       name: 'alt',

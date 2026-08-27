@@ -220,6 +220,40 @@ export interface Pagina {
             blockType: 'hero';
           }
         | {
+            /**
+             * Linea corta sobre el nombre, en mayusculas. Ej: FUNDADOR Y CONSULTOR PRINCIPAL.
+             */
+            antetitulo?: string | null;
+            nombre: string;
+            /**
+             * Cargo o titulo profesional.
+             */
+            subtitulo?: string | null;
+            texto?: string | null;
+            foto?: (string | null) | Media;
+            acciones?:
+              | {
+                  texto: string;
+                  enlace: string;
+                  estilo?: ('primario' | 'secundario') | null;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Se muestran sobre la foto. Ej: EXPERIENCIA / 20+ anios.
+             */
+            estadisticas?:
+              | {
+                  etiqueta: string;
+                  valor: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'perfil';
+          }
+        | {
             texto: {
               root: {
                 type: string;
@@ -321,6 +355,34 @@ export interface Pagina {
             id?: string | null;
             blockName?: string | null;
             blockType: 'propuesta';
+          }
+        | {
+            titulo?: string | null;
+            bajada?: string | null;
+            /**
+             * Linea corta sobre el titulo, en mayusculas. Ej: PRESENCIA INDUSTRIAL.
+             */
+            antetitulo?: string | null;
+            paises?:
+              | {
+                  pais: string;
+                  plantas?:
+                    | {
+                        nombre: string;
+                        descripcion: string;
+                        /**
+                         * Resalta la tarjeta con un acento.
+                         */
+                        insignia?: boolean | null;
+                        id?: string | null;
+                      }[]
+                    | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'presencia';
           }
         | {
             titulo: string;
@@ -1716,6 +1778,32 @@ export interface PaginasSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        perfil?:
+          | T
+          | {
+              antetitulo?: T;
+              nombre?: T;
+              subtitulo?: T;
+              texto?: T;
+              foto?: T;
+              acciones?:
+                | T
+                | {
+                    texto?: T;
+                    enlace?: T;
+                    estilo?: T;
+                    id?: T;
+                  };
+              estadisticas?:
+                | T
+                | {
+                    etiqueta?: T;
+                    valor?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         contenido?:
           | T
           | {
@@ -1760,6 +1848,29 @@ export interface PaginasSelect<T extends boolean = true> {
                     titulo?: T;
                     descripcion?: T;
                     icono?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        presencia?:
+          | T
+          | {
+              titulo?: T;
+              bajada?: T;
+              antetitulo?: T;
+              paises?:
+                | T
+                | {
+                    pais?: T;
+                    plantas?:
+                      | T
+                      | {
+                          nombre?: T;
+                          descripcion?: T;
+                          insignia?: T;
+                          id?: T;
+                        };
                     id?: T;
                   };
               id?: T;

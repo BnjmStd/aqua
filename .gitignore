@@ -41,8 +41,14 @@ yarn-error.log*
 next-env.d.ts
 
 # payload
-/media
+/media/*
+# ...salvo las imagenes de la semilla (se suben en scripts/seed.ts y las
+# referencia aquabioprocess.seed.db, asi el sitio renderiza en un clon nuevo)
+!/media/fundador.jpg
+!/media/fundador-*.jpg
 *.db
 *.db-shm
 *.db-wal
+# ...salvo la semilla de desarrollo, que si se versiona (ver scripts/db-seed.ts)
+!aquabioprocess.seed.db
 !.env.example

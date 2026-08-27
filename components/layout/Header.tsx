@@ -7,10 +7,14 @@ import { obtenerCuentaActual } from '@/lib/auth'
 import { MobileNav } from './MobileNav'
 import { NavLink } from './NavLink'
 
-const ENLACES_PRINCIPALES = UNIDADES.map(({ label, value }) => ({
-  etiqueta: label.split(' — ')[0],
-  url: `/${value}`,
-}))
+const ENLACES_PRINCIPALES = [
+  ...UNIDADES.map(({ label, value }) => ({
+    etiqueta: label.split(' — ')[0],
+    url: `/${value}`,
+  })),
+  // Fundador no es una unidad de negocio: va como enlace suelto al final.
+  { etiqueta: 'Fundador', url: '/fundador' },
+]
 
 export async function Header() {
   const cuenta = await obtenerCuentaActual()
