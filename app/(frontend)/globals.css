@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root {
+  /* Los colores marcados "brochure" son los hex EXACTOS extraidos del
+     brochure ejecutivo (docs/AQUABIOPROCESS_Brochure_Ejecutivo_10_paginas.pdf).
+     El resto de cada rampa se interpolo manteniendo el hue del ancla.
+     Si el brochure se rediseña, estos seis son los unicos que hay que
+     volver a leer del PDF. */
+
+  --background: #ffffff;
+  /* Carbon del brochure, no un gris neutro: lleva un tinte frio (196deg)
+     que lo hermana con el petrol de marca. */
+  --foreground: #1f2a2e;
+  /* Gris de apoyo del brochure (encabezado corrido, tagline). */
+  --color-muted: #5b6b70;
+
+  /* Marca — petrol/cyan del brochure. Una sola rampa cubre DOS colores del
+     PDF porque comparten hue (187-188deg): el 400 es el cyan de acento y el
+     700 es el petrol del logotipo. Por eso no existe una rampa `accent`
+     aparte: el brochure no tiene un segundo hue de acento. */
+  --color-brand-50: #e4f0f1; /* brochure — fondo de tarjetas */
+  --color-brand-100: #cae4e7;
+  --color-brand-200: #9fd4db;
+  --color-brand-300: #6ac2cd;
+  --color-brand-400: #2eafbf; /* brochure — acento */
+  --color-brand-500: #1c8b9c;
+  --color-brand-600: #127787;
+  --color-brand-700: #0d6c7a; /* brochure — color de marca / logotipo */
+  --color-brand-800: #0c515f;
+  --color-brand-900: #0d3d4a;
+  --color-brand-950: #0c2731;
+
+  /* Navy — el brochure lo reserva para titulares (es su fuente de 20pt, la
+     mayor del documento). No es un segundo color de marca: es jerarquia. */
+  --color-navy-50: #f1f5f9;
+  --color-navy-100: #dfe8f1;
+  --color-navy-200: #bed0e4;
+  --color-navy-300: #91b0d4;
+  --color-navy-400: #5989c5;
+  --color-navy-500: #376dae;
+  --color-navy-600: #275790;
+  --color-navy-700: #1e4676;
+  --color-navy-800: #16365d; /* brochure — titulares */
+  --color-navy-900: #122a49;
+  --color-navy-950: #0e1e34;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+
+  --shadow-soft: 0 1px 2px 0 rgb(15 23 32 / 0.04), 0 8px 24px -8px rgb(15 23 32 / 0.12);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--color-muted);
+
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+  --color-brand-950: var(--color-brand-950);
+
+  --color-navy-50: var(--color-navy-50);
+  --color-navy-100: var(--color-navy-100);
+  --color-navy-200: var(--color-navy-200);
+  --color-navy-300: var(--color-navy-300);
+  --color-navy-400: var(--color-navy-400);
+  --color-navy-500: var(--color-navy-500);
+  --color-navy-600: var(--color-navy-600);
+  --color-navy-700: var(--color-navy-700);
+  --color-navy-800: var(--color-navy-800);
+  --color-navy-900: var(--color-navy-900);
+  --color-navy-950: var(--color-navy-950);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+
+  --shadow-soft: var(--shadow-soft);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-source-serif);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Derivados del carbon del brochure (#1f2a2e), no negros neutros:
+       mantienen el mismo tinte frio en modo oscuro. */
+    --background: #131c20;
+    --foreground: #e8eef0;
+    --color-muted: #97a7ac;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
