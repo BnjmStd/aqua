@@ -1,48 +1,63 @@
 @import "tailwindcss";
 
+/* Las maquetas HTML de docs/templates/ traen utilidades de Tailwind CDN que no
+   son nuestras (p. ej. `bg-[url('placeholder')]`, que el bundler intenta
+   resolver como modulo y rompe el build). No son codigo de la app: fuera del
+   escaneo de contenido. */
+@source not "../../docs";
+
 :root {
-  /* Los colores marcados "brochure" son los hex EXACTOS extraidos del
-     brochure ejecutivo (docs/AQUABIOPROCESS_Brochure_Ejecutivo_10_paginas.pdf).
-     El resto de cada rampa se interpolo manteniendo el hue del ancla.
-     Si el brochure se rediseña, estos seis son los unicos que hay que
-     volver a leer del PDF. */
+  /* Fuente de verdad del color: docs/templates/inicio.html (maqueta Stitch,
+     Material 3). Los hex marcados "template" estan copiados literal de ahi;
+     el resto de cada rampa se interpolo manteniendo el hue del ancla.
+     Reemplaza a la paleta del brochure ejecutivo: misma familia, pero el
+     navy del template es mas profundo y el teal mas claro. Si la maqueta se
+     rehace, estos cinco anclas son los unicos que hay que volver a leer. */
 
-  --background: #ffffff;
-  /* Carbon del brochure, no un gris neutro: lleva un tinte frio (196deg)
-     que lo hermana con el petrol de marca. */
-  --foreground: #1f2a2e;
-  /* Gris de apoyo del brochure (encabezado corrido, tagline). */
-  --color-muted: #5b6b70;
+  /* La maqueta no usa blanco puro de fondo: `surface` es un blanco frio y las
+     tarjetas van en blanco real, asi el papel se despega del contenido. */
+  --background: #faf9fc; /* template — surface */
+  --color-surface: #ffffff; /* template — surface-container-lowest, tarjetas */
+  --foreground: #1a1c1e; /* template — on-surface */
+  --color-muted: #43474e; /* template — on-surface-variant */
+  --color-border: #c3c6cf; /* template — outline-variant */
+  /* Texto sobre fondos navy: blanco puro quema, este gris claro es el que la
+     maqueta usa en el parrafo del hero. */
+  --color-on-navy: #e8e8eb; /* template — surface-container-high */
 
-  /* Marca — petrol/cyan del brochure. Una sola rampa cubre DOS colores del
-     PDF porque comparten hue (187-188deg): el 400 es el cyan de acento y el
-     700 es el petrol del logotipo. Por eso no existe una rampa `accent`
-     aparte: el brochure no tiene un segundo hue de acento. */
-  --color-brand-50: #e4f0f1; /* brochure — fondo de tarjetas */
-  --color-brand-100: #cae4e7;
-  --color-brand-200: #9fd4db;
-  --color-brand-300: #6ac2cd;
-  --color-brand-400: #2eafbf; /* brochure — acento */
-  --color-brand-500: #1c8b9c;
-  --color-brand-600: #127787;
-  --color-brand-700: #0d6c7a; /* brochure — color de marca / logotipo */
-  --color-brand-800: #0c515f;
-  --color-brand-900: #0d3d4a;
-  --color-brand-950: #0c2731;
+  /* Marca — la rampa cubre DOS colores del template porque comparten hue
+     (192-195deg): el 300 es el `water-blue` (acento claro, se usa sobre navy)
+     y el 500 el `scientific-teal` (acento principal, nav activo y links). */
+  --color-brand-50: #f0f7f9;
+  --color-brand-100: #ddeef3;
+  --color-brand-200: #b4dae4;
+  --color-brand-300: #86c2d6; /* template — water-blue */
+  --color-brand-400: #5fb2c8;
+  --color-brand-500: #3e9eb7; /* template — scientific-teal */
+  --color-brand-600: #30859c;
+  --color-brand-700: #236c80;
+  --color-brand-800: #1b596a;
+  --color-brand-900: #144857;
+  --color-brand-950: #0c313b;
 
-  /* Navy — el brochure lo reserva para titulares (es su fuente de 20pt, la
-     mayor del documento). No es un segundo color de marca: es jerarquia. */
+  /* Navy — marca, titulares y botones solidos. Es el color con mas peso de la
+     maqueta, no una jerarquia tipografica como en el brochure. El 950 es el
+     hover del 800. */
   --color-navy-50: #f1f5f9;
-  --color-navy-100: #dfe8f1;
-  --color-navy-200: #bed0e4;
-  --color-navy-300: #91b0d4;
-  --color-navy-400: #5989c5;
-  --color-navy-500: #376dae;
-  --color-navy-600: #275790;
-  --color-navy-700: #1e4676;
-  --color-navy-800: #16365d; /* brochure — titulares */
-  --color-navy-900: #122a49;
-  --color-navy-950: #0e1e34;
+  --color-navy-100: #e2ebf3;
+  --color-navy-200: #c6d6e7;
+  --color-navy-300: #9cb8d3;
+  --color-navy-400: #6c94bc;
+  --color-navy-500: #48739d;
+  --color-navy-600: #355473;
+  --color-navy-700: #2a425b;
+  --color-navy-800: #0d3156; /* template — deep-navy */
+  --color-navy-900: #102437;
+  --color-navy-950: #001c38; /* template — primary */
+
+  /* Verde de apoyo. Plano y no rampa: la maqueta lo usa una sola vez, como
+     borde superior de una tarjeta. Si aparece un segundo uso, hacerlo rampa. */
+  --color-lime: #a2d49f; /* template — aquatic-lime */
 
   --radius-sm: 0.375rem;
   --radius-md: 0.625rem;
@@ -53,8 +68,12 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-surface: var(--color-surface);
   --color-foreground: var(--foreground);
   --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-on-navy: var(--color-on-navy);
+  --color-lime: var(--color-lime);
 
   --color-brand-50: var(--color-brand-50);
   --color-brand-100: var(--color-brand-100);
@@ -91,15 +110,14 @@
   --font-serif: var(--font-source-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Derivados del carbon del brochure (#1f2a2e), no negros neutros:
-       mantienen el mismo tinte frio en modo oscuro. */
-    --background: #131c20;
-    --foreground: #e8eef0;
-    --color-muted: #97a7ac;
-  }
-}
+/* Sin modo oscuro, a proposito. El bloque `@media (prefers-color-scheme: dark)`
+   que estaba aca venia literal de create-next-app (commit cbd6465) y nadie lo
+   eligio; encima se le colgaron 39 clases `dark:` derivadas a ojo. La maqueta
+   (docs/templates/inicio.html) es solo clara — fija `class="light"` y nunca
+   activa su `darkMode: "class"` — asi que no habia diseño contra el cual
+   validar esos colores. Si algun dia se quiere modo oscuro, que sea una
+   decision con maqueta propia y un toggle explicito, no la herencia del
+   scaffold. */
 
 body {
   background: var(--background);

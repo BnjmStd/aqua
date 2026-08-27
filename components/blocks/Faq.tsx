@@ -17,14 +17,14 @@ export function Faq({ titulo, preguntas }: BloqueDeTipo<'faq'>) {
           </Heading>
         ) : null}
 
-        <div className="divide-y divide-slate-200 dark:divide-slate-700">
+        <div className="divide-y divide-slate-200">
           {preguntas.map((item) => (
             <details key={item.id ?? item.pregunta} className="group py-5">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-foreground">
                 {item.pregunta}
                 <span
                   aria-hidden
-                  className="shrink-0 text-brand-700 transition-transform group-open:rotate-45 dark:text-brand-300"
+                  className="shrink-0 text-brand-700 transition-transform group-open:rotate-45"
                 >
                   +
                 </span>

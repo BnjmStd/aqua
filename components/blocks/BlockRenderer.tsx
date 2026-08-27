@@ -5,6 +5,8 @@ import { Equipo } from './Equipo'
 import { Faq } from './Faq'
 import { Hero } from './Hero'
 import { Logos } from './Logos'
+import { Propuesta } from './Propuesta'
+import { Unidades } from './Unidades'
 import type { Bloque } from './types'
 
 export function BlockRenderer({ bloques }: { bloques: Bloque[] }) {
@@ -18,6 +20,10 @@ export function BlockRenderer({ bloques }: { bloques: Bloque[] }) {
             return <Contenido key={bloque.id} {...bloque} />
           case 'destacados':
             return <Destacados key={bloque.id} {...bloque} />
+          case 'unidades':
+            return <Unidades key={bloque.id} {...bloque} />
+          case 'propuesta':
+            return <Propuesta key={bloque.id} {...bloque} />
           case 'cta':
             return <Cta key={bloque.id} {...bloque} />
           case 'logos':

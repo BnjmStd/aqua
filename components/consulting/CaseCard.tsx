@@ -16,10 +16,10 @@ export function CaseCard({ caso }: { caso: Caso }) {
       <p className="mt-2 text-sm leading-relaxed text-foreground/70">{caso.resumen}</p>
 
       {caso.metricas?.length ? (
-        <div className="mt-6 flex flex-wrap gap-6 border-t border-slate-100 pt-4 dark:border-slate-800">
+        <div className="mt-6 flex flex-wrap gap-6 border-t border-slate-100 pt-4">
           {caso.metricas.map((metrica) => (
             <div key={metrica.id ?? metrica.descripcion}>
-              <p className="font-serif text-2xl font-semibold text-brand-700 dark:text-brand-300">
+              <p className="font-serif text-2xl font-semibold text-brand-700">
                 {metrica.valor}
               </p>
               <p className="text-xs text-foreground/60">{metrica.descripcion}</p>

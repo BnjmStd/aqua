@@ -200,6 +200,10 @@ export interface Pagina {
   bloques?:
     | (
         | {
+            /**
+             * Linea corta sobre el titulo. Texto libre: la razon social canonica esta en Configuracion del sitio.
+             */
+            antetitulo?: string | null;
             titulo: string;
             bajada?: string | null;
             imagenFondo?: (string | null) | Media;
@@ -281,6 +285,42 @@ export interface Pagina {
             id?: string | null;
             blockName?: string | null;
             blockType: 'destacados';
+          }
+        | {
+            titulo?: string | null;
+            bajada?: string | null;
+            /**
+             * El icono y el enlace salen de la unidad; aca solo se escribe la descripcion.
+             */
+            tarjetas?:
+              | {
+                  unidad: 'consulting' | 'academy' | 'technologies' | 'insights' | 'rnd';
+                  descripcion: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'unidades';
+          }
+        | {
+            titulo?: string | null;
+            bajada?: string | null;
+            /**
+             * Exactamente cuatro: la grilla es un bento 2-1-1-2 y el ancho de cada tarjeta sale de su posicion, no se elige.
+             */
+            pilares?:
+              | {
+                  titulo: string;
+                  descripcion: string;
+                  icono:
+                    'lupa' | 'birrete' | 'chip' | 'documento' | 'matraz' | 'molecula' | 'ajustes' | 'grafico' | 'casco';
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'propuesta';
           }
         | {
             titulo: string;
@@ -1661,6 +1701,7 @@ export interface PaginasSelect<T extends boolean = true> {
         hero?:
           | T
           | {
+              antetitulo?: T;
               titulo?: T;
               bajada?: T;
               imagenFondo?: T;
@@ -1690,6 +1731,37 @@ export interface PaginasSelect<T extends boolean = true> {
               cantidad?: T;
               seleccionManual?: T;
               documentos?: T;
+              id?: T;
+              blockName?: T;
+            };
+        unidades?:
+          | T
+          | {
+              titulo?: T;
+              bajada?: T;
+              tarjetas?:
+                | T
+                | {
+                    unidad?: T;
+                    descripcion?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        propuesta?:
+          | T
+          | {
+              titulo?: T;
+              bajada?: T;
+              pilares?:
+                | T
+                | {
+                    titulo?: T;
+                    descripcion?: T;
+                    icono?: T;
+                    id?: T;
+                  };
               id?: T;
               blockName?: T;
             };

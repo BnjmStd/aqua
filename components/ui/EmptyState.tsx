@@ -12,7 +12,7 @@ type EmptyStateProps = {
 
 export function EmptyState({ titulo, descripcion, icono, accion }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-slate-300 px-6 py-16 text-center dark:border-slate-700">
+    <div className="flex flex-col items-center gap-3 rounded-lg border border-dashed border-slate-300 px-6 py-16 text-center">
       {icono ? <div className="text-foreground/40">{icono}</div> : null}
       <Heading level={4} as="h3" className="text-foreground/80">
         {titulo}

@@ -13,7 +13,7 @@ export function CourseCard({ curso }: { curso: Curso }) {
   return (
     <Link href={`/academy/cursos/${curso.slug}`} className="group block">
       <Card className="flex h-full flex-col p-0 transition-shadow group-hover:shadow-lg">
-        <div className="aspect-4/3 w-full overflow-hidden rounded-t-lg bg-slate-100 dark:bg-slate-800">
+        <div className="aspect-4/3 w-full overflow-hidden rounded-t-lg bg-slate-100">
           {imagen ? (
             <Image
               src={imagen}

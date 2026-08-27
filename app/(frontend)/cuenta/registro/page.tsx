@@ -25,7 +25,7 @@ export default async function RegistroPage(props: PageProps<'/cuenta/registro'>)
             </Text>
 
             {error ? (
-              <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+              <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
                 {error}
               </p>
             ) : null}
@@ -49,7 +49,7 @@ export default async function RegistroPage(props: PageProps<'/cuenta/registro'>)
 
             <Text tone="muted" className="mt-6">
               ¿Ya tienes cuenta?{' '}
-              <Link href="/cuenta/ingresar" className="text-brand-700 underline dark:text-brand-300">
+              <Link href="/cuenta/ingresar" className="text-brand-700 underline">
                 Ingresa aquí
               </Link>
               .

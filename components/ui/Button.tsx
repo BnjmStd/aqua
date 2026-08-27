@@ -10,9 +10,12 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         primario: 'bg-brand-700 text-white hover:bg-brand-800',
+        // El CTA solido de la maqueta es navy, no teal: el teal queda para
+        // acentos y enlaces, donde no compite con el peso del navy.
+        navy: 'bg-navy-800 text-white hover:bg-navy-950',
         secundario:
-          'border border-slate-300 bg-transparent text-foreground hover:bg-slate-100 dark:border-slate-700 dark:hover:bg-slate-800',
-        ghost: 'text-brand-700 hover:bg-brand-50 dark:text-brand-300 dark:hover:bg-brand-950',
+          'border border-border bg-transparent text-foreground hover:bg-brand-50',
+        ghost: 'text-brand-700 hover:bg-brand-50',
       },
       size: {
         sm: 'h-9 px-4 text-sm',

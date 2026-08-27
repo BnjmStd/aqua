@@ -32,7 +32,7 @@ export default async function SolicitudConsultingPage(props: PageProps<'/consult
             </Text>
 
             {error ? (
-              <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+              <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
                 {error}
               </p>
             ) : null}
@@ -45,7 +45,7 @@ export default async function SolicitudConsultingPage(props: PageProps<'/consult
                 <select
                   id="servicio"
                   name="servicio"
-                  className="mt-1.5 h-11 w-full rounded-md border border-slate-300 bg-background px-3.5 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:border-slate-700"
+                  className="mt-1.5 h-11 w-full rounded-md border border-slate-300 bg-background px-3.5 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
                 >
                   <option value="">No estoy seguro todavía</option>
                   {servicios.map((servicio) => (

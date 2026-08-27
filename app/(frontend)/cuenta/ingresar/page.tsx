@@ -25,7 +25,7 @@ export default async function IngresarPage(props: PageProps<'/cuenta/ingresar'>)
             </Text>
 
             {error ? (
-              <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
+              <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
                 {error}
               </p>
             ) : null}
@@ -47,7 +47,7 @@ export default async function IngresarPage(props: PageProps<'/cuenta/ingresar'>)
 
             <Text tone="muted" className="mt-6">
               ¿No tienes cuenta?{' '}
-              <Link href="/cuenta/registro" className="text-brand-700 underline dark:text-brand-300">
+              <Link href="/cuenta/registro" className="text-brand-700 underline">
                 Regístrate aquí
               </Link>
               .

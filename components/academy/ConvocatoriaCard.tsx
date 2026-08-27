@@ -19,7 +19,7 @@ export function ConvocatoriaCard({ convocatoria }: { convocatoria: ConvocatoriaC
         <div className="flex flex-wrap items-center gap-2">
           <Badge>{ETIQUETA_MODALIDAD[convocatoria.modalidad]}</Badge>
           {convocatoria.cuposDisponibles !== null && convocatoria.cuposDisponibles <= 3 ? (
-            <Badge className="bg-navy-800/10 text-navy-800 dark:bg-navy-300/15 dark:text-navy-300">
+            <Badge className="bg-navy-800/10 text-navy-800">
               {convocatoria.cuposDisponibles === 0 ? 'Cupo completo' : `Últimos ${convocatoria.cuposDisponibles} cupos`}
             </Badge>
           ) : null}

@@ -23,7 +23,7 @@ export function Heading({ level = 2, as, className, ...props }: HeadingProps) {
         // Navy para titulares: es la jerarquia que usa el brochure. Va antes
         // que `className` para que un `text-white` (secciones tone="brand")
         // lo pise via tailwind-merge.
-        'font-serif font-semibold text-balance text-navy-800 dark:text-navy-100',
+        'font-serif font-semibold text-balance text-navy-800',
         sizeByLevel[level],
         className,
       )}

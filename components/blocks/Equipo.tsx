@@ -24,7 +24,7 @@ export function Equipo({ titulo, personas }: BloqueDeTipo<'equipo'>) {
 
             return (
               <div key={persona.id} className="text-center">
-                <div className="mx-auto h-28 w-28 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+                <div className="mx-auto h-28 w-28 overflow-hidden rounded-full bg-slate-100">
                   {foto?.url ? (
                     <Image
                       src={foto.url}

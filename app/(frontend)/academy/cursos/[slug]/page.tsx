@@ -101,7 +101,7 @@ export default async function CursoPage(props: PageProps<'/academy/cursos/[slug]
                                 href={objetivo.videoIntro}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-1 inline-block text-xs font-medium text-brand-700 hover:underline dark:text-brand-300"
+                                className="mt-1 inline-block text-xs font-medium text-brand-700 hover:underline"
                               >
                                 Ver video introductorio →
                               </a>
@@ -116,7 +116,7 @@ export default async function CursoPage(props: PageProps<'/academy/cursos/[slug]
                 {curso.modulos?.length ? (
                   <div className="mt-10">
                     <Heading level={3}>Contenidos</Heading>
-                    <ol className="mt-4 divide-y divide-slate-200 dark:divide-slate-800">
+                    <ol className="mt-4 divide-y divide-slate-200">
                       {curso.modulos.map((modulo, indice) => {
                         const numerosObjetivos = (modulo.objetivos ?? [])
                           .filter(esPoblado)

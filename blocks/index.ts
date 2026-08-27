@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { NOMBRES_ICONO } from '../fields/iconos'
+import { UNIDADES } from '../fields/unidad'
 import { traducible } from '../lib/localizacion'
 
 /**
@@ -12,6 +14,14 @@ export const BloqueHero: Block = {
   slug: 'hero',
   labels: { singular: 'Portada', plural: 'Portadas' },
   fields: [
+    traducible({
+      name: 'antetitulo',
+      type: 'text',
+      admin: {
+        description:
+          'Linea corta sobre el titulo. Texto libre: la razon social canonica esta en Configuracion del sitio.',
+      },
+    }),
     traducible({ name: 'titulo', type: 'text', required: true }),
     traducible({ name: 'bajada', type: 'textarea' }),
     { name: 'imagenFondo', type: 'upload', relationTo: 'media' },
@@ -79,6 +89,58 @@ export const BloqueDestacados: Block = {
   ],
 }
 
+export const BloqueUnidades: Block = {
+  slug: 'unidades',
+  labels: { singular: 'Unidades de negocio', plural: 'Unidades de negocio' },
+  fields: [
+    traducible({ name: 'titulo', type: 'text' }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+    {
+      name: 'tarjetas',
+      type: 'array',
+      maxRows: UNIDADES.length,
+      admin: { description: 'El icono y el enlace salen de la unidad; aca solo se escribe la descripcion.' },
+      fields: [
+        {
+          name: 'unidad',
+          type: 'select',
+          required: true,
+          options: [...UNIDADES],
+        },
+        traducible({ name: 'descripcion', type: 'textarea', required: true }),
+      ],
+    },
+  ],
+}
+
+export const BloquePropuesta: Block = {
+  slug: 'propuesta',
+  labels: { singular: 'Propuesta de valor', plural: 'Propuestas de valor' },
+  fields: [
+    traducible({ name: 'titulo', type: 'text' }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+    {
+      name: 'pilares',
+      type: 'array',
+      maxRows: 4,
+      admin: {
+        description:
+          'Exactamente cuatro: la grilla es un bento 2-1-1-2 y el ancho de cada tarjeta sale de su posicion, no se elige.',
+      },
+      fields: [
+        traducible({ name: 'titulo', type: 'text', required: true }),
+        traducible({ name: 'descripcion', type: 'textarea', required: true }),
+        {
+          name: 'icono',
+          type: 'select',
+          required: true,
+          options: [...NOMBRES_ICONO],
+        },
+      ],
+    },
+  ],
+}
+
 export const BloqueCTA: Block = {
   slug: 'cta',
   labels: { singular: 'Llamado a la accion', plural: 'Llamados a la accion' },
@@ -134,6 +196,8 @@ export const BLOQUES_PAGINA = [
   BloqueHero,
   BloqueContenido,
   BloqueDestacados,
+  BloqueUnidades,
+  BloquePropuesta,
   BloqueCTA,
   BloqueLogos,
   BloqueFaq,

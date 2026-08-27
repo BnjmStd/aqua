@@ -48,7 +48,7 @@ function IconoNivel() {
 
 function Fila({ icono, etiqueta, valor }: { icono: ReactNode; etiqueta: string; valor: string }) {
   return (
-    <div className="flex items-center justify-between border-b border-slate-100 py-3 text-sm last:border-0 dark:border-slate-800">
+    <div className="flex items-center justify-between border-b border-slate-100 py-3 text-sm last:border-0">
       <span className="flex items-center gap-2 text-foreground/60">
         {icono}
         {etiqueta}
@@ -112,7 +112,7 @@ export function CourseSidebar({ curso }: { curso: Curso }) {
         <Card>
           <p className="text-xs font-medium uppercase tracking-wide text-foreground/50">Relator</p>
           <div className="mt-3 flex items-center gap-3">
-            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
+            <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-slate-100">
               {fotoRelator ? (
                 <Image
                   src={fotoRelator}

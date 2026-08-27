@@ -6,24 +6,32 @@ import { Heading } from '@/components/ui/Heading'
 import { Text } from '@/components/ui/Text'
 import { esPoblado, type BloqueDeTipo } from './types'
 
-export function Hero({ titulo, bajada, imagenFondo, acciones }: BloqueDeTipo<'hero'>) {
+export function Hero({ antetitulo, titulo, bajada, imagenFondo, acciones }: BloqueDeTipo<'hero'>) {
   const fondo = esPoblado(imagenFondo) ? imagenFondo : null
 
   return (
-    <section className="relative overflow-hidden bg-navy-800 text-white">
+    <section className="group relative overflow-hidden bg-navy-800 text-white">
       {fondo?.url ? (
         <Image
           src={fondo.url}
           alt={fondo.alt}
           fill
           priority
-          className="object-cover opacity-40"
+          // El zoom se apaga solo si el sistema pide menos movimiento.
+          className="object-cover opacity-40 transition-transform duration-700 ease-out motion-safe:group-hover:scale-110"
         />
       ) : null}
       <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-navy-800/85 to-brand-700/50" />
 
       <Container className="relative py-28 sm:py-36">
         <div className="max-w-2xl">
+          {antetitulo ? (
+            // brand-300 y no el teal del template: sobre el navy este da 6.7:1
+            // contra 4.3:1, y es texto chico en mayusculas.
+            <p className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-brand-300">
+              {antetitulo}
+            </p>
+          ) : null}
           <Heading level={1} as="h1" className="text-white">
             {titulo}
           </Heading>
