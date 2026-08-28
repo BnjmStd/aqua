@@ -1,3 +1,4 @@
+import { Bioindicadores } from './Bioindicadores'
 import { Contenido } from './Contenido'
 import { Cta } from './Cta'
 import { Destacados } from './Destacados'
@@ -27,6 +28,8 @@ export function BlockRenderer({ bloques }: { bloques: Bloque[] }) {
             return <Contenido key={bloque.id} {...bloque} />
           case 'destacados':
             return <Destacados key={bloque.id} {...bloque} />
+          case 'bioindicadores':
+            return <Bioindicadores key={bloque.id} {...bloque} />
           case 'unidades':
             return <Unidades key={bloque.id} {...bloque} />
           case 'propuesta':

@@ -4,7 +4,7 @@ import { join } from 'path'
 import config from '@payload-config'
 import { getPayload, type Payload } from 'payload'
 
-import type { Pagina } from '@/payload-types'
+import type { Articulo, Pagina } from '@/payload-types'
 
 type BloquesPagina = NonNullable<Pagina['bloques']>
 
@@ -212,6 +212,12 @@ const PAGINAS: DatosPagina[] = [
         ],
       },
       {
+        blockType: 'bioindicadores',
+        titulo: 'Lo que dice el microscopio',
+        bajada:
+          'En un diagnóstico biológico, la microscopía del lodo activado adelanta lo que los análisis fisicoquímicos confirman días después. Cada organismo es una señal sobre la edad del lodo, la aireación y la carga.',
+      },
+      {
         blockType: 'cta',
         titulo: '¿Tienes un desafío operacional en mente?',
         texto: 'Cuéntanos qué necesitas y coordinamos un diagnóstico inicial.',
@@ -323,6 +329,240 @@ const PAGINAS: DatosPagina[] = [
   },
 ]
 
+/**
+ * Bioindicadores del lodo activado (colección `bioindicadores`). Imágenes
+ * optimizadas por scripts/optimizar-bioindicadores.ts. Los textos de `queIndica`
+ * son interpretación estándar de microscopía y quedan sujetos a revisión del
+ * equipo técnico.
+ */
+const BIOINDICADORES: {
+  slug: string
+  archivo: string
+  alt: string
+  nombre: string
+  nombreCientifico?: string
+  grupo: 'floculo' | 'ciliado' | 'ameba' | 'metazoo' | 'filamentosa'
+  condicion: 'buena' | 'alerta' | 'problema'
+  queIndica: string
+  orden: number
+}[] = [
+  {
+    slug: 'floculo-sano',
+    archivo: 'bioindicador-floculo-sano.jpg',
+    alt: 'Microscopía de lodo activado: flóculo compacto con ciliados pedunculados fijos en su borde.',
+    nombre: 'Flóculo con ciliados fijos',
+    grupo: 'floculo',
+    condicion: 'buena',
+    queIndica:
+      'Flóculo firme y bien colonizado, con biomasa activa. Buena sedimentabilidad y efluente clarificado: es la estructura de referencia de un lodo sano.',
+    orden: 1,
+  },
+  {
+    slug: 'ciliados-pedunculados',
+    archivo: 'bioindicador-ciliados-pedunculados.jpg',
+    alt: 'Colonia de ciliados pedunculados Opercularia adherida a un flóculo de lodo activado.',
+    nombre: 'Ciliados pedunculados',
+    nombreCientifico: 'Opercularia sp.',
+    grupo: 'ciliado',
+    condicion: 'buena',
+    queIndica:
+      'Fijos al flóculo, depredan bacterias dispersas. Indican lodo maduro y bien oxigenado, con carga orgánica moderada y efluente de baja turbidez.',
+    orden: 2,
+  },
+  {
+    slug: 'rotifero',
+    archivo: 'bioindicador-rotifero.jpg',
+    alt: 'Rotífero del género Rotaria observado al microscopio en una muestra de lodo activado.',
+    nombre: 'Rotíferos',
+    nombreCientifico: 'Rotaria sp.',
+    grupo: 'metazoo',
+    condicion: 'alerta',
+    queIndica:
+      'Aparecen con lodos de edad alta (SRT largo) y relación alimento/microorganismos muy baja. Buena nitrificación y efluente de alta calidad; en exceso, señal de sobre-oxidación y pérdida de flóculo.',
+    orden: 3,
+  },
+  {
+    slug: 'ameba-testacea',
+    archivo: 'bioindicador-ameba-testacea.jpg',
+    alt: 'Ameba testácea Arcella junto a un ciliado reptante y flóculos de lodo activado.',
+    nombre: 'Amebas testáceas',
+    nombreCientifico: 'Arcella sp.',
+    grupo: 'ameba',
+    condicion: 'buena',
+    queIndica:
+      'Toleran bien condiciones estables y de baja carga. Su presencia acompaña a lodos con buena nitrificación y edad media-alta.',
+    orden: 4,
+  },
+  {
+    slug: 'gastrotrico',
+    archivo: 'bioindicador-gastrotrico.jpg',
+    alt: 'Gastrotrico del género Chaetonotus en una muestra de lodo activado.',
+    nombre: 'Gastrotricos',
+    nombreCientifico: 'Chaetonotus sp.',
+    grupo: 'metazoo',
+    condicion: 'buena',
+    queIndica:
+      'Metazoos asociados a lodos limpios, poco cargados y bien estabilizados, con efluente de buena calidad.',
+    orden: 5,
+  },
+  {
+    slug: 'bacterias-filamentosas',
+    archivo: 'bioindicador-bacterias-filamentosas.jpg',
+    alt: 'Bacterias filamentosas extendiéndose desde un flóculo de lodo activado.',
+    nombre: 'Bacterias filamentosas',
+    grupo: 'filamentosa',
+    condicion: 'problema',
+    queIndica:
+      'En exceso puentean los flóculos e impiden que compacten: bulking filamentoso, SVI alto y arrastre de sólidos al efluente. Causas típicas: oxígeno disuelto bajo, déficit de nutrientes, pH bajo o septicidad.',
+    orden: 6,
+  },
+  {
+    slug: 'crecimiento-disperso',
+    archivo: 'bioindicador-crecimiento-disperso.jpg',
+    alt: 'Lodo activado con crecimiento bacteriano disperso y filamentos libres, sin flóculos definidos.',
+    nombre: 'Crecimiento disperso',
+    grupo: 'floculo',
+    condicion: 'problema',
+    queIndica:
+      'Bacterias que no se agregan en flóculo: efluente turbio y mala sedimentación. Suele indicar lodo muy joven (SRT corto), choque tóxico o sobrecarga orgánica.',
+    orden: 7,
+  },
+]
+
+async function upsertBioindicador(
+  payload: Payload,
+  datos: (typeof BIOINDICADORES)[number],
+): Promise<string> {
+  const imagen = await upsertMedia(payload, datos.archivo, datos.alt)
+  const existentes = await payload.find({
+    collection: 'bioindicadores',
+    where: { slug: { equals: datos.slug } },
+    limit: 1,
+    depth: 0,
+  })
+  const data = {
+    nombre: datos.nombre,
+    nombreCientifico: datos.nombreCientifico,
+    slug: datos.slug,
+    imagen,
+    grupo: datos.grupo,
+    condicion: datos.condicion,
+    queIndica: datos.queIndica,
+    orden: datos.orden,
+    _status: 'published' as const,
+  }
+  const existente = existentes.docs[0]
+  if (existente) {
+    if (force) {
+      await payload.update({ collection: 'bioindicadores', id: existente.id, data, overrideAccess: true })
+      console.log(`  bioindicador ${datos.slug}: actualizado`)
+    } else {
+      console.log(`  bioindicador ${datos.slug}: ya existe`)
+    }
+  } else {
+    await payload.create({ collection: 'bioindicadores', data, overrideAccess: true })
+    console.log(`  bioindicador ${datos.slug}: creado`)
+  }
+  return imagen
+}
+
+/** Nodo de texto lexical. */
+function lexTexto(texto: string) {
+  return { type: 'text', version: 1, text: texto, format: 0, style: '', mode: 'normal', detail: 0 }
+}
+
+/** Nodos lexical de nivel raiz para el `contenido` de un articulo. */
+function lexParrafo(texto: string) {
+  return { type: 'paragraph', version: 1, direction: 'ltr', format: '', indent: 0, children: [lexTexto(texto)] }
+}
+
+function lexEncabezado(texto: string, tag: 'h2' | 'h3' = 'h2') {
+  return { type: 'heading', tag, version: 1, direction: 'ltr', format: '', indent: 0, children: [lexTexto(texto)] }
+}
+
+function lexImagen(mediaId: string) {
+  return { type: 'upload', version: 3, relationTo: 'media', value: mediaId, fields: null, format: '' }
+}
+
+function lexDocumento(nodos: Record<string, unknown>[]) {
+  return {
+    root: { type: 'root', version: 1, direction: 'ltr' as const, format: '' as const, indent: 0, children: nodos },
+  }
+}
+
+async function upsertArticulo(payload: Payload, imagenesBio: Record<string, string>) {
+  const SLUG = 'bioindicadores-lodo-activado'
+  const contenido = lexDocumento([
+    lexParrafo(
+      'En un diagnostico biologico, la microscopia del lodo activado es la primera lectura del estado del proceso. Mientras los analisis fisicoquimicos tardan dias, una muestra al microscopio muestra en minutos si el flóculo esta sano, si la aireacion alcanza y si la edad del lodo es la adecuada. Los organismos que aparecen —y los que faltan— son un indicador anticipado.',
+    ),
+    lexEncabezado('El flóculo, primero'),
+    lexImagen(imagenesBio['floculo-sano']),
+    lexParrafo(
+      'Antes de mirar quien vive en el lodo, se mira como esta armado. Un flóculo compacto, firme y bien definido, con bacterias formadoras dominando, sedimenta bien y deja un efluente clarificado. Es la estructura de referencia contra la que se compara todo lo demas.',
+    ),
+    lexEncabezado('Los que traen buenas noticias'),
+    lexParrafo(
+      'Los ciliados pedunculados —Opercularia, Vorticella y parientes— se fijan al flóculo y filtran bacterias dispersas del liquido. Su presencia indica un lodo maduro, bien oxigenado, con carga organica moderada y un efluente de baja turbidez.',
+    ),
+    lexImagen(imagenesBio['ciliados-pedunculados']),
+    lexParrafo(
+      'Mas arriba en la escala de estabilizacion aparecen los metazoos. Los rotiferos son propios de lodos de edad alta y relacion alimento/microorganismos muy baja: buena nitrificacion y efluente de alta calidad. En exceso, sin embargo, son senal de sobre-oxidacion y de un lodo que empieza a perder estructura.',
+    ),
+    lexImagen(imagenesBio['rotifero']),
+    lexParrafo(
+      'Las amebas testaceas como Arcella y los gastrotricos completan el cuadro de un lodo estable y poco cargado, con buena nitrificacion y edad media-alta.',
+    ),
+    lexImagen(imagenesBio['gastrotrico']),
+    lexEncabezado('Las senales de alarma'),
+    lexParrafo(
+      'El exceso de bacterias filamentosas es el problema mas frecuente. Los filamentos se extienden desde el flóculo y lo puentean, impidiendo que compacte: el indice volumetrico de lodos (SVI) sube, el manto crece y los solidos se van con el efluente. La causa esta detras del filamento dominante —oxigeno disuelto bajo, deficit de nutrientes, pH bajo, septicidad, sustrato muy biodegradable— y por eso identificarlo orienta la correccion.',
+    ),
+    lexImagen(imagenesBio['bacterias-filamentosas']),
+    lexParrafo(
+      'En el otro extremo esta el crecimiento disperso: bacterias que no llegan a agregarse en flóculo. El efluente sale turbio y la sedimentacion es mala. Suele indicar un lodo muy joven, un choque toxico o una sobrecarga organica reciente.',
+    ),
+    lexImagen(imagenesBio['crecimiento-disperso']),
+    lexEncabezado('Del microscopio a la decision'),
+    lexParrafo(
+      'Ninguna de estas observaciones se lee sola: se cruzan con el SVI, el oxigeno disuelto, la edad del lodo y la carga. Pero permiten anticipar. Cuando la poblacion de ciliados cae o los filamentos empiezan a dominar, hay dias de margen para ajustar aireacion, purga o dosificacion antes de que el problema llegue al punto de descarga. Esa ventaja de tiempo es el valor de mirar.',
+    ),
+  ])
+
+  const data = {
+    titulo: 'Bioindicadores del lodo activado: lo que el microscopio adelanta',
+    bajada:
+      'Antes de que lleguen los resultados de laboratorio, la microscopia del lodo ya muestra si el proceso esta sano. Una guia visual de los organismos que importan.',
+    contenido: contenido as unknown as NonNullable<Articulo['contenido']>,
+    tipo: 'analisis' as const,
+    fechaPublicacion: new Date('2026-08-01T12:00:00Z').toISOString(),
+    unidades: ['insights'] as NonNullable<Articulo['unidades']>,
+    slug: SLUG,
+    imagenDestacada: imagenesBio['ciliados-pedunculados'],
+    tiempoLecturaMinutos: 4,
+    _status: 'published' as const,
+  }
+
+  const existentes = await payload.find({
+    collection: 'articulos',
+    where: { slug: { equals: SLUG } },
+    limit: 1,
+    depth: 0,
+  })
+  const existente = existentes.docs[0]
+  if (existente) {
+    if (force) {
+      await payload.update({ collection: 'articulos', id: existente.id, data, overrideAccess: true })
+      console.log(`  articulo ${SLUG}: actualizado`)
+    } else {
+      console.log(`  articulo ${SLUG}: ya existe`)
+    }
+  } else {
+    await payload.create({ collection: 'articulos', data, overrideAccess: true })
+    console.log(`  articulo ${SLUG}: creado`)
+  }
+}
+
 async function upsertAdmin(payload: Payload) {
   const existentes = await payload.find({
     collection: 'users',
@@ -404,6 +644,15 @@ async function main() {
 
   console.log('Admin...')
   await upsertAdmin(payload)
+
+  console.log('Bioindicadores...')
+  const imagenesBio: Record<string, string> = {}
+  for (const datos of BIOINDICADORES) {
+    imagenesBio[datos.slug] = await upsertBioindicador(payload, datos)
+  }
+
+  console.log('Insights...')
+  await upsertArticulo(payload, imagenesBio)
 
   console.log('Paginas...')
   for (const datos of PAGINAS) {

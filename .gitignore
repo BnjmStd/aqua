@@ -50,6 +50,7 @@ next-env.d.ts
 !/media/hero-planta-*.jpg
 !/media/logo.png
 !/media/logo-*.png
+!/media/bioindicador-*.jpg
 *.db
 *.db-shm
 *.db-wal

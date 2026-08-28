@@ -75,6 +75,7 @@ export interface Config {
     categorias: Categoria;
     servicios: Servicio;
     casos: Caso;
+    bioindicadores: Bioindicadore;
     'solicitudes-consulting': SolicitudesConsulting;
     cursos: Curso;
     objetivos: Objetivo;
@@ -105,6 +106,7 @@ export interface Config {
     categorias: CategoriasSelect<false> | CategoriasSelect<true>;
     servicios: ServiciosSelect<false> | ServiciosSelect<true>;
     casos: CasosSelect<false> | CasosSelect<true>;
+    bioindicadores: BioindicadoresSelect<false> | BioindicadoresSelect<true>;
     'solicitudes-consulting': SolicitudesConsultingSelect<false> | SolicitudesConsultingSelect<true>;
     cursos: CursosSelect<false> | CursosSelect<true>;
     objetivos: ObjetivosSelect<false> | ObjetivosSelect<true>;
@@ -330,6 +332,13 @@ export interface Pagina {
             id?: string | null;
             blockName?: string | null;
             blockType: 'destacados';
+          }
+        | {
+            titulo?: string | null;
+            bajada?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'bioindicadores';
           }
         | {
             titulo?: string | null;
@@ -1246,6 +1255,47 @@ export interface Testimonio {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Organismos de la microscopia de lodos activados y que indica cada uno sobre la planta.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bioindicadores".
+ */
+export interface Bioindicadore {
+  id: string;
+  /**
+   * Nombre comun. Ej: Ciliados pedunculados.
+   */
+  nombre: string;
+  /**
+   * Genero o grupo. Ej: Opercularia sp.
+   */
+  nombreCientifico?: string | null;
+  /**
+   * URL del contenido. Se genera solo desde el titulo; cambiarlo rompe enlaces existentes.
+   */
+  slug?: string | null;
+  /**
+   * Microscopia del organismo. La descripcion accesible va en el propio archivo.
+   */
+  imagen: string | Media;
+  grupo: 'floculo' | 'ciliado' | 'ameba' | 'metazoo' | 'filamentosa';
+  /**
+   * Que senala su presencia (o su exceso) para la operacion.
+   */
+  condicion: 'buena' | 'alerta' | 'problema';
+  /**
+   * Interpretacion operacional, 1 a 3 frases.
+   */
+  queIndica: string;
+  /**
+   * Orden de aparicion en la galeria (menor primero).
+   */
+  orden?: number | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
  * Pedidos de contacto de cuentas. No se exponen publicamente salvo a su dueño.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1651,6 +1701,10 @@ export interface PayloadLockedDocument {
         value: string | Caso;
       } | null)
     | ({
+        relationTo: 'bioindicadores';
+        value: string | Bioindicadore;
+      } | null)
+    | ({
         relationTo: 'solicitudes-consulting';
         value: string | SolicitudesConsulting;
       } | null)
@@ -1839,6 +1893,14 @@ export interface PaginasSelect<T extends boolean = true> {
               cantidad?: T;
               seleccionManual?: T;
               documentos?: T;
+              id?: T;
+              blockName?: T;
+            };
+        bioindicadores?:
+          | T
+          | {
+              titulo?: T;
+              bajada?: T;
               id?: T;
               blockName?: T;
             };
@@ -2082,6 +2144,23 @@ export interface CasosSelect<T extends boolean = true> {
         imagen?: T;
         noIndexar?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "bioindicadores_select".
+ */
+export interface BioindicadoresSelect<T extends boolean = true> {
+  nombre?: T;
+  nombreCientifico?: T;
+  slug?: T;
+  imagen?: T;
+  grupo?: T;
+  condicion?: T;
+  queIndica?: T;
+  orden?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
@@ -2855,6 +2934,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'casos';
           value: string | Caso;
+        } | null)
+      | ({
+          relationTo: 'bioindicadores';
+          value: string | Bioindicadore;
         } | null)
       | ({
           relationTo: 'cursos';

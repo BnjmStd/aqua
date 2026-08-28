@@ -95,6 +95,15 @@ export const BloqueProceso: Block = {
   ],
 }
 
+export const BloqueBioindicadores: Block = {
+  slug: 'bioindicadores',
+  labels: { singular: 'Bioindicadores', plural: 'Bloques de bioindicadores' },
+  fields: [
+    traducible({ name: 'titulo', type: 'text' }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+  ],
+}
+
 export const BloqueContenido: Block = {
   slug: 'contenido',
   labels: { singular: 'Texto', plural: 'Bloques de texto' },
@@ -289,6 +298,7 @@ export const BLOQUES_PAGINA = [
   BloquePerfil,
   BloqueContenido,
   BloqueDestacados,
+  BloqueBioindicadores,
   BloqueUnidades,
   BloquePropuesta,
   BloquePresencia,

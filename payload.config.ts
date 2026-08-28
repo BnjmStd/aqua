@@ -16,6 +16,7 @@ import { Personas } from './collections/Personas'
 import { Testimonios } from './collections/Testimonios'
 import { Users } from './collections/Users'
 // Consulting
+import { Bioindicadores } from './collections/consulting/Bioindicadores'
 import { Casos } from './collections/consulting/Casos'
 import { Servicios } from './collections/consulting/Servicios'
 import { SolicitudesConsulting } from './collections/consulting/SolicitudesConsulting'
@@ -71,6 +72,7 @@ export default buildConfig({
     // Consulting
     Servicios,
     Casos,
+    Bioindicadores,
     SolicitudesConsulting,
     // Academy
     Cursos,

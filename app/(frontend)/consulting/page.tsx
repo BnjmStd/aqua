@@ -34,9 +34,11 @@ export default async function ConsultingPage() {
 
   const bloques = pagina.bloques ?? []
   // El catalogo de servicios y casos vive en sus colecciones (no son bloques
-  // de pagina); el hero y el cierre si vienen del CMS y se intercalan.
+  // de pagina); el hero y el cierre si vienen del CMS y se intercalan. Lo que
+  // haya entre medio (p. ej. el bloque de bioindicadores) va tras los casos.
   const encabezado = bloques.filter((b) => b.blockType === 'hero')
   const cierre = bloques.filter((b) => b.blockType === 'cta')
+  const medio = bloques.filter((b) => b.blockType !== 'hero' && b.blockType !== 'cta')
 
   return (
     <div className="flex flex-1 flex-col">
@@ -63,6 +65,8 @@ export default async function ConsultingPage() {
             </Container>
           </Section>
         ) : null}
+
+        <BlockRenderer bloques={medio} />
 
         <BlockRenderer bloques={cierre} />
       </main>
