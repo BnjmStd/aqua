@@ -59,6 +59,7 @@ export function EsquemaProceso({ className, tono = 'claro', modo = 'hero' }: Pro
     if (!svg) return
 
     const q = gsap.utils.selector(svg)
+    let limpiarTicker: (() => void) | undefined
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       gsap.set(q('[data-tuberia], [data-bajada]'), { strokeDashoffset: 0 })
@@ -84,11 +85,17 @@ export function EsquemaProceso({ className, tono = 'claro', modo = 'hero' }: Pro
             { scaleY: 0, transformOrigin: '50% 100%', duration: 1, ease: 'power1.inOut' },
             '-=0.35',
           )
-          // El clarificador solo llega a ~40%; el resto lo aporta el scroll.
+          // En `hero` el clarificador se llena entero acá. En `seccion` este
+          // tramo llega a ~40% y el resto lo termina de aportar el scroll.
           .fromTo(
             q('[data-agua-clar]'),
             { scaleY: 0, transformOrigin: '50% 100%' },
-            { scaleY: 0.4, transformOrigin: '50% 100%', duration: 1, ease: 'power1.inOut' },
+            {
+              scaleY: modo === 'seccion' ? 0.4 : 1,
+              transformOrigin: '50% 100%',
+              duration: 1,
+              ease: 'power1.inOut',
+            },
             '<',
           )
           .from(q('[data-burbuja-grupo]'), { opacity: 0, duration: 0.6 }, '<')
@@ -106,61 +113,67 @@ export function EsquemaProceso({ className, tono = 'claro', modo = 'hero' }: Pro
           .from(q('[data-rotulo]'), { opacity: 0, y: 6, duration: 0.5 }, '-=0.3')
       }
 
-      // --- Bucles continuos (ambiente, nunca escrubeados) ------------------
-      const bucles = (delay: number) => {
-        gsap.to(q('[data-aireador]'), {
-          rotation: 360,
-          transformOrigin: '50% 50%',
-          duration: 3.5,
-          ease: 'none',
-          repeat: -1,
-          delay,
-        })
-        gsap.to(q('[data-molecula]'), {
-          rotation: 360,
-          transformOrigin: '50% 50%',
-          duration: 26,
-          ease: 'none',
-          repeat: -1,
-          delay,
-        })
-        gsap.to(q('[data-flujo]'), {
-          strokeDashoffset: -60,
-          duration: 1.6,
-          ease: 'none',
-          repeat: -1,
-          delay,
-        })
-        gsap.to(q('[data-burbuja]'), {
-          keyframes: [
-            { y: -12, opacity: 0.9, duration: 0.4 },
-            { y: -80, opacity: 0.9, duration: 1.5 },
-            { y: -106, opacity: 0, duration: 0.5 },
-          ],
-          ease: 'sine.out',
-          stagger: { each: 0.5, from: 'random', repeat: -1 },
-          delay,
-        })
-        gsap.to(q('[data-onda]'), {
-          keyframes: [
-            { scale: 0.3, opacity: 0.7, duration: 0.01 },
-            { scale: 1.9, opacity: 0, duration: 1.7 },
-          ],
-          transformOrigin: '50% 50%',
-          ease: 'sine.out',
-          stagger: { each: 0.85, repeat: -1 },
-          delay,
-        })
-        gsap.to(q('[data-gota]'), {
-          keyframes: [
-            { opacity: 1, y: 0, duration: 0.01 },
-            { y: 20, opacity: 0, duration: 1 },
-          ],
-          ease: 'power1.in',
-          repeat: -1,
-          repeatDelay: 0.7,
-          delay,
-        })
+      // --- Bucles continuos (ambiente) ------------------------------------
+      // Todos en una sola timeline para poder modularle la velocidad de golpe
+      // con timeScale() (lo usa el control por scroll de mas abajo, en hero).
+      const bucles = (inicio: number) => {
+        const loops = gsap.timeline()
+        loops
+          .to(
+            q('[data-aireador]'),
+            { rotation: 360, transformOrigin: '50% 50%', duration: 3.5, ease: 'none', repeat: -1 },
+            inicio,
+          )
+          .to(
+            q('[data-molecula]'),
+            { rotation: 360, transformOrigin: '50% 50%', duration: 26, ease: 'none', repeat: -1 },
+            inicio,
+          )
+          .to(
+            q('[data-flujo]'),
+            { strokeDashoffset: -60, duration: 1.6, ease: 'none', repeat: -1 },
+            inicio,
+          )
+          .to(
+            q('[data-burbuja]'),
+            {
+              keyframes: [
+                { y: -12, opacity: 0.9, duration: 0.4 },
+                { y: -80, opacity: 0.9, duration: 1.5 },
+                { y: -106, opacity: 0, duration: 0.5 },
+              ],
+              ease: 'sine.out',
+              stagger: { each: 0.5, from: 'random', repeat: -1 },
+            },
+            inicio,
+          )
+          .to(
+            q('[data-onda]'),
+            {
+              keyframes: [
+                { scale: 0.3, opacity: 0.7, duration: 0.01 },
+                { scale: 1.9, opacity: 0, duration: 1.7 },
+              ],
+              transformOrigin: '50% 50%',
+              ease: 'sine.out',
+              stagger: { each: 0.85, repeat: -1 },
+            },
+            inicio,
+          )
+          .to(
+            q('[data-gota]'),
+            {
+              keyframes: [
+                { opacity: 1, y: 0, duration: 0.01 },
+                { y: 20, opacity: 0, duration: 1 },
+              ],
+              ease: 'power1.in',
+              repeat: -1,
+              repeatDelay: 0.7,
+            },
+            inicio,
+          )
+        return loops
       }
 
       if (modo === 'seccion') {
@@ -190,22 +203,40 @@ export function EsquemaProceso({ className, tono = 'claro', modo = 'hero' }: Pro
         return
       }
 
-      // modo === 'hero'
+      // modo === 'hero' — la intro se reproduce sola y deja la planta armada
+      // (clarificador incluido). El scroll ya no llena nada; en cambio, modula
+      // la velocidad de los bucles ambiente.
       const intro = gsap.timeline({ defaults: { ease: 'power3.out' } })
       armar(intro)
-      bucles(intro.duration())
+      const loops = bucles(intro.duration())
 
-      gsap
-        .timeline({
-          defaults: { ease: 'none', immediateRender: false },
-          scrollTrigger: { trigger: svg, start: 'top top', end: '+=340', scrub: 0.8 },
-        })
-        .to(q('[data-agua-clar]'), { scaleY: 1, transformOrigin: '50% 100%' })
+      // Los bucles siguen la velocidad del scroll: aceleran mientras el usuario
+      // se mueve y decaen a ralenti (~1x) cuando se detiene, con techo en 3x.
+      let objetivo = 1
+      ScrollTrigger.create({
+        trigger: svg,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: (self) => {
+          const v = Math.min(Math.abs(self.getVelocity()) / 1400, 1)
+          objetivo = 1 + v * 2
+        },
+      })
+      const seguirScroll = () => {
+        objetivo += (1 - objetivo) * 0.05 // decae a 1 cuando no llega mas velocidad
+        const actual = loops.timeScale()
+        loops.timeScale(actual + (objetivo - actual) * 0.1)
+      }
+      gsap.ticker.add(seguirScroll)
+      limpiarTicker = () => gsap.ticker.remove(seguirScroll)
 
       ScrollTrigger.refresh()
     }, svg)
 
-    return () => ctx.revert()
+    return () => {
+      limpiarTicker?.()
+      ctx.revert()
+    }
   }, [modo])
 
   return (

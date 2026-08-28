@@ -1,7 +1,9 @@
 import { RichText } from '@payloadcms/richtext-lexical/react'
 
 import { Container } from '@/components/ui/Container'
+import { FaqLista } from '@/components/ui/FaqLista'
 import { Heading } from '@/components/ui/Heading'
+import { MicrobioAmbiente } from '@/components/ui/MicrobioAmbiente'
 import { Section } from '@/components/ui/Section'
 import type { BloqueDeTipo } from './types'
 
@@ -9,32 +11,24 @@ export function Faq({ titulo, preguntas }: BloqueDeTipo<'faq'>) {
   if (!preguntas?.length) return null
 
   return (
-    <Section tone="muted">
-      <Container className="max-w-3xl">
+    <Section tone="muted" className="relative overflow-hidden">
+      <MicrobioAmbiente />
+      <Container className="relative z-10 max-w-3xl">
         {titulo ? (
           <Heading level={2} className="mb-10 text-center">
             {titulo}
           </Heading>
         ) : null}
 
-        <div className="divide-y divide-slate-200">
-          {preguntas.map((item) => (
-            <details key={item.id ?? item.pregunta} className="group py-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-foreground">
-                {item.pregunta}
-                <span
-                  aria-hidden
-                  className="shrink-0 text-brand-700 transition-transform group-open:rotate-45"
-                >
-                  +
-                </span>
-              </summary>
-              <div className="mt-3 text-foreground/80 [&_p]:mt-2 [&_p]:leading-relaxed">
-                <RichText data={item.respuesta} />
-              </div>
-            </details>
-          ))}
-        </div>
+        <FaqLista
+          items={preguntas.map((item) => ({
+            id: item.id ?? item.pregunta,
+            pregunta: item.pregunta,
+            // RichText se renderiza en el servidor y viaja como nodo ya listo:
+            // asi no entra al bundle del cliente.
+            respuesta: <RichText data={item.respuesta} />,
+          }))}
+        />
       </Container>
     </Section>
   )

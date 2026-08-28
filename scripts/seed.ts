@@ -373,21 +373,12 @@ async function upsertPagina(payload: Payload, datos: DatosPagina) {
 async function main() {
   const payload = await getPayload({ config })
 
-  console.log('Configuracion del sitio...')
-  await payload.updateGlobal({
-    slug: 'configuracion-sitio',
-    data: {
-      nombreComercial: 'aquabioprocess.cl',
-      razonSocial: 'SALINAS AQUABIOPROCESS EXPERT CONSULTING SpA',
-      email: 'contacto@aquabioprocess.cl',
-    },
-    overrideAccess: true,
-  })
-
-  console.log('Admin...')
-  await upsertAdmin(payload)
-
   console.log('Media...')
+  const logoMarca = await upsertMedia(
+    payload,
+    'logo.png',
+    'Logotipo de Salinas Aquabioprocess Expert Consulting: una gota de agua con una hoja verde junto al nombre de la empresa.',
+  )
   const fotoFundador = await upsertMedia(
     payload,
     'fundador.jpg',
@@ -398,6 +389,21 @@ async function main() {
     'hero-planta.jpg',
     'Planta de tratamiento de aguas industriales con estanques de acero, tableros de control y laboratorio de analisis.',
   )
+
+  console.log('Configuracion del sitio...')
+  await payload.updateGlobal({
+    slug: 'configuracion-sitio',
+    data: {
+      nombreComercial: 'aquabioprocess.cl',
+      razonSocial: 'SALINAS AQUABIOPROCESS EXPERT CONSULTING SpA',
+      email: 'contacto@aquabioprocess.cl',
+      logo: logoMarca,
+    },
+    overrideAccess: true,
+  })
+
+  console.log('Admin...')
+  await upsertAdmin(payload)
 
   console.log('Paginas...')
   for (const datos of PAGINAS) {

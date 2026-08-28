@@ -1,10 +1,10 @@
-import Link from 'next/link'
-
+import { CanalUnidades } from '@/components/ui/CanalUnidades'
 import { Container } from '@/components/ui/Container'
 import { Heading } from '@/components/ui/Heading'
+import { MoleculaTitulo } from '@/components/ui/MoleculaTitulo'
 import { Section } from '@/components/ui/Section'
+import { TarjetaUnidad } from '@/components/ui/TarjetaUnidad'
 import { Text } from '@/components/ui/Text'
-import { Icono } from '@/components/ui/iconos'
 import type { NombreIcono } from '@/fields/iconos'
 import { UNIDADES, type Unidad } from '@/fields/unidad'
 import type { BloqueDeTipo } from './types'
@@ -30,7 +30,12 @@ export function Unidades({ titulo, bajada, tarjetas }: BloqueDeTipo<'unidades'>)
       <Container>
         {(titulo || bajada) && (
           <div className="mx-auto mb-16 max-w-3xl text-center">
-            {titulo && <Heading level={2}>{titulo}</Heading>}
+            {titulo && (
+              <>
+                <MoleculaTitulo className="mx-auto mb-3" />
+                <Heading level={2}>{titulo}</Heading>
+              </>
+            )}
             {bajada && (
               <Text tone="lead" className="mt-4">
                 {bajada}
@@ -39,30 +44,19 @@ export function Unidades({ titulo, bajada, tarjetas }: BloqueDeTipo<'unidades'>)
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {tarjetas.map((tarjeta) => {
-            const unidad = tarjeta.unidad
-
-            return (
-              // La tarjeta entera es el enlace a la pagina de la unidad: la
-              // maqueta no lo hace, pero cada tarjeta ya nombra una seccion que
-              // existe en el sitio y dejarla muerta seria peor.
-              <Link
-                key={tarjeta.id ?? unidad}
-                href={`/${unidad}`}
-                className="group rounded-lg border border-border bg-surface p-8 shadow-soft transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-              >
-                <span className="text-brand-700">
-                  <Icono nombre={ICONO_UNIDAD[unidad]} />
-                </span>
-                <Heading level={4} as="h3" className="mt-4">
-                  {NOMBRE_UNIDAD[unidad]}
-                </Heading>
-                <Text className="mt-3">{tarjeta.descripcion}</Text>
-              </Link>
-            )
-          })}
-        </div>
+        {/* La grilla vive dentro de CanalUnidades para que la tuberia animada
+            pueda medir cada tarjeta y ramificarse hacia ellas (solo en desktop). */}
+        <CanalUnidades>
+          {tarjetas.map((tarjeta) => (
+            <TarjetaUnidad
+              key={tarjeta.id ?? tarjeta.unidad}
+              unidad={tarjeta.unidad}
+              nombre={NOMBRE_UNIDAD[tarjeta.unidad]}
+              descripcion={tarjeta.descripcion}
+              icono={ICONO_UNIDAD[tarjeta.unidad]}
+            />
+          ))}
+        </CanalUnidades>
       </Container>
     </Section>
   )
