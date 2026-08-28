@@ -540,6 +540,7 @@ async function upsertArticulo(payload: Payload, imagenesBio: Record<string, stri
     slug: SLUG,
     imagenDestacada: imagenesBio['ciliados-pedunculados'],
     tiempoLecturaMinutos: 4,
+    destacado: true,
     _status: 'published' as const,
   }
 

@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# aquabioprocess.cl
 
-## Getting Started
+Sitio de Salinas Aquabioprocess Expert Consulting.
+Next.js 16 + Payload CMS + SQLite (sin Docker).
 
-First, run the development server:
+## Puesta en marcha
 
 ```bash
+npm install
+cp .env.example .env        # y poné un PAYLOAD_SECRET real
+npm run db:seed             # crea la BD local desde la semilla versionada
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Sitio: http://localhost:3000
+- Panel: http://localhost:3000/admin (usuario admin de la semilla)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Si ya tenés una BD local y querés empezar de cero:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run db:seed -- --force  # descarta aquabioprocess.db y la vuelve a la semilla
+```
 
-## Learn More
+## Comandos
 
-To learn more about Next.js, take a look at the following resources:
+| comando | qué hace |
+| --- | --- |
+| `npm run dev` | servidor de desarrollo |
+| `npm run build` | build de producción |
+| `npm run db:seed` | restaura `aquabioprocess.db` desde la semilla (no toca una BD existente) |
+| `npm run db:seed -- --force` | descarta la BD local y la vuelve a la semilla |
+| `npm run db:seed:contenido` | regenera el contenido base en la BD viva (`-- --force` reescribe páginas) |
+| `npm run db:snapshot` | congela la BD viva actual como `aquabioprocess.seed.db` |
+| `npm run generate:types` | regenera `payload-types.ts` tras cambiar una colección |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Actualizar la semilla versionada
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`aquabioprocess.db` es tu BD de trabajo (ignorada por git). `aquabioprocess.seed.db`
+es la copia commiteada que usan los clones nuevos. Para sincronizarlas después de
+cambiar contenido base:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run db:seed:contenido -- --force
+npm run db:snapshot
+git add aquabioprocess.seed.db media/
+```

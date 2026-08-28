@@ -57,6 +57,15 @@ export const Articulos: CollectionConfig = {
       },
     },
     {
+      name: 'destacado',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Aparece grande al inicio de /insights. Si hay varios, se muestra el mas reciente.',
+      },
+    },
+    {
       name: 'archivado',
       type: 'checkbox',
       defaultValue: false,

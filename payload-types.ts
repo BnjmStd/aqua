@@ -986,6 +986,10 @@ export interface Articulo {
    */
   fechaPublicacion: string;
   /**
+   * Aparece grande al inicio de /insights. Si hay varios, se muestra el mas reciente.
+   */
+  destacado?: boolean | null;
+  /**
    * Sigue accesible por URL pero se oculta de los listados. Evita romper enlaces.
    */
   archivado?: boolean | null;
@@ -2405,6 +2409,7 @@ export interface ArticulosSelect<T extends boolean = true> {
   contenido?: T;
   tipo?: T;
   fechaPublicacion?: T;
+  destacado?: T;
   archivado?: T;
   autores?: T;
   urlLinkedin?: T;

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { ArticleCard } from '@/components/insights/ArticleCard'
+import { FeaturedArticle } from '@/components/insights/FeaturedArticle'
 import { Container } from '@/components/ui/Container'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Heading } from '@/components/ui/Heading'
@@ -18,6 +19,10 @@ export const metadata: Metadata = {
 
 export default async function InsightsPage() {
   const articulos = await obtenerArticulosPublicados()
+  // Destacado del equipo: el mas reciente marcado como tal (la query ya viene
+  // ordenada por fecha). El resto va en la grilla.
+  const destacado = articulos.find((articulo) => articulo.destacado) ?? null
+  const resto = articulos.filter((articulo) => articulo.id !== destacado?.id)
 
   return (
     <div className="flex flex-1 flex-col">
@@ -34,11 +39,16 @@ export default async function InsightsPage() {
             </div>
 
             {articulos.length ? (
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {articulos.map((articulo) => (
-                  <ArticleCard key={articulo.id} articulo={articulo} />
-                ))}
-              </div>
+              <>
+                {destacado ? <FeaturedArticle articulo={destacado} /> : null}
+                {resto.length ? (
+                  <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {resto.map((articulo) => (
+                      <ArticleCard key={articulo.id} articulo={articulo} />
+                    ))}
+                  </div>
+                ) : null}
+              </>
             ) : (
               <EmptyState
                 titulo="Todavía no hay artículos publicados"
