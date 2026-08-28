@@ -98,6 +98,8 @@ const PAGINAS: DatosPagina[] = [
     bloques: [
       {
         blockType: 'hero',
+        // imagenFondo se enchufa en main() con la imagen recien subida.
+        esquema: true,
         antetitulo: 'Salinas Aquabioprocess Expert Consulting SpA.',
         titulo: 'Science behind the process. Experience behind the solution.',
         bajada:
@@ -139,6 +141,12 @@ const PAGINAS: DatosPagina[] = [
               'Investigación aplicada, desarrollo de pilotajes y fomento de la innovación técnica continua para resolver desafíos complejos.',
           },
         ],
+      },
+      {
+        blockType: 'proceso',
+        titulo: 'Del efluente crudo al agua tratada',
+        bajada:
+          'Cada etapa —reactor biológico, aireación, clarificación— se controla con ciencia, datos y experiencia operacional.',
       },
       {
         blockType: 'cta',
@@ -385,9 +393,18 @@ async function main() {
     'fundador.jpg',
     'Consultor con casco y chaleco reflectante frente a los estanques de una planta de tratamiento de aguas industriales.',
   )
+  const heroInicio = await upsertMedia(
+    payload,
+    'hero-planta.jpg',
+    'Planta de tratamiento de aguas industriales con estanques de acero, tableros de control y laboratorio de analisis.',
+  )
 
   console.log('Paginas...')
   for (const datos of PAGINAS) {
+    if (datos.slug === 'inicio') {
+      // El bloque hero es el primero; le enchufamos la imagen de fondo recien subida.
+      Object.assign(datos.bloques[0], { imagenFondo: heroInicio })
+    }
     if (datos.slug === 'fundador') {
       // El bloque perfil es el primero; le enchufamos la foto recien subida.
       Object.assign(datos.bloques[0], { foto: fotoFundador })

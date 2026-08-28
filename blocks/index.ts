@@ -45,6 +45,15 @@ export const BloqueHero: Block = {
     traducible({ name: 'titulo', type: 'text', required: true }),
     traducible({ name: 'bajada', type: 'textarea' }),
     { name: 'imagenFondo', type: 'upload', relationTo: 'media' },
+    {
+      name: 'esquema',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        description:
+          'Muestra el esquema animado de la linea de tratamiento a la derecha del texto (solo en pantallas grandes).',
+      },
+    },
     campoAcciones,
   ],
 }
@@ -74,6 +83,15 @@ export const BloquePerfil: Block = {
         { name: 'valor', type: 'text', required: true },
       ],
     },
+  ],
+}
+
+export const BloqueProceso: Block = {
+  slug: 'proceso',
+  labels: { singular: 'Proceso animado', plural: 'Procesos animados' },
+  fields: [
+    traducible({ name: 'titulo', type: 'text' }),
+    traducible({ name: 'bajada', type: 'textarea' }),
   ],
 }
 
@@ -267,6 +285,7 @@ export const BloqueEquipo: Block = {
 
 export const BLOQUES_PAGINA = [
   BloqueHero,
+  BloqueProceso,
   BloquePerfil,
   BloqueContenido,
   BloqueDestacados,

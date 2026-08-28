@@ -207,6 +207,10 @@ export interface Pagina {
             titulo: string;
             bajada?: string | null;
             imagenFondo?: (string | null) | Media;
+            /**
+             * Muestra el esquema animado de la linea de tratamiento a la derecha del texto (solo en pantallas grandes).
+             */
+            esquema?: boolean | null;
             acciones?:
               | {
                   texto: string;
@@ -218,6 +222,13 @@ export interface Pagina {
             id?: string | null;
             blockName?: string | null;
             blockType: 'hero';
+          }
+        | {
+            titulo?: string | null;
+            bajada?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'proceso';
           }
         | {
             /**
@@ -1767,6 +1778,7 @@ export interface PaginasSelect<T extends boolean = true> {
               titulo?: T;
               bajada?: T;
               imagenFondo?: T;
+              esquema?: T;
               acciones?:
                 | T
                 | {
@@ -1775,6 +1787,14 @@ export interface PaginasSelect<T extends boolean = true> {
                     estilo?: T;
                     id?: T;
                   };
+              id?: T;
+              blockName?: T;
+            };
+        proceso?:
+          | T
+          | {
+              titulo?: T;
+              bajada?: T;
               id?: T;
               blockName?: T;
             };

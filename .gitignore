@@ -46,6 +46,8 @@ next-env.d.ts
 # referencia aquabioprocess.seed.db, asi el sitio renderiza en un clon nuevo)
 !/media/fundador.jpg
 !/media/fundador-*.jpg
+!/media/hero-planta.jpg
+!/media/hero-planta-*.jpg
 *.db
 *.db-shm
 *.db-wal
