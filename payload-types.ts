@@ -210,9 +210,9 @@ export interface Pagina {
             bajada?: string | null;
             imagenFondo?: (string | null) | Media;
             /**
-             * Muestra el esquema animado de la linea de tratamiento a la derecha del texto (solo en pantallas grandes).
+             * Ilustracion animada a la derecha del texto (solo en pantallas grandes).
              */
-            esquema?: boolean | null;
+            adorno?: ('ninguno' | 'esquema' | 'causaRaiz') | null;
             acciones?:
               | {
                   texto: string;
@@ -1836,7 +1836,7 @@ export interface PaginasSelect<T extends boolean = true> {
               titulo?: T;
               bajada?: T;
               imagenFondo?: T;
-              esquema?: T;
+              adorno?: T;
               acciones?:
                 | T
                 | {

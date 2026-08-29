@@ -99,7 +99,7 @@ const PAGINAS: DatosPagina[] = [
       {
         blockType: 'hero',
         // imagenFondo se enchufa en main() con la imagen recien subida.
-        esquema: true,
+        adorno: 'esquema',
         antetitulo: 'Salinas Aquabioprocess Expert Consulting SpA.',
         titulo: 'Science behind the process. Experience behind the solution.',
         bajada:
@@ -202,6 +202,7 @@ const PAGINAS: DatosPagina[] = [
     bloques: [
       {
         blockType: 'hero',
+        adorno: 'causaRaiz',
         antetitulo: 'Consulting',
         titulo: 'Decidir antes de invertir',
         bajada:
@@ -466,6 +467,40 @@ async function upsertBioindicador(
   return imagen
 }
 
+/**
+ * Fotos de terreno de corrosion para el articulo de Insights. Imagenes
+ * optimizadas por scripts/optimizar-corrosion.ts. El texto del articulo es
+ * criterio general de inspeccion de integridad y queda sujeto a revision del
+ * equipo tecnico.
+ */
+const CORROSION_IMAGENES: { slug: string; archivo: string; alt: string }[] = [
+  {
+    slug: 'estructura-consumida',
+    archivo: 'corrosion-estructura-consumida.jpg',
+    alt: 'Soporte de acero de una planta de tratamiento casi completamente consumido por la corrosion, con herrumbre en capas.',
+  },
+  {
+    slug: 'fuga-en-union',
+    archivo: 'corrosion-fuga-en-union.jpg',
+    alt: 'Union bridada de una tuberia con corrosion avanzada y una fuga de agua activa en la soldadura de la boquilla.',
+  },
+  {
+    slug: 'ampollas-recubrimiento',
+    archivo: 'corrosion-ampollas-recubrimiento.jpg',
+    alt: 'Recubrimiento de una superficie en contacto con el efluente, con ampollas y zonas desprendidas.',
+  },
+  {
+    slug: 'zona-de-dificil-acceso',
+    archivo: 'corrosion-zona-de-dificil-acceso.jpg',
+    alt: 'Soportes y bridas de tuberia bajo una losa de hormigon, con corrosion generalizada y pintura perdida.',
+  },
+  {
+    slug: 'inspeccion-soldadura',
+    archivo: 'corrosion-inspeccion-soldadura.jpg',
+    alt: 'Detalle de una soldadura con la superficie recien granallada junto a un tramo con recubrimiento antiguo y oxido.',
+  },
+]
+
 /** Nodo de texto lexical. */
 function lexTexto(texto: string) {
   return { type: 'text', version: 1, text: texto, format: 0, style: '', mode: 'normal', detail: 0 }
@@ -564,6 +599,106 @@ async function upsertArticulo(payload: Payload, imagenesBio: Record<string, stri
   }
 }
 
+async function upsertArticuloCorrosion(payload: Payload) {
+  const SLUG = 'corrosion-plantas-tratamiento'
+
+  const img: Record<string, string> = {}
+  for (const { slug, archivo, alt } of CORROSION_IMAGENES) {
+    img[slug] = await upsertMedia(payload, archivo, alt)
+  }
+
+  const contenido = lexDocumento([
+    lexParrafo(
+      'En una planta de tratamiento la corrosion no es un problema de mantencion aislado: es parte del proceso. El agua residual aporta cloruros, sulfatos y solidos; la humedad y la condensacion mantienen las superficies mojadas; y la actividad biologica genera sulfuro de hidrogeno. Sobre ese fondo, estructuras de acero al carbono y hormigon que en otro contexto durarian decadas se degradan en pocos anos si no se protegen y se revisan.',
+    ),
+    lexEncabezado('Cada zona se corroe distinto'),
+    lexParrafo(
+      'Un mismo estanque tiene ambientes muy diferentes segun la altura. La zona sumergida sufre corrosion mas o menos uniforme y ataque localizado bajo depositos. La franja de salpicadura —mojado y secado alternados, con oxigeno siempre disponible— es la mas agresiva para el acero y donde primero fallan los recubrimientos. La zona atmosferica se deteriora por condensacion. Y el espacio de gas sobre el liquido, en camaras y estructuras cerradas, concentra el sulfuro de hidrogeno.',
+    ),
+    lexEncabezado('Del sulfuro al acido: la corrosion biogenica'),
+    lexParrafo(
+      'En las zonas sin oxigeno —camaras de llegada, impulsiones, digestion, lodos septicos— las bacterias sulfato-reductoras producen sulfuro de hidrogeno. El gas pasa al aire del recinto y, sobre las paredes humedas, otras bacterias lo oxidan a acido sulfurico. El pH de la superficie puede bajar a valores de 1 a 2. Ese acido disuelve la pasta de cemento del hormigon —deja los aridos a la vista y expone la armadura— y ataca el acero de barandas, compuertas y ductos en la parte alta de la estructura, justo donde es mas dificil inspeccionar.',
+    ),
+    lexImagen(img['zona-de-dificil-acceso']),
+    lexParrafo(
+      'Union bridada y soportes bajo una losa: corrosion generalizada y recubrimiento perdido en un punto de dificil acceso, tipico de donde el deterioro avanza sin que nadie lo vea.',
+    ),
+    lexEncabezado('Lo que se busca en terreno'),
+    lexParrafo(
+      'La inspeccion visual ordena el resto del trabajo. Hay cuatro senales que se registran y fotografian.',
+    ),
+    lexParrafo(
+      'Perdida de seccion. Escamas gruesas, laminacion del acero (herrumbre en hojaldre) y elementos que ya no conservan su espesor original. Cuando un perfil o un soporte llega a este estado, la reparacion local rara vez alcanza.',
+    ),
+    lexImagen(img['estructura-consumida']),
+    lexParrafo(
+      'Soporte de acero practicamente consumido por la corrosion, con herrumbre laminar. A esta altura del deterioro el elemento se reemplaza, no se repara.',
+    ),
+    lexParrafo(
+      'Fugas en uniones. Bridas, soldaduras de boquillas y juntas apernadas son puntos de corrosion por rendija: el ataque avanza escondido en la junta hasta que aparece el goteo. Una fuga pequena en una linea de aire o de recirculacion tiene efecto directo en el proceso.',
+    ),
+    lexImagen(img['fuga-en-union']),
+    lexParrafo(
+      'Fuga activa en la union de una tuberia: la corrosion progreso desde la soldadura de la boquilla hasta perforar. El punto ya estaba comprometido mucho antes de que se viera el agua.',
+    ),
+    lexParrafo(
+      'Falla del recubrimiento. Ampollas, desprendimiento y oxido que se mete bajo la pintura son el aviso temprano, cuando todavia no hay dano estructural. Intervenir el recubrimiento en esta etapa es mucho mas barato que esperar a que el metal quede expuesto.',
+    ),
+    lexImagen(img['ampollas-recubrimiento']),
+    lexParrafo(
+      'Ampollamiento y desprendimiento del recubrimiento en una superficie en contacto con el efluente: el momento para intervenir es este, antes de que el acero quede al descubierto.',
+    ),
+    lexParrafo(
+      'Zonas ciegas. Cara inferior de pasarelas, apoyos de tuberia, pernos de anclaje, empotramientos: donde no se ve y no se limpia, la corrosion corre mas rapido. Son los puntos que hay que ir a buscar a proposito.',
+    ),
+    lexEncabezado('De la inspeccion a la decision'),
+    lexParrafo(
+      'El registro visual se complementa con medicion de espesores por ultrasonido en los puntos criticos. Con el espesor remanente y el original se estima la velocidad de corrosion y la vida util que queda. Eso permite ordenar las intervenciones por consecuencia —no es lo mismo un elemento estructural que un pasamanos— y definir la ventana: reparar recubrimiento ahora, reemplazar un tramo en la proxima parada, o dejar un punto en seguimiento con proxima medicion agendada.',
+    ),
+    lexImagen(img['inspeccion-soldadura']),
+    lexParrafo(
+      'Inspeccion de una soldadura: superficie recien preparada junto al recubrimiento antiguo con oxido. Sobre metal limpio se mide espesor y se decide si el elemento sigue, se refuerza o se cambia.',
+    ),
+    lexParrafo(
+      'Y como todo en una planta, la integridad mecanica y el proceso biologico son el mismo problema. Una linea de aire que pierde por corrosion baja el oxigeno disuelto en el reactor; una compuerta que no cierra descontrola un reparto de caudal; un puente de clarificador comprometido limita la operacion. Revisar el deterioro a tiempo es, tambien, cuidar el desempeno del tratamiento.',
+    ),
+  ])
+
+  const data = {
+    titulo: 'Corrosion en plantas de tratamiento: leer el deterioro antes de la falla',
+    bajada:
+      'El efluente, la condensacion y el biogas hacen de una planta de tratamiento uno de los ambientes mas agresivos para el acero y el hormigon. Una guia visual de lo que se busca en una inspeccion de integridad.',
+    contenido: contenido as unknown as NonNullable<Articulo['contenido']>,
+    tipo: 'analisis' as const,
+    fechaPublicacion: new Date('2026-08-29T12:00:00Z').toISOString(),
+    unidades: ['insights', 'consulting'] as NonNullable<Articulo['unidades']>,
+    slug: SLUG,
+    imagenDestacada: img['fuga-en-union'],
+    tiempoLecturaMinutos: 5,
+    destacado: false,
+    _status: 'published' as const,
+  }
+
+  const existentes = await payload.find({
+    collection: 'articulos',
+    where: { slug: { equals: SLUG } },
+    limit: 1,
+    depth: 0,
+  })
+  const existente = existentes.docs[0]
+  if (existente) {
+    if (force) {
+      await payload.update({ collection: 'articulos', id: existente.id, data, overrideAccess: true })
+      console.log(`  articulo ${SLUG}: actualizado`)
+    } else {
+      console.log(`  articulo ${SLUG}: ya existe`)
+    }
+  } else {
+    await payload.create({ collection: 'articulos', data, overrideAccess: true })
+    console.log(`  articulo ${SLUG}: creado`)
+  }
+}
+
 async function upsertAdmin(payload: Payload) {
   const existentes = await payload.find({
     collection: 'users',
@@ -581,6 +716,34 @@ async function upsertAdmin(payload: Payload) {
     overrideAccess: true,
   })
   console.log(`  admin ${ADMIN.email}: creado`)
+}
+
+/**
+ * Media que un bloque de una pagina ya tiene puesta (normalmente desde el
+ * admin), para que `--force` NO la pise con la del seed. Devuelve el id, o
+ * null si la pagina/bloque/campo no existe o el media fue borrado.
+ *
+ * `blockType` en vez de indice: sobrevive a que reordenen los bloques.
+ */
+async function mediaDeBloque(
+  payload: Payload,
+  slug: string,
+  blockType: string,
+  campo: string,
+): Promise<string | null> {
+  const { docs } = await payload.find({
+    collection: 'paginas',
+    where: { slug: { equals: slug } },
+    depth: 0,
+    limit: 1,
+  })
+  const bloques = (docs[0]?.bloques ?? []) as { blockType?: string; [k: string]: unknown }[]
+  const valor = bloques.find((b) => b.blockType === blockType)?.[campo]
+  if (typeof valor !== 'string') return null
+  const existe = await payload
+    .findByID({ collection: 'media', id: valor, depth: 0 })
+    .catch(() => null)
+  return existe ? valor : null
 }
 
 async function upsertPagina(payload: Payload, datos: DatosPagina) {
@@ -623,12 +786,17 @@ async function main() {
   const fotoFundador = await upsertMedia(
     payload,
     'fundador.jpg',
-    'Consultor con casco y chaleco reflectante frente a los estanques de una planta de tratamiento de aguas industriales.',
+    'Consultor sonriendo, con casco blanco y chaleco reflectante, sosteniendo una carpeta frente a los estanques de aireacion de una planta de tratamiento de aguas.',
   )
   const heroInicio = await upsertMedia(
     payload,
     'hero-planta.jpg',
     'Planta de tratamiento de aguas industriales con estanques de acero, tableros de control y laboratorio de analisis.',
+  )
+  const heroConsulting = await upsertMedia(
+    payload,
+    'hero-consulting.jpg',
+    'Reactor biologico de lodos activados en operacion, con espuma superficial y una pasarela metalica cruzando el estanque.',
   )
 
   console.log('Configuracion del sitio...')
@@ -639,6 +807,10 @@ async function main() {
       razonSocial: 'SALINAS AQUABIOPROCESS EXPERT CONSULTING SpA',
       email: 'contacto@aquabioprocess.cl',
       logo: logoMarca,
+      whatsapp: {
+        numero: '+56 9 6849 0768',
+        mensajePorDefecto: 'Hola, quisiera más información.',
+      },
     },
     overrideAccess: true,
   })
@@ -654,16 +826,24 @@ async function main() {
 
   console.log('Insights...')
   await upsertArticulo(payload, imagenesBio)
+  await upsertArticuloCorrosion(payload)
 
   console.log('Paginas...')
   for (const datos of PAGINAS) {
+    // Las imagenes de estos bloques se enchufan aca (los ids de Media son
+    // dinamicos). Si el bloque YA tiene una imagen puesta desde el admin, se
+    // respeta: el seed solo aporta la de arranque.
     if (datos.slug === 'inicio') {
-      // El bloque hero es el primero; le enchufamos la imagen de fondo recien subida.
-      Object.assign(datos.bloques[0], { imagenFondo: heroInicio })
+      const actual = await mediaDeBloque(payload, 'inicio', 'hero', 'imagenFondo')
+      Object.assign(datos.bloques[0], { imagenFondo: actual ?? heroInicio })
+    }
+    if (datos.slug === 'consulting') {
+      const actual = await mediaDeBloque(payload, 'consulting', 'hero', 'imagenFondo')
+      Object.assign(datos.bloques[0], { imagenFondo: actual ?? heroConsulting })
     }
     if (datos.slug === 'fundador') {
-      // El bloque perfil es el primero; le enchufamos la foto recien subida.
-      Object.assign(datos.bloques[0], { foto: fotoFundador })
+      const actual = await mediaDeBloque(payload, 'fundador', 'perfil', 'foto')
+      Object.assign(datos.bloques[0], { foto: actual ?? fotoFundador })
     }
     await upsertPagina(payload, datos)
   }

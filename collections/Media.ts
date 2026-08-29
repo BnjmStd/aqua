@@ -29,17 +29,29 @@ export const Media: CollectionConfig = {
      * archivos se sirven same-origin en `/api/media/file/`, devolvemos rutas
      * relativas: el optimizador las toma sin configuracion y funciona igual
      * en local, preview y produccion.
+     *
+     * Ademas se les agrega `?v=<updatedAt>`: los archivos se sirven por
+     * nombre, asi que si se reemplaza uno conservando el nombre (ej: cambiar
+     * la foto del fundador) la URL no cambiaria y el navegador y la cache de
+     * `next/image` seguirian mostrando el viejo. El sufijo la invalida.
      */
     afterRead: [
       ({ doc }) => {
-        const aRelativa = (u: unknown) =>
-          typeof u === 'string' ? u.replace(/^https?:\/\/[^/]+/i, '') : u
-        doc.url = aRelativa(doc.url)
-        doc.thumbnailURL = aRelativa(doc.thumbnailURL)
+        const version =
+          typeof doc.updatedAt === 'string' && !Number.isNaN(Date.parse(doc.updatedAt))
+            ? `?v=${Date.parse(doc.updatedAt)}`
+            : ''
+        const normalizar = (u: unknown) => {
+          if (typeof u !== 'string' || !u) return u
+          const relativa = u.replace(/^https?:\/\/[^/]+/i, '')
+          return relativa.includes('?') ? relativa : relativa + version
+        }
+        doc.url = normalizar(doc.url)
+        doc.thumbnailURL = normalizar(doc.thumbnailURL)
         if (doc.sizes && typeof doc.sizes === 'object') {
           for (const tamano of Object.values(doc.sizes)) {
             if (tamano && typeof tamano === 'object') {
-              ;(tamano as { url?: unknown }).url = aRelativa((tamano as { url?: unknown }).url)
+              ;(tamano as { url?: unknown }).url = normalizar((tamano as { url?: unknown }).url)
             }
           }
         }

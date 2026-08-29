@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { Heading } from '@/components/ui/Heading'
+import { HeroBanner } from '@/components/ui/HeroBanner'
+import { RutaAprendizaje } from '@/components/ui/RutaAprendizaje'
 import { Section } from '@/components/ui/Section'
-import { Text } from '@/components/ui/Text'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { obtenerCursosPublicados } from '@/queries/academy/cursos'
@@ -30,32 +31,19 @@ export default async function AcademyPage() {
     <div className="flex flex-1 flex-col">
       <Header />
       <main className="flex-1">
-        <Section tone="brand">
-          <Container className="py-12 sm:py-16">
-            <div className="max-w-2xl">
-              <Heading level={1} as="h1" className="text-white">
-                Academy
-              </Heading>
-              <Text tone="lead" className="mt-6 text-white/80">
-                Cursos in-company, talleres y coaching para operadores, técnicos, ingenieros y
-                supervisores. Transferencia de conocimiento como parte de cada intervención.
-              </Text>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Button href="/academy/cursos" variant="primario" size="lg">
-                  Ver cursos
-                </Button>
-                <Button
-                  href="/contacto"
-                  variant="secundario"
-                  size="lg"
-                  className="border-white/30 text-white hover:bg-white/10"
-                >
-                  Hablar con un asesor
-                </Button>
-              </div>
-            </div>
-          </Container>
-        </Section>
+        <HeroBanner
+          titulo="Academy"
+          bajada="Cursos in-company, talleres y coaching para operadores, técnicos, ingenieros y supervisores. Transferencia de conocimiento como parte de cada intervención."
+          imagen={{
+            url: '/hero-academy.jpg',
+            alt: 'Vista cenital de una parrilla de difusores en operación en un reactor biológico de lodos activados.',
+          }}
+          acciones={[
+            { texto: 'Ver cursos', enlace: '/academy/cursos', estilo: 'primario' },
+            { texto: 'Hablar con un asesor', enlace: '/contacto', estilo: 'secundario' },
+          ]}
+          aside={<RutaAprendizaje className="mx-auto lg:ml-auto" />}
+        />
 
         <Section>
           <Container>

@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
-import { UNIDADES } from '@/fields/unidad'
+import { UNIDADES_NAVEGABLES } from '@/fields/unidad'
 import { obtenerCuentaActual } from '@/lib/auth'
 import { esPoblado } from '@/lib/relaciones'
 import { obtenerConfiguracionSitio } from '@/lib/sitio'
@@ -11,7 +11,7 @@ import { MobileNav } from './MobileNav'
 import { NavLink } from './NavLink'
 
 const ENLACES_PRINCIPALES = [
-  ...UNIDADES.map(({ label, value }) => ({
+  ...UNIDADES_NAVEGABLES.map(({ label, value }) => ({
     etiqueta: label.split(' — ')[0],
     url: `/${value}`,
   })),

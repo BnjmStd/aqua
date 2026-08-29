@@ -48,9 +48,12 @@ next-env.d.ts
 !/media/fundador-*.jpg
 !/media/hero-planta.jpg
 !/media/hero-planta-*.jpg
+!/media/hero-consulting.jpg
+!/media/hero-consulting-*.jpg
 !/media/logo.png
 !/media/logo-*.png
 !/media/bioindicador-*.jpg
+!/media/corrosion-*.jpg
 *.db
 *.db-shm
 *.db-wal

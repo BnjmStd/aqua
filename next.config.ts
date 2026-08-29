@@ -42,6 +42,19 @@ const nextConfig: NextConfig = {
   // No anunciar que el sitio corre sobre Next.js.
   poweredByHeader: false,
 
+  images: {
+    // El optimizador solo toca imagenes locales de estas rutas.
+    // - /api/media/file/**: archivos de Payload. Sin `search` para dejar
+    //   pasar el `?v=<updatedAt>` que agrega collections/Media.ts (necesario
+    //   para invalidar cache cuando se reemplaza un archivo con el mismo
+    //   nombre). La ruta ya esta acotada a nuestro endpoint de media.
+    // - /**: assets estaticos de /public, siempre sin query string.
+    localPatterns: [
+      { pathname: "/api/media/file/**" },
+      { pathname: "/**", search: "" },
+    ],
+  },
+
   async headers() {
     return [
       {

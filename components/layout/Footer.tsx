@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { Container } from '@/components/ui/Container'
-import { UNIDADES } from '@/fields/unidad'
+import { UNIDADES_NAVEGABLES } from '@/fields/unidad'
 import { obtenerConfiguracionSitio } from '@/lib/sitio'
 import { WhatsAppFlotante } from './WhatsAppFlotante'
 
@@ -34,7 +34,7 @@ export async function Footer() {
             <div>
               <p className="text-sm font-medium text-white">Unidades</p>
               <ul className="mt-4 space-y-2">
-                {UNIDADES.map((unidad) => (
+                {UNIDADES_NAVEGABLES.map((unidad) => (
                   <li key={unidad.value}>
                     <Link
                       href={`/${unidad.value}`}

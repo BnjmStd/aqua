@@ -16,6 +16,17 @@ export const UNIDADES = [
 export type Unidad = (typeof UNIDADES)[number]['value']
 
 /**
+ * Unidades que todavia no tienen pagina publica (`/technologies`, `/rnd` dan
+ * 404). Se omiten de los menus hasta que existan; sacar de aca para publicarlas.
+ */
+export const UNIDADES_SIN_PAGINA: readonly Unidad[] = ['technologies', 'rnd']
+
+/** Unidades con pagina publica, para armar navegacion (header, footer). */
+export const UNIDADES_NAVEGABLES = UNIDADES.filter(
+  (unidad) => !UNIDADES_SIN_PAGINA.includes(unidad.value),
+)
+
+/**
  * @param required Casos y articulos pueden ser transversales; cursos no.
  */
 export const campoUnidad = (required = true): Field => ({

@@ -46,13 +46,18 @@ export const BloqueHero: Block = {
     traducible({ name: 'bajada', type: 'textarea' }),
     { name: 'imagenFondo', type: 'upload', relationTo: 'media' },
     {
-      name: 'esquema',
-      type: 'checkbox',
-      defaultValue: false,
+      name: 'adorno',
+      type: 'select',
+      defaultValue: 'ninguno',
       admin: {
         description:
-          'Muestra el esquema animado de la linea de tratamiento a la derecha del texto (solo en pantallas grandes).',
+          'Ilustracion animada a la derecha del texto (solo en pantallas grandes).',
       },
+      options: [
+        { label: 'Ninguno', value: 'ninguno' },
+        { label: 'Esquema de la linea de tratamiento', value: 'esquema' },
+        { label: 'Arbol de causa raiz', value: 'causaRaiz' },
+      ],
     },
     campoAcciones,
   ],
