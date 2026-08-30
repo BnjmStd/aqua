@@ -42,6 +42,14 @@ const nextConfig: NextConfig = {
   // No anunciar que el sitio corre sobre Next.js.
   poweredByHeader: false,
 
+  // Por si algo corre en modo dev detrás del dominio real.
+  allowedDevOrigins: [
+    "aquabioprocess.cl",
+    "www.aquabioprocess.cl",
+    "https://aquabioprocess.cl",
+    "https://www.aquabioprocess.cl",
+  ],
+
   images: {
     // El optimizador solo toca imagenes locales de estas rutas.
     // - /api/media/file/**: archivos de Payload. Sin `search` para dejar
