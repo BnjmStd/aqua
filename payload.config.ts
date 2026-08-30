@@ -190,10 +190,6 @@ export default buildConfig({
         client: {
             url: process.env.DATABASE_URI || "file:./aquabioprocess.db",
         },
-        // Un solo proceso + SQLite: el esquema se alinea al codigo al arrancar
-        // (build y start). Sin esto, `next build` en production no crea tablas
-        // nuevas y explota al pre-renderizar /academy.
-        push: true,
         // 'uuid' en vez de enteros autoincrementales: los IDs quedan portables
         // entre SQLite y Postgres, sin secuencias que reajustar al migrar.
         idType: "uuid",

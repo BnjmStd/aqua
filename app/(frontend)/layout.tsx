@@ -23,9 +23,6 @@ export const metadata: Metadata = {
     "Consultoría científico-técnica en tratamiento de aguas, efluentes industriales y procesos biológicos.",
 };
 
-/** No pre-renderizar con SQLite en el build: el esquema vive en el server. */
-export const dynamic = "force-dynamic";
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
