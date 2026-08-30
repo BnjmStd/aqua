@@ -12,7 +12,6 @@
     "crear-admin": "tsx --env-file=.env scripts/crear-admin.ts",
     "db:seed": "tsx scripts/db-seed.ts",
     "db:seed:contenido": "tsx --env-file=.env scripts/seed.ts",
-    "db:sync": "tsx --env-file=.env scripts/db-sync.ts",
     "db:snapshot": "tsx --env-file=.env scripts/db-snapshot.ts",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap"
