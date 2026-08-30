@@ -7,6 +7,8 @@ import { Card } from '@/components/ui/Card'
 import { Heading } from '@/components/ui/Heading'
 import { urlDeMedia } from '@/lib/media'
 import { esPoblado } from '@/lib/relaciones'
+import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { rutaContacto } from '@/lib/whatsapp'
 import type { Curso } from '@/payload-types'
 import { ETIQUETA_MODALIDAD, ETIQUETA_NIVEL } from './etiquetas'
 
@@ -58,7 +60,9 @@ function Fila({ icono, etiqueta, valor }: { icono: ReactNode; etiqueta: string; 
   )
 }
 
-export function CourseSidebar({ curso }: { curso: Curso }) {
+export async function CourseSidebar({ curso }: { curso: Curso }) {
+  const sitio = await obtenerConfiguracionSitio()
+  const email = correoParaMotivo(sitio)
   const relator = curso.relatoresHabituales?.find(esPoblado)
   const fotoRelator = relator ? urlDeMedia(relator.foto, 'thumbnail') : null
 
@@ -91,7 +95,7 @@ export function CourseSidebar({ curso }: { curso: Curso }) {
           <p className="mt-4 text-xs leading-relaxed text-foreground/60">{curso.certificacion}</p>
         ) : null}
 
-        <Button href="/contacto" size="lg" className="mt-6 w-full">
+        <Button href={rutaContacto(email, 'curso', { nombre: curso.titulo })} size="lg" className="mt-6 w-full">
           Quiero inscribirme
         </Button>
         <p className="mt-3 text-center text-xs text-foreground/50">

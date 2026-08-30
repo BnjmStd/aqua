@@ -24,8 +24,8 @@ export function Destacados({ titulo, origen, documentos }: BloqueDeTipo<'destaca
   if (!items.length) return null
 
   return (
-    <Section>
-      <Container>
+    <Section textura>
+      <Container className="relative">
         {titulo ? (
           <Heading level={2} className="mb-12">
             {titulo}
@@ -34,7 +34,7 @@ export function Destacados({ titulo, origen, documentos }: BloqueDeTipo<'destaca
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
-            <Card key={item.id}>
+            <Card key={item.id} className="transition-transform duration-300 motion-safe:hover:-translate-y-0.5">
               <Badge>{ETIQUETA_ORIGEN[origen]}</Badge>
               <h3 className="mt-4 font-serif text-xl font-semibold">{item.titulo}</h3>
               {item.resumen ? (

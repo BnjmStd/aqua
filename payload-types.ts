@@ -267,6 +267,62 @@ export interface Pagina {
             blockType: 'perfil';
           }
         | {
+            antetitulo?: string | null;
+            titulo: string;
+            bajada?: string | null;
+            texto: string;
+            /**
+             * Frase final, debajo de las bases.
+             */
+            cierre?: string | null;
+            imagen?: (string | null) | Media;
+            bases?:
+              | {
+                  titulo: string;
+                  descripcion: string;
+                  icono:
+                    'lupa' | 'birrete' | 'chip' | 'documento' | 'matraz' | 'molecula' | 'ajustes' | 'grafico' | 'casco';
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'quienesSomos';
+          }
+        | {
+            antetitulo?: string | null;
+            titulo: string;
+            bajada?: string | null;
+            pasos?:
+              | {
+                  titulo: string;
+                  descripcion: string;
+                  id?: string | null;
+                }[]
+              | null;
+            /**
+             * Opcional. Texto bajo la lista (resultado esperado, nota).
+             */
+            cierre?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'pasos';
+          }
+        | {
+            titulo: string;
+            bajada?: string | null;
+            sectores?:
+              | {
+                  nombre: string;
+                  descripcion: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'sectores';
+          }
+        | {
             texto: {
               root: {
                 type: string;
@@ -1882,6 +1938,58 @@ export interface PaginasSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        quienesSomos?:
+          | T
+          | {
+              antetitulo?: T;
+              titulo?: T;
+              bajada?: T;
+              texto?: T;
+              cierre?: T;
+              imagen?: T;
+              bases?:
+                | T
+                | {
+                    titulo?: T;
+                    descripcion?: T;
+                    icono?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        pasos?:
+          | T
+          | {
+              antetitulo?: T;
+              titulo?: T;
+              bajada?: T;
+              pasos?:
+                | T
+                | {
+                    titulo?: T;
+                    descripcion?: T;
+                    id?: T;
+                  };
+              cierre?: T;
+              id?: T;
+              blockName?: T;
+            };
+        sectores?:
+          | T
+          | {
+              titulo?: T;
+              bajada?: T;
+              sectores?:
+                | T
+                | {
+                    nombre?: T;
+                    descripcion?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
         contenido?:
           | T
           | {
@@ -2751,7 +2859,23 @@ export interface ConfiguracionSitio {
   logo?: (string | null) | Media;
   logoOscuro?: (string | null) | Media;
   favicon?: (string | null) | Media;
+  /**
+   * Fallback si no hay lista abajo. Tambien se usa si WhatsApp no esta configurado.
+   */
   email?: string | null;
+  /**
+   * Todos se muestran en el footer. Podes agregar, quitar o reordenar.
+   */
+  correos?:
+    | {
+        email: string;
+        /**
+         * Opcional. Ej: Fundador, Comercial, Academy.
+         */
+        etiqueta?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   telefono?: string | null;
   direccion?: string | null;
   comuna?: string | null;
@@ -2762,7 +2886,7 @@ export interface ConfiguracionSitio {
      */
     numero?: string | null;
     /**
-     * Mensaje precargado cuando alguien abre el boton flotante de WhatsApp.
+     * Mensaje precargado solo del boton flotante. Los demas CTA abren el correo.
      */
     mensajePorDefecto?: string | null;
   };
@@ -2840,6 +2964,13 @@ export interface ConfiguracionSitioSelect<T extends boolean = true> {
   logoOscuro?: T;
   favicon?: T;
   email?: T;
+  correos?:
+    | T
+    | {
+        email?: T;
+        etiqueta?: T;
+        id?: T;
+      };
   telefono?: T;
   direccion?: T;
   comuna?: T;

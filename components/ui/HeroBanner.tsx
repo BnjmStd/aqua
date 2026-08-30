@@ -6,6 +6,8 @@ import { Container } from '@/components/ui/Container'
 import { Heading } from '@/components/ui/Heading'
 import { Text } from '@/components/ui/Text'
 import { cn } from '@/lib/cn'
+import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { resolverMailto } from '@/lib/whatsapp'
 
 export type HeroAccion = {
   texto: string
@@ -20,7 +22,7 @@ export type HeroAccion = {
  * components/blocks/Hero.tsx) y tambien la usan las paginas que no vienen de
  * `paginas` (ej: /academy), para que todas las portadas se vean igual.
  */
-export function HeroBanner({
+export async function HeroBanner({
   antetitulo,
   titulo,
   bajada,
@@ -35,6 +37,12 @@ export function HeroBanner({
   acciones?: HeroAccion[] | null
   aside?: ReactNode
 }) {
+  const email = correoParaMotivo(await obtenerConfiguracionSitio())
+  const accionesListas = acciones?.map((accion) => ({
+    ...accion,
+    enlace: resolverMailto(accion.enlace, email),
+  }))
+
   return (
     <section className="group relative overflow-hidden bg-navy-800 text-white">
       {imagen ? (
@@ -44,7 +52,8 @@ export function HeroBanner({
           fill
           priority
           // El zoom se apaga solo si el sistema pide menos movimiento.
-          className="object-cover opacity-40 transition-transform duration-700 ease-out motion-safe:group-hover:scale-110"
+          sizes="100vw"
+          className="object-cover opacity-45 transition-transform duration-700 ease-out motion-safe:group-hover:scale-110"
         />
       ) : null}
       <div className="absolute inset-0 bg-linear-to-t from-navy-900 via-navy-800/85 to-brand-700/50" />
@@ -59,7 +68,8 @@ export function HeroBanner({
             {antetitulo ? (
               // brand-300 y no el teal del template: sobre el navy este da 6.7:1
               // contra 4.3:1, y es texto chico en mayusculas.
-              <p className="mb-4 text-xs font-medium uppercase tracking-[0.15em] text-brand-300">
+              <p className="mb-4 flex items-center gap-3 text-xs font-medium uppercase tracking-[0.15em] text-brand-300">
+                <span aria-hidden className="h-px w-8 bg-lime" />
                 {antetitulo}
               </p>
             ) : null}
@@ -72,9 +82,9 @@ export function HeroBanner({
               </Text>
             ) : null}
 
-            {acciones?.length ? (
+            {accionesListas?.length ? (
               <div className="mt-10 flex flex-wrap gap-4">
-                {acciones.map((accion) => (
+                {accionesListas.map((accion) => (
                   <Button
                     key={accion.id ?? accion.texto}
                     href={accion.enlace}

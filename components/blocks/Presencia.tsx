@@ -14,8 +14,8 @@ export function Presencia({ antetitulo, titulo, bajada, paises }: BloqueDeTipo<'
   if (!paises?.length) return null
 
   return (
-    <Section tone="muted">
-      <Container>
+    <Section tone="muted" textura>
+      <Container className="relative">
         {(antetitulo || titulo || bajada) && (
           <div className="max-w-2xl">
             {antetitulo && (
@@ -42,7 +42,11 @@ export function Presencia({ antetitulo, titulo, bajada, paises }: BloqueDeTipo<'
                 {columna.plantas?.map((planta, j) => (
                   <Card
                     key={planta.id ?? j}
-                    className={planta.insignia ? 'border-l-4 border-l-lime' : undefined}
+                    className={
+                      planta.insignia
+                        ? 'border-l-4 border-l-lime'
+                        : 'border-l-4 border-l-brand-500/40'
+                    }
                   >
                     <Heading level={4} as="h4" className="text-xl">
                       {planta.nombre}

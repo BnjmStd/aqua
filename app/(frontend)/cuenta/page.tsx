@@ -14,6 +14,8 @@ import { obtenerCuentaActual } from '@/lib/auth'
 import { esPoblado } from '@/lib/relaciones'
 import { obtenerMisInscripciones } from '@/queries/cuenta/inscripciones'
 import { obtenerMisSolicitudes } from '@/queries/cuenta/solicitudes'
+import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { rutaContacto } from '@/lib/whatsapp'
 import { cerrarSesion } from './actions'
 
 const ETIQUETA_ESTADO_INSCRIPCION: Record<string, string> = {
@@ -37,10 +39,12 @@ export default async function CuentaPage() {
   const cuenta = await obtenerCuentaActual()
   if (!cuenta) redirect('/cuenta/ingresar?redirect=/cuenta')
 
-  const [inscripciones, solicitudes] = await Promise.all([
+  const [inscripciones, solicitudes, sitio] = await Promise.all([
     obtenerMisInscripciones(cuenta.id),
     obtenerMisSolicitudes(cuenta.id),
+    obtenerConfiguracionSitio(),
   ])
+  const mailtoConsultoria = rutaContacto(correoParaMotivo(sitio), 'consultoria')
 
   return (
     <div className="flex flex-1 flex-col">
@@ -103,7 +107,7 @@ export default async function CuentaPage() {
             <div className="mt-12">
               <div className="mb-4 flex items-center justify-between">
                 <Heading level={3}>Mis solicitudes de consultoría</Heading>
-                <Button href="/consulting/solicitud" variant="ghost" size="sm">
+                <Button href={mailtoConsultoria} variant="ghost" size="sm">
                   Nueva solicitud
                 </Button>
               </div>
@@ -128,7 +132,7 @@ export default async function CuentaPage() {
                   titulo="Aún no tienes solicitudes"
                   descripcion="Si necesitas una asesoría o auditoría, cuéntanos qué necesitas."
                   accion={
-                    <Button href="/consulting/solicitud" size="sm">
+                    <Button href={mailtoConsultoria} size="sm">
                       Solicitar consultoría
                     </Button>
                   }

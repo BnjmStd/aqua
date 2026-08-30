@@ -20,8 +20,8 @@ export default async function CursosPage() {
     <div className="flex flex-1 flex-col">
       <Header />
       <main className="flex-1">
-        <Section>
-          <Container>
+        <Section textura>
+          <Container className="relative">
             <Heading level={1} className="mb-12">
               Cursos
             </Heading>

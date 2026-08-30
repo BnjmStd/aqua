@@ -26,8 +26,8 @@ export function Unidades({ titulo, bajada, tarjetas }: BloqueDeTipo<'unidades'>)
   if (!tarjetas?.length) return null
 
   return (
-    <Section>
-      <Container>
+    <Section textura>
+      <Container className="relative">
         {(titulo || bajada) && (
           <div className="mx-auto mb-16 max-w-3xl text-center">
             {titulo && (

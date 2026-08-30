@@ -25,8 +25,8 @@ export function Propuesta({ titulo, bajada, pilares }: BloqueDeTipo<'propuesta'>
   if (!pilares?.length) return null
 
   return (
-    <Section tone="muted">
-      <Container>
+    <Section tone="muted" textura>
+      <Container className="relative">
         {(titulo || bajada) && (
           <div className="mx-auto mb-16 max-w-3xl text-center">
             {titulo && <Heading level={2}>{titulo}</Heading>}
@@ -47,7 +47,7 @@ export function Propuesta({ titulo, bajada, pilares }: BloqueDeTipo<'propuesta'>
               <div
                 key={pilar.id ?? i}
                 className={cn(
-                  'relative flex flex-col justify-center overflow-hidden rounded-lg border border-border p-8',
+                  'relative flex flex-col justify-center overflow-hidden rounded-lg border border-border p-8 transition-transform duration-300 motion-safe:hover:-translate-y-0.5',
                   ancha && 'md:col-span-2',
                   tarjeta,
                 )}

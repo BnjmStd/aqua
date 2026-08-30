@@ -58,8 +58,7 @@ export function proxy(request: NextRequest) {
   }
 
   const rutaProtegidaDeCuenta =
-    (pathname.startsWith('/cuenta') && !RUTAS_PUBLICAS_DE_CUENTA.includes(pathname)) ||
-    pathname.startsWith('/consulting/solicitud')
+    pathname.startsWith('/cuenta') && !RUTAS_PUBLICAS_DE_CUENTA.includes(pathname)
 
   if (rutaProtegidaDeCuenta && !tieneSesion) {
     return redirigirALogin(request, '/cuenta/ingresar')
@@ -71,5 +70,5 @@ export function proxy(request: NextRequest) {
 export const config = {
   // Deliberadamente NO incluye /api: la API tiene su propio control de
   // acceso por coleccion y por campo, y ahi si se valida de verdad.
-  matcher: ['/admin/:path*', '/cuenta/:path*', '/consulting/solicitud'],
+  matcher: ['/admin/:path*', '/cuenta/:path*'],
 }

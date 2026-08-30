@@ -6,16 +6,17 @@ import { Container } from '@/components/ui/Container'
 import { UNIDADES_NAVEGABLES } from '@/fields/unidad'
 import { obtenerCuentaActual } from '@/lib/auth'
 import { esPoblado } from '@/lib/relaciones'
-import { obtenerConfiguracionSitio } from '@/lib/sitio'
+import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { rutaContacto } from '@/lib/whatsapp'
 import { MobileNav } from './MobileNav'
 import { NavLink } from './NavLink'
 
 const ENLACES_PRINCIPALES = [
+  { etiqueta: 'Inicio', url: '/' },
   ...UNIDADES_NAVEGABLES.map(({ label, value }) => ({
     etiqueta: label.split(' — ')[0],
     url: `/${value}`,
   })),
-  // Fundador no es una unidad de negocio: va como enlace suelto al final.
   { etiqueta: 'Fundador', url: '/fundador' },
 ]
 
@@ -25,6 +26,7 @@ const LOGO_ESTATICO = { src: '/logo.png', width: 600, height: 250 }
 export async function Header() {
   const [cuenta, sitio] = await Promise.all([obtenerCuentaActual(), obtenerConfiguracionSitio()])
 
+  const mailto = rutaContacto(correoParaMotivo(sitio))
   const logoCms = esPoblado(sitio.logo) ? sitio.logo : null
   const logo =
     logoCms?.url != null
@@ -59,12 +61,14 @@ export async function Header() {
           <Button href={cuenta ? '/cuenta' : '/cuenta/ingresar'} variant="secundario" size="sm">
             {cuenta ? 'Mi cuenta' : 'Ingresar'}
           </Button>
-          <Button href="/contacto" variant="navy" size="sm">
+          <Button href={mailto} variant="navy" size="sm">
             Contactar
           </Button>
         </div>
 
-        <MobileNav enlaces={ENLACES_PRINCIPALES} />
+        <MobileNav
+          enlaces={[...ENLACES_PRINCIPALES, { etiqueta: 'Contactar', url: mailto }]}
+        />
       </Container>
     </header>
   )

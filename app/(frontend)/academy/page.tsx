@@ -14,6 +14,8 @@ import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { obtenerCursosPublicados } from '@/queries/academy/cursos'
 import { obtenerProximasConvocatorias } from '@/queries/academy/convocatorias'
+import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { rutaContacto } from '@/lib/whatsapp'
 
 export const metadata: Metadata = {
   title: 'Academy | aquabioprocess.cl',
@@ -22,10 +24,12 @@ export const metadata: Metadata = {
 }
 
 export default async function AcademyPage() {
-  const [convocatorias, cursos] = await Promise.all([
+  const [convocatorias, cursos, sitio] = await Promise.all([
     obtenerProximasConvocatorias(3),
     obtenerCursosPublicados(),
+    obtenerConfiguracionSitio(),
   ])
+  const email = correoParaMotivo(sitio)
 
   return (
     <div className="flex flex-1 flex-col">
@@ -40,13 +44,13 @@ export default async function AcademyPage() {
           }}
           acciones={[
             { texto: 'Ver cursos', enlace: '/academy/cursos', estilo: 'primario' },
-            { texto: 'Hablar con un asesor', enlace: '/contacto', estilo: 'secundario' },
+            { texto: 'Hablar con un asesor', enlace: rutaContacto(email, 'asesor'), estilo: 'secundario' },
           ]}
           aside={<RutaAprendizaje className="mx-auto lg:ml-auto" />}
         />
 
-        <Section>
-          <Container>
+        <Section textura>
+          <Container className="relative">
             <div className="flex items-end justify-between gap-4">
               <Heading level={2}>Próximas convocatorias</Heading>
               <Button href="/academy/cursos" variant="ghost" size="sm">
@@ -97,7 +101,7 @@ export default async function AcademyPage() {
           titulo="¿Necesitas un curso cerrado para tu equipo?"
           texto="Adaptamos programa, horas y modalidad a la operación de tu empresa."
           textoBoton="Escríbenos"
-          enlace="/contacto"
+          enlace={rutaContacto(email, 'academy')}
         />
       </main>
       <Footer />

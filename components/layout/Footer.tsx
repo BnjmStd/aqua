@@ -2,17 +2,17 @@ import Link from 'next/link'
 
 import { Container } from '@/components/ui/Container'
 import { UNIDADES_NAVEGABLES } from '@/fields/unidad'
-import { obtenerConfiguracionSitio } from '@/lib/sitio'
+import { correoParaMotivo, correosPublicos, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { rutaContacto } from '@/lib/whatsapp'
 import { WhatsAppFlotante } from './WhatsAppFlotante'
-
-const ENLACES_LEGALES = [
-  { etiqueta: 'Política de privacidad', url: '/privacidad' },
-  { etiqueta: 'Contacto', url: '/contacto' },
-]
 
 export async function Footer() {
   const anio = new Date().getFullYear()
   const sitio = await obtenerConfiguracionSitio()
+  const enlacesLegales = [
+    { etiqueta: 'Política de privacidad', url: '/privacidad' },
+    { etiqueta: 'Contacto', url: rutaContacto(correoParaMotivo(sitio)) },
+  ]
 
   return (
     <>
@@ -50,26 +50,50 @@ export async function Footer() {
             <div>
               <p className="text-sm font-medium text-white">Legal</p>
               <ul className="mt-4 space-y-2">
-                {ENLACES_LEGALES.map((enlace) => (
-                  <li key={enlace.url}>
-                    <Link href={enlace.url} className="text-sm text-navy-300 transition-colors hover:text-brand-500">
-                      {enlace.etiqueta}
-                    </Link>
-                  </li>
-                ))}
+                {enlacesLegales.map((enlace) => {
+                  const externo = enlace.url.startsWith('mailto:') || enlace.url.startsWith('http')
+                  const clase = 'text-sm text-navy-300 transition-colors hover:text-brand-500'
+                  return (
+                    <li key={enlace.url}>
+                      {externo ? (
+                        <a
+                          href={enlace.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={clase}
+                        >
+                          {enlace.etiqueta}
+                        </a>
+                      ) : (
+                        <Link href={enlace.url} className={clase}>
+                          {enlace.etiqueta}
+                        </Link>
+                      )}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
 
             <div>
               <p className="text-sm font-medium text-white">Contacto</p>
-              {sitio.email ? (
-                <a
-                  href={`mailto:${sitio.email}`}
-                  className="mt-4 block text-sm text-navy-300 transition-colors hover:text-brand-500"
-                >
-                  {sitio.email}
-                </a>
-              ) : null}
+              <ul className="mt-4 space-y-3">
+                {correosPublicos(sitio).map((correo) => (
+                  <li key={correo.email}>
+                    {correo.etiqueta ? (
+                      <p className="text-xs text-navy-400">{correo.etiqueta}</p>
+                    ) : null}
+                    <a
+                      href={`mailto:${correo.email}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block text-sm text-navy-300 transition-colors hover:text-brand-500"
+                    >
+                      {correo.email}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 

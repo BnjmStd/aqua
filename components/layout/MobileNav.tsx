@@ -37,23 +37,41 @@ export function MobileNav({ enlaces }: { enlaces: NavLink[] }) {
         <nav className="absolute inset-x-0 top-20 border-t border-border bg-surface px-6 py-4 shadow-soft">
           <ul className="flex flex-col gap-1">
             {enlaces.map((enlace) => {
-              const activo = pathname === enlace.url || pathname.startsWith(`${enlace.url}/`)
+              const activo =
+                enlace.url === '/'
+                  ? pathname === '/'
+                  : pathname === enlace.url || pathname.startsWith(`${enlace.url}/`)
+
+              const clase = cn(
+                'block rounded-sm px-3 py-2 text-xs font-medium uppercase tracking-[0.05em]',
+                activo
+                  ? 'bg-brand-50 text-brand-700'
+                  : 'text-muted hover:bg-brand-50 hover:text-brand-700',
+              )
+              const externo = enlace.url.startsWith('mailto:') || enlace.url.startsWith('http')
 
               return (
                 <li key={enlace.url}>
-                  <Link
-                    href={enlace.url}
-                    onClick={() => setAbierto(false)}
-                    aria-current={activo ? 'page' : undefined}
-                    className={cn(
-                      'block rounded-sm px-3 py-2 text-xs font-medium uppercase tracking-[0.05em]',
-                      activo
-                        ? 'bg-brand-50 text-brand-700'
-                        : 'text-muted hover:bg-brand-50 hover:text-brand-700',
-                    )}
-                  >
-                    {enlace.etiqueta}
-                  </Link>
+                  {externo ? (
+                    <a
+                      href={enlace.url}
+                      onClick={() => setAbierto(false)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={clase}
+                    >
+                      {enlace.etiqueta}
+                    </a>
+                  ) : (
+                    <Link
+                      href={enlace.url}
+                      onClick={() => setAbierto(false)}
+                      aria-current={activo ? 'page' : undefined}
+                      className={clase}
+                    >
+                      {enlace.etiqueta}
+                    </Link>
+                  )}
                 </li>
               )
             })}

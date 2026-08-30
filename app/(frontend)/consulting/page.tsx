@@ -46,8 +46,8 @@ export default async function ConsultingPage() {
       <main className="flex-1">
         <BlockRenderer bloques={encabezado} />
 
-        <Section>
-          <Container>
+        <Section textura>
+          <Container className="relative">
             <Heading level={2}>Servicios</Heading>
             <div className="mt-10">
               <ServiceCatalog servicios={servicios} />

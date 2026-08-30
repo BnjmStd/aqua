@@ -47,14 +47,14 @@ export async function Bioindicadores({ titulo, bajada }: BloqueDeTipo<'bioindica
             const senal = SENAL[item.condicion] ?? SENAL.buena
 
             return (
-              <Card key={item.id} className="flex flex-col overflow-hidden p-0">
+              <Card key={item.id} className="group flex flex-col overflow-hidden p-0">
                 {imagen?.url ? (
                   <div className="relative aspect-4/3 bg-navy-950">
                     <Image
                       src={imagen.url}
                       alt={imagen.alt}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-105"
                       sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 100vw"
                     />
                   </div>

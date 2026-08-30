@@ -5,6 +5,9 @@ import { Container } from '@/components/ui/Container'
 import { Heading } from '@/components/ui/Heading'
 import { Icono } from '@/components/ui/iconos'
 import { Text } from '@/components/ui/Text'
+import { TexturaGrilla } from '@/components/ui/TexturaGrilla'
+import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
+import { resolverMailto } from '@/lib/whatsapp'
 import { esPoblado, type BloqueDeTipo } from './types'
 
 /**
@@ -12,7 +15,7 @@ import { esPoblado, type BloqueDeTipo } from './types'
  * overlay de datos. Es el tratamiento de la maqueta del fundador, sobre fondo
  * claro (a diferencia del bloque `hero`, que va full-bleed sobre navy).
  */
-export function Perfil({
+export async function Perfil({
   antetitulo,
   nombre,
   subtitulo,
@@ -21,15 +24,18 @@ export function Perfil({
   acciones,
   estadisticas,
 }: BloqueDeTipo<'perfil'>) {
+  const email = correoParaMotivo(await obtenerConfiguracionSitio())
+  const accionesListas = acciones
+    ?.filter((accion) => !/cv|descargar/i.test(`${accion.texto} ${accion.enlace}`))
+    .map((accion) => ({
+      ...accion,
+      enlace: resolverMailto(accion.enlace, email),
+    }))
   const retrato = esPoblado(foto) ? foto : null
 
   return (
     <section className="relative overflow-hidden border-b border-border bg-background">
-      {/* Grilla tecnica de fondo, muy tenue. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 opacity-[0.4] [background-image:linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] [background-size:40px_40px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
-      />
+      <TexturaGrilla className="-z-10" />
 
       <Container className="grid items-center gap-12 py-20 sm:py-28 lg:grid-cols-12">
         <div className="lg:col-span-7">
@@ -56,9 +62,9 @@ export function Perfil({
             <Text className="mt-6 border-l-2 border-brand-500 pl-4">{texto}</Text>
           ) : null}
 
-          {acciones?.length ? (
+          {accionesListas?.length ? (
             <div className="mt-10 flex flex-wrap gap-4">
-              {acciones.map((accion) => (
+              {accionesListas.map((accion) => (
                 <Button
                   key={accion.id ?? accion.texto}
                   href={accion.enlace}

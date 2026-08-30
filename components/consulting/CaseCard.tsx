@@ -8,7 +8,7 @@ export function CaseCard({ caso }: { caso: Caso }) {
     : (esPoblado(caso.cliente) ? caso.cliente.nombre : null)
 
   return (
-    <Card className="h-full">
+    <Card className="h-full transition-transform duration-300 motion-safe:hover:-translate-y-0.5">
       {cliente ? (
         <p className="text-xs font-medium uppercase tracking-wide text-foreground/50">{cliente}</p>
       ) : null}

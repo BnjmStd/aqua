@@ -1,7 +1,9 @@
 import { Container } from '@/components/ui/Container'
 import { EsquemaProceso } from '@/components/ui/EsquemaProceso'
+import { FondoFoto } from '@/components/ui/FondoFoto'
 import { Heading } from '@/components/ui/Heading'
 import { Text } from '@/components/ui/Text'
+import { TexturaGrilla } from '@/components/ui/TexturaGrilla'
 import type { BloqueDeTipo } from './types'
 
 /**
@@ -13,9 +15,11 @@ export function Proceso({ titulo, bajada }: BloqueDeTipo<'proceso'>) {
   return (
     <section
       data-esquema-pin
-      className="flex min-h-screen flex-col justify-center overflow-hidden bg-navy-800 py-20 text-white"
+      className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-navy-800 py-20 text-white"
     >
-      <Container className="flex flex-col items-center gap-12">
+      <FondoFoto src="/hero-planta.jpg" opacidad={0.18} />
+      <TexturaGrilla oscura />
+      <Container className="relative flex flex-col items-center gap-12">
         {(titulo || bajada) && (
           <div className="max-w-2xl text-center">
             {titulo && (

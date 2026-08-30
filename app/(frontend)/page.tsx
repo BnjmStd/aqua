@@ -21,11 +21,18 @@ export default async function Home() {
   const pagina = await obtenerPagina(SLUG)
   if (!pagina) notFound()
 
+  const bloques = pagina.bloques ?? []
+  // El CTA navy no puede ir pegado al esquema de planta (también navy):
+  // el cierre va al final, después de las secciones claras.
+  const cierre = bloques.filter((b) => b.blockType === 'cta')
+  const resto = bloques.filter((b) => b.blockType !== 'cta')
+
   return (
     <div className="flex flex-1 flex-col">
       <Header />
       <main className="flex-1">
-        <BlockRenderer bloques={pagina.bloques ?? []} />
+        <BlockRenderer bloques={resto} />
+        <BlockRenderer bloques={cierre} />
       </main>
       <Footer />
     </div>

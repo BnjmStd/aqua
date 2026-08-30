@@ -51,6 +51,19 @@ export function Button({ className, variant, size, ...props }: ButtonProps) {
 
   if (props.href !== undefined) {
     const { href, ...anchorProps } = props as ButtonAsLink
+    const externo =
+      href.startsWith('mailto:') || href.startsWith('http://') || href.startsWith('https://')
+    if (externo) {
+      return (
+        <a
+          href={href}
+          className={classes}
+          {...anchorProps}
+          target="_blank"
+          rel="noopener noreferrer"
+        />
+      )
+    }
     return <Link href={href} className={classes} {...anchorProps} />
   }
 

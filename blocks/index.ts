@@ -288,6 +288,82 @@ export const BloqueFaq: Block = {
   ],
 }
 
+export const BloqueQuienesSomos: Block = {
+  slug: 'quienesSomos',
+  labels: { singular: 'Quienes somos', plural: 'Quienes somos' },
+  fields: [
+    traducible({ name: 'antetitulo', type: 'text' }),
+    traducible({ name: 'titulo', type: 'text', required: true }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+    traducible({ name: 'texto', type: 'textarea', required: true }),
+    traducible({
+      name: 'cierre',
+      type: 'textarea',
+      admin: { description: 'Frase final, debajo de las bases.' },
+    }),
+    { name: 'imagen', type: 'upload', relationTo: 'media' },
+    {
+      name: 'bases',
+      type: 'array',
+      maxRows: 4,
+      labels: { singular: 'Base', plural: 'Bases' },
+      fields: [
+        traducible({ name: 'titulo', type: 'text', required: true }),
+        traducible({ name: 'descripcion', type: 'textarea', required: true }),
+        {
+          name: 'icono',
+          type: 'select',
+          required: true,
+          options: [...NOMBRES_ICONO],
+        },
+      ],
+    },
+  ],
+}
+
+export const BloquePasos: Block = {
+  slug: 'pasos',
+  labels: { singular: 'Pasos / preguntas', plural: 'Pasos / preguntas' },
+  fields: [
+    traducible({ name: 'antetitulo', type: 'text' }),
+    traducible({ name: 'titulo', type: 'text', required: true }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+    {
+      name: 'pasos',
+      type: 'array',
+      minRows: 1,
+      labels: { singular: 'Paso', plural: 'Pasos' },
+      fields: [
+        traducible({ name: 'titulo', type: 'text', required: true }),
+        traducible({ name: 'descripcion', type: 'textarea', required: true }),
+      ],
+    },
+    traducible({
+      name: 'cierre',
+      type: 'textarea',
+      admin: { description: 'Opcional. Texto bajo la lista (resultado esperado, nota).' },
+    }),
+  ],
+}
+
+export const BloqueSectores: Block = {
+  slug: 'sectores',
+  labels: { singular: 'Sectores', plural: 'Sectores' },
+  fields: [
+    traducible({ name: 'titulo', type: 'text', required: true }),
+    traducible({ name: 'bajada', type: 'textarea' }),
+    {
+      name: 'sectores',
+      type: 'array',
+      labels: { singular: 'Sector', plural: 'Sectores' },
+      fields: [
+        traducible({ name: 'nombre', type: 'text', required: true }),
+        traducible({ name: 'descripcion', type: 'textarea', required: true }),
+      ],
+    },
+  ],
+}
+
 export const BloqueEquipo: Block = {
   slug: 'equipo',
   labels: { singular: 'Equipo', plural: 'Equipo' },
@@ -301,6 +377,9 @@ export const BLOQUES_PAGINA = [
   BloqueHero,
   BloqueProceso,
   BloquePerfil,
+  BloqueQuienesSomos,
+  BloquePasos,
+  BloqueSectores,
   BloqueContenido,
   BloqueDestacados,
   BloqueBioindicadores,

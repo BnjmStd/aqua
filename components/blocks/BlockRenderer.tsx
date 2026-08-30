@@ -6,10 +6,13 @@ import { Equipo } from './Equipo'
 import { Faq } from './Faq'
 import { Hero } from './Hero'
 import { Logos } from './Logos'
+import { Pasos } from './Pasos'
 import { Perfil } from './Perfil'
 import { Presencia } from './Presencia'
 import { Proceso } from './Proceso'
 import { Propuesta } from './Propuesta'
+import { QuienesSomos } from './QuienesSomos'
+import { Sectores } from './Sectores'
 import { Unidades } from './Unidades'
 import type { Bloque } from './types'
 
@@ -22,6 +25,12 @@ export function BlockRenderer({ bloques }: { bloques: Bloque[] }) {
             return <Hero key={bloque.id} {...bloque} />
           case 'perfil':
             return <Perfil key={bloque.id} {...bloque} />
+          case 'quienesSomos':
+            return <QuienesSomos key={bloque.id} {...bloque} />
+          case 'pasos':
+            return <Pasos key={bloque.id} {...bloque} />
+          case 'sectores':
+            return <Sectores key={bloque.id} {...bloque} />
           case 'proceso':
             return <Proceso key={bloque.id} {...bloque} />
           case 'contenido':

@@ -28,8 +28,8 @@ export default async function InsightsPage() {
     <div className="flex flex-1 flex-col">
       <Header />
       <main className="flex-1">
-        <Section>
-          <Container>
+        <Section textura>
+          <Container className="relative">
             <div className="mb-12 max-w-2xl">
               <Heading level={1}>Insights</Heading>
               <Text tone="lead" className="mt-4">
