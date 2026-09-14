@@ -7,8 +7,6 @@ import { ServiceCatalog } from '@/components/consulting/ServiceCatalog'
 import { Container } from '@/components/ui/Container'
 import { Heading } from '@/components/ui/Heading'
 import { Section } from '@/components/ui/Section'
-import { Footer } from '@/components/layout/Footer'
-import { Header } from '@/components/layout/Header'
 import { obtenerPagina } from '@/queries/paginas'
 import { obtenerCasosPublicados } from '@/queries/consulting/casos'
 import { obtenerServiciosPublicados } from '@/queries/consulting/servicios'
@@ -41,36 +39,32 @@ export default async function ConsultingPage() {
   const medio = bloques.filter((b) => b.blockType !== 'hero' && b.blockType !== 'cta')
 
   return (
-    <div className="flex flex-1 flex-col">
-      <Header />
-      <main className="flex-1">
-        <BlockRenderer bloques={encabezado} />
+    <>
+      <BlockRenderer bloques={encabezado} />
 
-        <Section textura>
-          <Container className="relative">
-            <Heading level={2}>Servicios</Heading>
+      <Section textura>
+        <Container className="relative">
+          <Heading level={2}>Servicios</Heading>
+          <div className="mt-10">
+            <ServiceCatalog servicios={servicios} />
+          </div>
+        </Container>
+      </Section>
+
+      {casos.length ? (
+        <Section tone="muted">
+          <Container>
+            <Heading level={2}>Casos de éxito</Heading>
             <div className="mt-10">
-              <ServiceCatalog servicios={servicios} />
+              <CaseCatalog casos={casos} />
             </div>
           </Container>
         </Section>
+      ) : null}
 
-        {casos.length ? (
-          <Section tone="muted">
-            <Container>
-              <Heading level={2}>Casos de éxito</Heading>
-              <div className="mt-10">
-                <CaseCatalog casos={casos} />
-              </div>
-            </Container>
-          </Section>
-        ) : null}
+      <BlockRenderer bloques={medio} />
 
-        <BlockRenderer bloques={medio} />
-
-        <BlockRenderer bloques={cierre} />
-      </main>
-      <Footer />
-    </div>
+      <BlockRenderer bloques={cierre} />
+    </>
   )
 }
