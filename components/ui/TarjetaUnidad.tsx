@@ -9,7 +9,7 @@ import { Heading } from '@/components/ui/Heading'
 import { Icono } from '@/components/ui/iconos'
 import { Text } from '@/components/ui/Text'
 import type { NombreIcono } from '@/fields/iconos'
-import type { Unidad } from '@/fields/unidad'
+import { RUTA_UNIDAD, type Unidad } from '@/fields/unidad'
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -37,7 +37,7 @@ const BURBUJAS = [
 
 /**
  * Tarjeta de una unidad de negocio. Se comporta como la maqueta original
- * (toda la tarjeta enlaza a `/unidad`) y suma el llenado: al entrar al
+ * (toda la tarjeta enlaza a la pagina de la unidad) y suma el llenado: al entrar al
  * viewport un lavado de agua sube desde la base y, una vez llena, la tarjeta
  * "airea" burbujas mientras sigue a la vista.
  */
@@ -133,7 +133,7 @@ export function TarjetaUnidad({ unidad, nombre, descripcion, icono }: Props) {
   return (
     <Link
       ref={raiz}
-      href={`/${unidad}`}
+      href={RUTA_UNIDAD[unidad]}
       className="group relative rounded-lg border border-border bg-surface p-8 shadow-soft transition-shadow hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       {/* El agua: `to-transparent` arriba, asi el borde superior aplastado por

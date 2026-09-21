@@ -1,15 +1,13 @@
 import Link from 'next/link'
 
-import { Button } from '@/components/ui/Button'
 import { Container } from '@/components/ui/Container'
-import { Field } from '@/components/ui/Field'
 import { Heading } from '@/components/ui/Heading'
 import { Section } from '@/components/ui/Section'
 import { Text } from '@/components/ui/Text'
-import { iniciarSesion } from '../actions'
+import { FormularioIngreso } from './FormularioIngreso'
 
 export default async function IngresarPage(props: PageProps<'/cuenta/ingresar'>) {
-  const { error, redirect: redirectTo } = await props.searchParams
+  const { redirect: redirectTo } = await props.searchParams
 
   return (
     <Section>
@@ -19,26 +17,7 @@ export default async function IngresarPage(props: PageProps<'/cuenta/ingresar'>)
           Con tu cuenta ves tus inscripciones y solicitudes de consultoría.
         </Text>
 
-        {error ? (
-          <p className="mt-6 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">
-            {error}
-          </p>
-        ) : null}
-
-        <form action={iniciarSesion} className="mt-8 space-y-5">
-          {redirectTo ? <input type="hidden" name="redirect" value={redirectTo} /> : null}
-          <Field label="Email" name="email" type="email" required autoComplete="email" />
-          <Field
-            label="Contraseña"
-            name="password"
-            type="password"
-            required
-            autoComplete="current-password"
-          />
-          <Button type="submit" size="lg" className="w-full">
-            Ingresar
-          </Button>
-        </form>
+        <FormularioIngreso redirectTo={typeof redirectTo === 'string' ? redirectTo : undefined} />
 
         <Text tone="muted" className="mt-6">
           ¿No tienes cuenta?{' '}

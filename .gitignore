@@ -41,6 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 # payload
+# archivos privados del aula (collections/academy/Recursos.ts): nunca se versionan
+/recursos/
+# respaldos de justificaciones (certificados medicos, etc.): datos personales, nunca al repo
+/justificaciones/
 /media/*
 # ...salvo las imagenes de la semilla (se suben en scripts/seed.ts y las
 # referencia aquabioprocess.seed.db, asi el sitio renderiza en un clon nuevo)

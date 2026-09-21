@@ -13,7 +13,7 @@ import sharp from 'sharp'
  *
  * hero-consulting.jpg la sube scripts/seed.ts a Media y la enchufa como
  * `imagenFondo` del hero de la pagina Consulting. hero-academy.jpg la
- * referencia directo app/(frontend)/academy/page.tsx (esa pagina no viene
+ * referencia directo app/(frontend)/(sitio)/academia/page.tsx (esa pagina no viene
  * del CMS).
  */
 

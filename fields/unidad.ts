@@ -16,6 +16,21 @@ export const UNIDADES = [
 export type Unidad = (typeof UNIDADES)[number]['value']
 
 /**
+ * URL publica de cada unidad. Va aparte del `value` a proposito: el `value`
+ * se guarda en la base (select de Payload) y cambiarlo exige migrar datos; la
+ * ruta es solo presentacion. Insights y R&D quedan en ingles como marca.
+ *
+ * Si cambias una ruta, agrega el 301 desde la anterior en next.config.ts.
+ */
+export const RUTA_UNIDAD: Record<Unidad, string> = {
+  consulting: '/consultoria',
+  academy: '/academia',
+  technologies: '/tecnologias',
+  insights: '/insights',
+  rnd: '/rnd',
+}
+
+/**
  * Unidades que todavia no tienen pagina publica (`/technologies`, `/rnd` dan
  * 404). Se omiten de los menus hasta que existan; sacar de aca para publicarlas.
  */

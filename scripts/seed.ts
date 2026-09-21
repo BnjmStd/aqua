@@ -131,7 +131,7 @@ const PAGINAS: DatosPagina[] = [
                     },
                     {
                         texto: "Ver servicios",
-                        enlace: "/consulting",
+                        enlace: "/consultoria",
                         estilo: "secundario",
                     },
                 ],

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import { Container } from '@/components/ui/Container'
-import { UNIDADES_NAVEGABLES } from '@/fields/unidad'
+import { RUTA_UNIDAD, UNIDADES_NAVEGABLES } from '@/fields/unidad'
 import { correoParaMotivo, correosPublicos, obtenerConfiguracionSitio } from '@/lib/sitio'
 import { rutaContacto } from '@/lib/whatsapp'
 import { WhatsAppFlotante } from './WhatsAppFlotante'
@@ -37,7 +37,7 @@ export async function Footer() {
                 {UNIDADES_NAVEGABLES.map((unidad) => (
                   <li key={unidad.value}>
                     <Link
-                      href={`/${unidad.value}`}
+                      href={RUTA_UNIDAD[unidad.value]}
                       className="text-sm text-navy-300 transition-colors hover:text-brand-500"
                     >
                       {unidad.label.split(' — ')[0]}

@@ -48,6 +48,29 @@ export const Cuentas: CollectionConfig = {
   },
   fields: [
     // email y password los agrega Payload solo, por `auth: true`.
+    {
+      name: 'correoVerificadoEl',
+      type: 'date',
+      label: 'Correo verificado el',
+      admin: { readOnly: true, position: 'sidebar' },
+      // La cuenta ve si esta verificada, pero no puede marcarse sola.
+      access: { create: () => false, update: esPersonalDelPanel },
+    },
+    {
+      // Solo el hash (ver lib/verificacion.ts). Nunca sale por la API.
+      name: 'tokenVerificacion',
+      type: 'text',
+      index: true,
+      admin: { hidden: true },
+      access: { read: () => false, create: () => false, update: () => false },
+    },
+    {
+      name: 'tokenVerificacionExpira',
+      type: 'date',
+      admin: { hidden: true },
+      access: { read: () => false, create: () => false, update: () => false },
+    },
+    { name: 'verificacionEnviadaEl', type: 'date', admin: { hidden: true }, access: { read: () => false, create: () => false, update: () => false } },
     { name: 'nombre', type: 'text', required: true, label: 'Nombre completo' },
     { name: 'telefono', type: 'text' },
     {

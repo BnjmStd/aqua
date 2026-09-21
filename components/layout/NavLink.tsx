@@ -12,7 +12,7 @@ import { cn } from '@/lib/cn'
  */
 export function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
   const pathname = usePathname()
-  // Activo tambien en las subrutas: /academy/cursos marca "Academia".
+  // Activo tambien en las subrutas: /academia/cursos marca "Academia".
   const activo =
     href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`)
 

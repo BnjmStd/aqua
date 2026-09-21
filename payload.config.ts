@@ -2,6 +2,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
+
+import { esPersonalDelPanel } from "./access";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { buildConfig } from "payload";
 import sharp from "sharp";
@@ -15,6 +17,9 @@ import { Paginas } from "./collections/Paginas";
 import { Personas } from "./collections/Personas";
 import { Testimonios } from "./collections/Testimonios";
 import { Users } from "./collections/Users";
+// Sistema
+import { Envios } from "./collections/sistema/Envios";
+import { Notificaciones } from "./collections/sistema/Notificaciones";
 // Consulting
 import { Bioindicadores } from "./collections/consulting/Bioindicadores";
 import { Casos } from "./collections/consulting/Casos";
@@ -24,7 +29,10 @@ import { SolicitudesConsulting } from "./collections/consulting/SolicitudesConsu
 import { Convocatorias } from "./collections/academy/Convocatorias";
 import { Cursos } from "./collections/academy/Cursos";
 import { Inscripciones } from "./collections/academy/Inscripciones";
+import { Justificaciones } from "./collections/academy/Justificaciones";
+import { ListasAsistencia } from "./collections/academy/ListasAsistencia";
 import { Objetivos } from "./collections/academy/Objetivos";
+import { Recursos } from "./collections/academy/Recursos";
 // Technologies
 import { Partners } from "./collections/technologies/Partners";
 import { Tecnologias } from "./collections/technologies/Tecnologias";
@@ -36,6 +44,8 @@ import { Suscriptores } from "./collections/insights/Suscriptores";
 import { Proyectos } from "./collections/rnd/Proyectos";
 import { Publicaciones } from "./collections/rnd/Publicaciones";
 // Globals
+import { accesoCola } from "./access/cola";
+import { tareaEnviarNotificacion } from "./jobs/enviar-notificacion";
 import { ConfiguracionSitio } from "./globals/ConfiguracionSitio";
 import { Navegacion } from "./globals/Navegacion";
 
@@ -54,6 +64,10 @@ export default buildConfig({
 
     admin: {
         user: Users.slug,
+        components: {
+            // Campana del equipo arriba a la derecha (components/admin/AvisosDelPanel.tsx).
+            actions: ["/components/admin/AvisosDelPanel#AvisosDelPanel"],
+        },
         importMap: {
             baseDir: path.resolve(dirname),
         },
@@ -79,6 +93,9 @@ export default buildConfig({
         Objetivos,
         Convocatorias,
         Inscripciones,
+        Recursos,
+        ListasAsistencia,
+        Justificaciones,
         // Technologies
         Partners,
         Tecnologias,
@@ -90,6 +107,8 @@ export default buildConfig({
         Proyectos,
         Publicaciones,
         // Sistema
+        Notificaciones,
+        Envios,
         Media,
         Users,
         Cuentas,
@@ -164,11 +183,41 @@ export default buildConfig({
      * hay que llamar a /api/payload-jobs/run desde un cron externo.
      */
     jobs: {
+        tasks: [tareaEnviarNotificacion],
+
+        /**
+         * Sin esto, Payload deja la cola abierta a CUALQUIER usuario con
+         * sesion — incluidas las `cuentas` del registro publico del sitio:
+         * podian leerla, dispararla y encolar trabajos. Ver access/cola.ts.
+         */
+        access: accesoCola,
+        jobsCollectionOverrides: ({ defaultJobsCollection }) => ({
+            ...defaultJobsCollection,
+            access: {
+                read: ({ req }) => esPersonalDelPanel(req.user),
+                create: ({ req }) => esPersonalDelPanel(req.user),
+                update: ({ req }) => esPersonalDelPanel(req.user),
+                delete: ({ req }) => esPersonalDelPanel(req.user),
+            },
+        }),
+
+        /** El registro que sirve queda en `envios`; la cola no acumula basura. */
+        deleteJobOnComplete: true,
+
+        /**
+         * Jobs queue. Sin esto, "programar publicacion" se guarda pero nunca se
+         * ejecuta: el job queda encolado y nadie lo corre. Tambien entrega las
+         * notificaciones.
+         *
+         * En produccion serverless (Vercel) el autoRun no sobrevive entre requests:
+         * hay que llamar a /api/payload-jobs/run desde un cron externo, con
+         * `Authorization: Bearer $CRON_SECRET`.
+         */
         autoRun: [
             {
-                cron: "*/5 * * * *",
+                cron: "* * * * *",
                 queue: "default",
-                limit: 10,
+                limit: 20,
             },
         ],
         shouldAutoRun: () => process.env.NODE_ENV !== "production",

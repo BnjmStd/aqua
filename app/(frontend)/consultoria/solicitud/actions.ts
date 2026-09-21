@@ -7,7 +7,7 @@ import { obtenerPayload } from '@/lib/payload'
 
 export async function crearSolicitud(formData: FormData) {
   const cuenta = await obtenerCuentaActual()
-  if (!cuenta) redirect('/cuenta/ingresar?redirect=/consulting/solicitud')
+  if (!cuenta) redirect('/cuenta/ingresar?redirect=/consultoria/solicitud')
 
   const servicio = String(formData.get('servicio') ?? '') || undefined
   const empresa = String(formData.get('empresa') ?? '') || undefined
@@ -22,7 +22,7 @@ export async function crearSolicitud(formData: FormData) {
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'No pudimos enviar la solicitud.'
-    redirect(`/consulting/solicitud?error=${encodeURIComponent(message)}`)
+    redirect(`/consultoria/solicitud?error=${encodeURIComponent(message)}`)
   }
 
   redirect('/cuenta')

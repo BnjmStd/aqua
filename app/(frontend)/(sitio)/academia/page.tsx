@@ -39,7 +39,7 @@ export default async function AcademyPage() {
           alt: 'Vista cenital de una parrilla de difusores en operación en un reactor biológico de lodos activados.',
         }}
         acciones={[
-          { texto: 'Ver cursos', enlace: '/academy/cursos', estilo: 'primario' },
+          { texto: 'Ver cursos', enlace: '/academia/cursos', estilo: 'primario' },
           { texto: 'Hablar con un asesor', enlace: rutaContacto(email, 'asesor'), estilo: 'secundario' },
         ]}
         aside={<RutaAprendizaje className="mx-auto lg:ml-auto" />}
@@ -49,7 +49,7 @@ export default async function AcademyPage() {
         <Container className="relative">
           <div className="flex items-end justify-between gap-4">
             <Heading level={2}>Próximas convocatorias</Heading>
-            <Button href="/academy/cursos" variant="ghost" size="sm">
+            <Button href="/academia/cursos" variant="ghost" size="sm">
               Ver todos los cursos →
             </Button>
           </div>
@@ -66,7 +66,7 @@ export default async function AcademyPage() {
                 titulo="Sin convocatorias abiertas por ahora"
                 descripcion="Revisa el catálogo completo o conversa con nosotros sobre un curso cerrado para tu equipo."
                 accion={
-                  <Button href="/academy/cursos" variant="secundario" size="sm">
+                  <Button href="/academia/cursos" variant="secundario" size="sm">
                     Ver catálogo de cursos
                   </Button>
                 }
@@ -84,7 +84,7 @@ export default async function AcademyPage() {
           </div>
           {cursos.length > 3 ? (
             <div className="mt-10 text-center">
-              <Button href="/academy/cursos" variant="secundario">
+              <Button href="/academia/cursos" variant="secundario">
                 Ver todos los cursos
               </Button>
             </div>

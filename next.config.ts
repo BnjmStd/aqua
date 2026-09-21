@@ -42,6 +42,14 @@ const nextConfig: NextConfig = {
   // No anunciar que el sitio corre sobre Next.js.
   poweredByHeader: false,
 
+  experimental: {
+    serverActions: {
+      // Default 1 MB. Las justificaciones del aula adjuntan un respaldo de hasta
+      // 5 MB (TAMANO_MAXIMO_RESPALDO); el resto es margen del multipart.
+      bodySizeLimit: "6mb",
+    },
+  },
+
   images: {
     // El optimizador solo toca imagenes locales de estas rutas.
     // - /api/media/file/**: archivos de Payload. Sin `search` para dejar
@@ -53,6 +61,18 @@ const nextConfig: NextConfig = {
       { pathname: "/api/media/file/**" },
       { pathname: "/**", search: "" },
     ],
+  },
+
+  async redirects() {
+    // Las URLs de las unidades pasaron a español (ver RUTA_UNIDAD en
+    // fields/unidad.ts). Permanentes para que Google traspase lo indexado y
+    // los enlaces viejos, dentro y fuera del CMS, sigan llegando.
+    return [
+      { source: "/consulting", destination: "/consultoria", permanent: true },
+      { source: "/consulting/:ruta*", destination: "/consultoria/:ruta*", permanent: true },
+      { source: "/academy", destination: "/academia", permanent: true },
+      { source: "/academy/:ruta*", destination: "/academia/:ruta*", permanent: true },
+    ];
   },
 
   async headers() {

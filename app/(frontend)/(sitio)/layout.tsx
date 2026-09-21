@@ -1,5 +1,6 @@
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { Avisos } from '@/components/ui/Avisos'
 
 /**
  * Marco del sitio publico: todo lo que vive en (sitio) sale con Header y
@@ -12,7 +13,7 @@ import { Header } from '@/components/layout/Header'
  * armar el Header), el error sube a app/(frontend)/error.tsx, que muestra la
  * misma pantalla pero sin marco.
  *
- * Fuera del grupo quedan las rutas puente (/contacto, /consulting/solicitud),
+ * Fuera del grupo quedan las rutas puente (/contacto, /consultoria/solicitud),
  * que abren el correo y vuelven atras sin mostrar nada.
  */
 export default function SitioLayout({ children }: LayoutProps<'/'>) {
@@ -21,6 +22,7 @@ export default function SitioLayout({ children }: LayoutProps<'/'>) {
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <Avisos />
     </div>
   )
 }

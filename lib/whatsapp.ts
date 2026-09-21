@@ -54,9 +54,13 @@ export function rutaContacto(
   return urlMailto(email, motivo, extra)
 }
 
-/** Convierte un `/contacto?motivo=` o `/consulting/solicitud` viejo del CMS en mailto. */
+/**
+ * Convierte un `/contacto?motivo=` o `/consultoria/solicitud` viejo del CMS en
+ * mailto. `/consulting/solicitud` es la misma ruta antes de pasar las URLs a
+ * español; sigue guardada en bloques existentes.
+ */
 export function resolverMailto(href: string, email: string): string {
-  if (href.startsWith('/consulting/solicitud')) {
+  if (href.startsWith('/consultoria/solicitud') || href.startsWith('/consulting/solicitud')) {
     return urlMailto(email, 'consultoria')
   }
   if (!href.startsWith('/contacto')) return href

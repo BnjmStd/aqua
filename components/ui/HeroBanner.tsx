@@ -20,7 +20,7 @@ export type HeroAccion = {
  * Franja de portada: navy con imagen de fondo tenue y degradado encima.
  * Es la version presentacional del bloque `hero` del CMS (ver
  * components/blocks/Hero.tsx) y tambien la usan las paginas que no vienen de
- * `paginas` (ej: /academy), para que todas las portadas se vean igual.
+ * `paginas` (ej: /academia), para que todas las portadas se vean igual.
  */
 export async function HeroBanner({
   antetitulo,

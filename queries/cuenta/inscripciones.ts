@@ -13,7 +13,7 @@ export async function obtenerMisInscripciones(cuentaId: string): Promise<Inscrip
     collection: 'inscripciones',
     where: { cuenta: { equals: cuentaId } },
     sort: '-createdAt',
-    depth: 1,
+    depth: 2,
     limit: 50,
   })
 

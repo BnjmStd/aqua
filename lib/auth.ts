@@ -1,4 +1,5 @@
 import { headers as obtenerHeaders } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { cache } from 'react'
 
 import type { Cuenta } from '@/payload-types'
@@ -22,4 +23,16 @@ export async function obtenerCuentaActual(): Promise<Cuenta | null> {
     return user as unknown as Cuenta
   }
   return null
+}
+
+/**
+ * Para paginas privadas de la cuenta: devuelve la cuenta o manda a ingresar,
+ * volviendo a `ruta` despues. Cada pagina la llama por su cuenta — un layout
+ * no alcanza como guardia, porque no se vuelve a renderizar al navegar entre
+ * sus hijas.
+ */
+export async function exigirCuenta(ruta: string): Promise<Cuenta> {
+  const cuenta = await obtenerCuentaActual()
+  if (!cuenta) redirect(`/cuenta/ingresar?redirect=${encodeURIComponent(ruta)}`)
+  return cuenta
 }

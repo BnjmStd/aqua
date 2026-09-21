@@ -10,6 +10,7 @@ import {
   limitarEnviosPorIp,
   rechazarSiHoneypot,
 } from '../../hooks/antiAbuso'
+import { emitirEvento } from '../../lib/notificaciones/emitir'
 import { esRutValido } from '../../lib/rut'
 
 /**
@@ -87,6 +88,17 @@ export const Inscripciones: CollectionConfig = {
         }
 
         return data
+      },
+    ],
+    afterChange: [
+      async ({ doc, previousDoc, operation, req }) => {
+        if (operation === 'create') {
+          await emitirEvento('inscripcion.creada', { inscripcionId: doc.id }, { req })
+          return
+        }
+        if (doc.estadoInscripcion === 'confirmada' && previousDoc?.estadoInscripcion !== 'confirmada') {
+          await emitirEvento('inscripcion.confirmada', { inscripcionId: doc.id }, { req })
+        }
       },
     ],
   },

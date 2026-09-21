@@ -89,6 +89,16 @@ export const Cursos: CollectionConfig = {
               admin: { step: 0.5 },
             },
             {
+              name: 'asistenciaMinima',
+              type: 'number',
+              label: 'Asistencia mínima para certificar (%)',
+              required: true,
+              defaultValue: 75,
+              min: 0,
+              max: 100,
+              admin: { description: '75 % es el estándar SENCE. El aula le muestra al alumno cuánto le falta.' },
+            },
+            {
               name: 'nivel',
               type: 'select',
               options: [

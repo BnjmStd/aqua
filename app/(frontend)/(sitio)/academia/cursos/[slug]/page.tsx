@@ -17,7 +17,7 @@ import { metadataDesdeSeo } from '@/lib/seo'
 import { obtenerCursoPorSlug } from '@/queries/academy/cursos'
 import { obtenerObjetivosDeCurso } from '@/queries/academy/objetivos'
 
-export async function generateMetadata(props: PageProps<'/academy/cursos/[slug]'>): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<'/academia/cursos/[slug]'>): Promise<Metadata> {
   const { slug } = await props.params
   const curso = await obtenerCursoPorSlug(slug)
   if (!curso) return {}
@@ -25,7 +25,7 @@ export async function generateMetadata(props: PageProps<'/academy/cursos/[slug]'
   return metadataDesdeSeo(curso.seo, { titulo: curso.titulo, descripcion: curso.resumen })
 }
 
-export default async function CursoPage(props: PageProps<'/academy/cursos/[slug]'>) {
+export default async function CursoPage(props: PageProps<'/academia/cursos/[slug]'>) {
   const { slug } = await props.params
   const curso = await obtenerCursoPorSlug(slug)
 
@@ -44,7 +44,7 @@ export default async function CursoPage(props: PageProps<'/academy/cursos/[slug]
             Inicio
           </Link>
           <span aria-hidden>/</span>
-          <Link href="/academy/cursos" className="hover:text-foreground">
+          <Link href="/academia/cursos" className="hover:text-foreground">
             Cursos
           </Link>
           <span aria-hidden>/</span>

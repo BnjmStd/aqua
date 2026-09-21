@@ -4,6 +4,7 @@ import { esCuentaAutenticada, esPersonalDelPanel, propiaOStaff, soloAdmins, solo
 import { campoHoneypot } from '../../fields/honeypot'
 import { campoHuellaOrigen } from '../../fields/huellaOrigen'
 import { limitarEnviosPorIp, rechazarSiHoneypot } from '../../hooks/antiAbuso'
+import { emitirEvento } from '../../lib/notificaciones/emitir'
 
 /**
  * SOLICITUD DE CONSULTING = un pedido de contacto de una cuenta, con
@@ -37,6 +38,11 @@ export const SolicitudesConsulting: CollectionConfig = {
           return { ...data, cuenta: req.user.id }
         }
         return data
+      },
+    ],
+    afterChange: [
+      async ({ doc, operation, req }) => {
+        if (operation === 'create') await emitirEvento('solicitud-consultoria.creada', { solicitudId: doc.id }, { req })
       },
     ],
   },

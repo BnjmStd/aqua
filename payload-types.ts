@@ -81,6 +81,9 @@ export interface Config {
     objetivos: Objetivo;
     convocatorias: Convocatoria;
     inscripciones: Inscripcione;
+    recursos: Recurso;
+    'listas-asistencia': ListasAsistencia;
+    justificaciones: Justificacione;
     partners: Partner;
     tecnologias: Tecnologia;
     articulos: Articulo;
@@ -88,6 +91,8 @@ export interface Config {
     suscriptores: Suscriptore;
     proyectos: Proyecto;
     publicaciones: Publicacione;
+    notificaciones: Notificacione;
+    envios: Envio;
     media: Media;
     users: User;
     cuentas: Cuenta;
@@ -112,6 +117,9 @@ export interface Config {
     objetivos: ObjetivosSelect<false> | ObjetivosSelect<true>;
     convocatorias: ConvocatoriasSelect<false> | ConvocatoriasSelect<true>;
     inscripciones: InscripcionesSelect<false> | InscripcionesSelect<true>;
+    recursos: RecursosSelect<false> | RecursosSelect<true>;
+    'listas-asistencia': ListasAsistenciaSelect<false> | ListasAsistenciaSelect<true>;
+    justificaciones: JustificacionesSelect<false> | JustificacionesSelect<true>;
     partners: PartnersSelect<false> | PartnersSelect<true>;
     tecnologias: TecnologiasSelect<false> | TecnologiasSelect<true>;
     articulos: ArticulosSelect<false> | ArticulosSelect<true>;
@@ -119,6 +127,8 @@ export interface Config {
     suscriptores: SuscriptoresSelect<false> | SuscriptoresSelect<true>;
     proyectos: ProyectosSelect<false> | ProyectosSelect<true>;
     publicaciones: PublicacionesSelect<false> | PublicacionesSelect<true>;
+    notificaciones: NotificacionesSelect<false> | NotificacionesSelect<true>;
+    envios: EnviosSelect<false> | EnviosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     cuentas: CuentasSelect<false> | CuentasSelect<true>;
@@ -147,6 +157,7 @@ export interface Config {
   user: User | Cuenta;
   jobs: {
     tasks: {
+      enviarNotificacion: TaskEnviarNotificacion;
       schedulePublish: TaskSchedulePublish;
       inline: {
         input: unknown;
@@ -737,6 +748,10 @@ export interface Curso {
       }[]
     | null;
   duracionHoras: number;
+  /**
+   * 75 % es el estándar SENCE. El aula le muestra al alumno cuánto le falta.
+   */
+  asistenciaMinima: number;
   nivel?: ('introductorio' | 'intermedio' | 'avanzado') | null;
   modalidadesDisponibles?: ('presencial' | 'online_vivo' | 'elearning' | 'mixta' | 'incompany')[] | null;
   certificacion?: string | null;
@@ -1383,6 +1398,10 @@ export interface SolicitudesConsulting {
  */
 export interface Cuenta {
   id: string;
+  correoVerificadoEl?: string | null;
+  tokenVerificacion?: string | null;
+  tokenVerificacionExpira?: string | null;
+  verificacionEnviadaEl?: string | null;
   nombre: string;
   telefono?: string | null;
   rut?: string | null;
@@ -1455,6 +1474,109 @@ export interface Inscripcione {
   huellaOrigen?: string | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Material, grabaciones y enlaces de clase. Solo los ven los inscritos confirmados del curso.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recursos".
+ */
+export interface Recurso {
+  id: string;
+  titulo: string;
+  tipo: 'material' | 'lectura' | 'grabacion' | 'enlace_clase';
+  /**
+   * El material base del programa conviene cargarlo a nivel curso: aparece en cada edición.
+   */
+  alcance: 'convocatoria' | 'curso';
+  /**
+   * N° de sesión (1, 2, 3…) según el orden de fechas. Vacío = recurso general.
+   */
+  sesion?: number | null;
+  convocatoria?: (string | null) | Convocatoria;
+  curso?: (string | null) | Curso;
+  /**
+   * URL de Zoom, Meet, YouTube, Vimeo o Drive. Déjalo vacío si subes un archivo. Grabaciones en YouTube: súbelas como "No listado" y deja activado "Permitir inserción", o no se verán en el aula.
+   */
+  enlace?: string | null;
+  descripcion?: string | null;
+  /**
+   * Opcional. Ej: publicar la grabación al día siguiente.
+   */
+  visibleDesde?: string | null;
+  /**
+   * Opcional. Vacío = disponible siempre.
+   */
+  visibleHasta?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Una lista por sesión. Marca a los presentes; el resto cuenta como ausente.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listas-asistencia".
+ */
+export interface ListasAsistencia {
+  id: string;
+  titulo?: string | null;
+  convocatoria: string | Convocatoria;
+  /**
+   * N° según el orden de fechas.
+   */
+  sesion: number;
+  /**
+   * Elige la convocatoria primero. Solo aparecen inscripciones confirmadas.
+   */
+  presentes?: (string | Inscripcione)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Avisos de alumnos que figuran ausentes. Revisa las pendientes: el resultado se refleja al tiro en su aula.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "justificaciones".
+ */
+export interface Justificacione {
+  id: string;
+  titulo?: string | null;
+  estado: 'pendiente' | 'aprobada' | 'rechazada';
+  /**
+   * Obligatorio al aprobar.
+   */
+  resultado?: ('presente' | 'justificada') | null;
+  /**
+   * La ve en su aula. Obligatoria al rechazar: explica por qué y qué puede hacer.
+   */
+  respuesta?: string | null;
+  motivo: 'si_asisti' | 'salud' | 'fuerza_mayor' | 'laboral' | 'otro';
+  sesion: number;
+  detalle: string;
+  revisadaEl?: string | null;
+  inscripcion: string | Inscripcione;
+  convocatoria: string | Convocatoria;
+  cuenta: string | Cuenta;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1587,6 +1709,54 @@ export interface Publicacione {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Avisos enviados. Se generan solos desde los eventos del sitio.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notificaciones".
+ */
+export interface Notificacione {
+  id: string;
+  destinatario:
+    | {
+        relationTo: 'users';
+        value: string | User;
+      }
+    | {
+        relationTo: 'cuentas';
+        value: string | Cuenta;
+      };
+  titulo: string;
+  cuerpo?: string | null;
+  /**
+   * Ruta interna a la que lleva el aviso.
+   */
+  url?: string | null;
+  categoria: 'academia' | 'pagos' | 'consultoria' | 'cuenta' | 'equipo';
+  leidaEl?: string | null;
+  /**
+   * Qué receta la generó (lib/notificaciones/recetas).
+   */
+  receta: string;
+  /**
+   * Datos del evento: con esto el envío reconstruye el contenido.
+   */
+  datos?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Evita duplicados si un hook corre dos veces.
+   */
+  claveUnica: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -1615,6 +1785,39 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * Entregas por correo, WhatsApp o SMS. Solo lectura: las genera el sistema.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "envios".
+ */
+export interface Envio {
+  id: string;
+  /**
+   * Más de una cuando el envío agrupa avisos (resumen).
+   */
+  notificaciones: (string | Notificacione)[];
+  canal: 'email' | 'whatsapp' | 'sms';
+  estado: 'pendiente' | 'enviado' | 'fallido' | 'omitido';
+  intentos?: number | null;
+  /**
+   * Correo o teléfono al que se envió, tal como estaba en ese momento.
+   */
+  destino: string;
+  enviadoEl?: string | null;
+  /**
+   * Los avisos con la misma clave se juntan en un solo mensaje mientras la ventana sigue abierta.
+   */
+  claveAgrupacion?: string | null;
+  /**
+   * Id de Resend / Meta / Twilio, para rastrear rebotes.
+   */
+  idProveedor?: string | null;
+  ultimoError?: string | null;
+  motivoOmision?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1685,7 +1888,7 @@ export interface PayloadJob {
     | {
         executedAt: string;
         completedAt: string;
-        taskSlug: 'inline' | 'schedulePublish';
+        taskSlug: 'inline' | 'enviarNotificacion' | 'schedulePublish';
         taskID: string;
         input?:
           | {
@@ -1718,7 +1921,7 @@ export interface PayloadJob {
         id?: string | null;
       }[]
     | null;
-  taskSlug?: ('inline' | 'schedulePublish') | null;
+  taskSlug?: ('inline' | 'enviarNotificacion' | 'schedulePublish') | null;
   queue?: string | null;
   waitUntil?: string | null;
   processing?: boolean | null;
@@ -1785,6 +1988,18 @@ export interface PayloadLockedDocument {
         value: string | Inscripcione;
       } | null)
     | ({
+        relationTo: 'recursos';
+        value: string | Recurso;
+      } | null)
+    | ({
+        relationTo: 'listas-asistencia';
+        value: string | ListasAsistencia;
+      } | null)
+    | ({
+        relationTo: 'justificaciones';
+        value: string | Justificacione;
+      } | null)
+    | ({
         relationTo: 'partners';
         value: string | Partner;
       } | null)
@@ -1811,6 +2026,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'publicaciones';
         value: string | Publicacione;
+      } | null)
+    | ({
+        relationTo: 'notificaciones';
+        value: string | Notificacione;
+      } | null)
+    | ({
+        relationTo: 'envios';
+        value: string | Envio;
       } | null)
     | ({
         relationTo: 'media';
@@ -2313,6 +2536,7 @@ export interface CursosSelect<T extends boolean = true> {
         id?: T;
       };
   duracionHoras?: T;
+  asistenciaMinima?: T;
   nivel?: T;
   modalidadesDisponibles?: T;
   certificacion?: T;
@@ -2444,6 +2668,73 @@ export interface InscripcionesSelect<T extends boolean = true> {
   huellaOrigen?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recursos_select".
+ */
+export interface RecursosSelect<T extends boolean = true> {
+  titulo?: T;
+  tipo?: T;
+  alcance?: T;
+  sesion?: T;
+  convocatoria?: T;
+  curso?: T;
+  enlace?: T;
+  descripcion?: T;
+  visibleDesde?: T;
+  visibleHasta?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "listas-asistencia_select".
+ */
+export interface ListasAsistenciaSelect<T extends boolean = true> {
+  titulo?: T;
+  convocatoria?: T;
+  sesion?: T;
+  presentes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "justificaciones_select".
+ */
+export interface JustificacionesSelect<T extends boolean = true> {
+  titulo?: T;
+  estado?: T;
+  resultado?: T;
+  respuesta?: T;
+  motivo?: T;
+  sesion?: T;
+  detalle?: T;
+  revisadaEl?: T;
+  inscripcion?: T;
+  convocatoria?: T;
+  cuenta?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2660,6 +2951,41 @@ export interface PublicacionesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notificaciones_select".
+ */
+export interface NotificacionesSelect<T extends boolean = true> {
+  destinatario?: T;
+  titulo?: T;
+  cuerpo?: T;
+  url?: T;
+  categoria?: T;
+  leidaEl?: T;
+  receta?: T;
+  datos?: T;
+  claveUnica?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "envios_select".
+ */
+export interface EnviosSelect<T extends boolean = true> {
+  notificaciones?: T;
+  canal?: T;
+  estado?: T;
+  intentos?: T;
+  destino?: T;
+  enviadoEl?: T;
+  claveAgrupacion?: T;
+  idProveedor?: T;
+  ultimoError?: T;
+  motivoOmision?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
@@ -2751,6 +3077,10 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "cuentas_select".
  */
 export interface CuentasSelect<T extends boolean = true> {
+  correoVerificadoEl?: T;
+  tokenVerificacion?: T;
+  tokenVerificacionExpira?: T;
+  verificacionEnviadaEl?: T;
   nombre?: T;
   telefono?: T;
   rut?: T;
@@ -3045,6 +3375,16 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskEnviarNotificacion".
+ */
+export interface TaskEnviarNotificacion {
+  input: {
+    envioId: string;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

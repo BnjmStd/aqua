@@ -10,7 +10,7 @@ const FORMATO_FECHA = new Intl.DateTimeFormat('es-CL', { day: 'numeric', month: 
 
 export function ConvocatoriaCard({ convocatoria }: { convocatoria: ConvocatoriaConCupo }) {
   const curso = esPoblado(convocatoria.curso) ? convocatoria.curso : null
-  const href = curso ? `/academy/cursos/${curso.slug}` : '/academy/cursos'
+  const href = curso ? `/academia/cursos/${curso.slug}` : '/academia/cursos'
   const lugar = convocatoria.lugar?.ciudad ?? convocatoria.lugar?.plataforma
 
   return (
