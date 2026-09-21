@@ -57,6 +57,8 @@ next-env.d.ts
 !/media/hero-planta-*.jpg
 !/media/hero-consulting.jpg
 !/media/hero-consulting-*.jpg
+!/media/hero-academy.jpg
+!/media/hero-academy-*.jpg
 !/media/logo.png
 !/media/logo-*.png
 !/media/bioindicador-*.jpg
