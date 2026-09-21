@@ -2,6 +2,10 @@ import { EmptyState } from '@/components/ui/EmptyState'
 import type { Servicio } from '@/payload-types'
 import { ServiceCard } from './ServiceCard'
 
+/**
+ * Catalogo de consultoria: cada titulo es un enlace a su pagina singular
+ * (`/consultoria/servicios/[slug]`), con CTA de solicitud de información.
+ */
 export function ServiceCatalog({ servicios }: { servicios: Servicio[] }) {
   if (!servicios.length) {
     return (

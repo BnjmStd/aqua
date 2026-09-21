@@ -2,7 +2,16 @@ import { AbrirCorreo } from '@/components/contacto/AbrirCorreo'
 import { correoParaMotivo, obtenerConfiguracionSitio } from '@/lib/sitio'
 import { rutaContacto } from '@/lib/whatsapp'
 
-export default async function SolicitudConsultingPage() {
+type Props = {
+  searchParams: Promise<{ nombre?: string; servicio?: string }>
+}
+
+export default async function SolicitudConsultingPage({ searchParams }: Props) {
   const sitio = await obtenerConfiguracionSitio()
-  return <AbrirCorreo href={rutaContacto(correoParaMotivo(sitio), 'consultoria')} />
+  const params = await searchParams
+  const nombre = params.nombre ?? params.servicio
+  const href = nombre
+    ? rutaContacto(correoParaMotivo(sitio), 'servicio', { nombre })
+    : rutaContacto(correoParaMotivo(sitio), 'consultoria')
+  return <AbrirCorreo href={href} />
 }

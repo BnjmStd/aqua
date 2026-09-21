@@ -1353,7 +1353,7 @@ export interface Bioindicadore {
    * Microscopia del organismo. La descripcion accesible va en el propio archivo.
    */
   imagen: string | Media;
-  grupo: 'floculo' | 'ciliado' | 'ameba' | 'metazoo' | 'filamentosa';
+  grupo: 'floculo' | 'ciliado' | 'ameba' | 'metazoo' | 'filamentosa' | 'hongo';
   /**
    * Que senala su presencia (o su exceso) para la operacion.
    */

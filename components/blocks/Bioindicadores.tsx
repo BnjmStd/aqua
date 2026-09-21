@@ -15,6 +15,7 @@ const GRUPO: Record<string, string> = {
   ameba: 'Amebas y flagelados',
   metazoo: 'Metazoos',
   filamentosa: 'Bacterias filamentosas',
+  hongo: 'Hongos',
 }
 
 const SENAL: Record<string, { borde: string; punto: string; etiqueta: string }> = {

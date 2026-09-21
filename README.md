@@ -23,15 +23,15 @@ npm run db:seed -- --force  # descarta aquabioprocess.db y la vuelve a la semill
 
 ## Comandos
 
-| comando | qué hace |
-| --- | --- |
-| `npm run dev` | servidor de desarrollo |
-| `npm run build` | build de producción |
-| `npm run db:seed` | restaura `aquabioprocess.db` desde la semilla (no toca una BD existente) |
-| `npm run db:seed -- --force` | descarta la BD local y la vuelve a la semilla |
-| `npm run db:seed:contenido` | regenera el contenido base en la BD viva (`-- --force` reescribe páginas) |
-| `npm run db:snapshot` | congela la BD viva actual como `aquabioprocess.seed.db` |
-| `npm run generate:types` | regenera `payload-types.ts` tras cambiar una colección |
+| comando                      | qué hace                                                                  |
+| ---------------------------- | ------------------------------------------------------------------------- |
+| `npm run dev`                | servidor de desarrollo                                                    |
+| `npm run build`              | build de producción                                                       |
+| `npm run db:seed`            | restaura `aquabioprocess.db` desde la semilla (no toca una BD existente)  |
+| `npm run db:seed -- --force` | descarta la BD local y la vuelve a la semilla                             |
+| `npm run db:seed:contenido`  | regenera el contenido base en la BD viva (`-- --force` reescribe páginas) |
+| `npm run db:snapshot`        | congela la BD viva actual como `aquabioprocess.seed.db`                   |
+| `npm run generate:types`     | regenera `payload-types.ts` tras cambiar una colección                    |
 
 ## Actualizar la semilla versionada
 

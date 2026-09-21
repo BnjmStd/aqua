@@ -44,7 +44,10 @@ export default async function ConsultingPage() {
 
       <Section textura>
         <Container className="relative">
-          <Heading level={2}>Servicios</Heading>
+          <Heading level={2}>Asesorías y auditorías</Heading>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-foreground/70 md:text-base">
+            Cada línea de servicio abre su ficha completa. Desde ahí puedes solicitar información.
+          </p>
           <div className="mt-10">
             <ServiceCatalog servicios={servicios} />
           </div>

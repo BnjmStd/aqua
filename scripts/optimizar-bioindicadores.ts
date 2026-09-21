@@ -22,7 +22,9 @@ const SELECCION: { archivo: string; slug: string }[] = [
   { archivo: '5 Activated sludge microscopy floc protozoaRotifero-Rotaria 4.JPG', slug: 'rotifero' },
   { archivo: '5 Activated sludge microscopy floc protozoaAmeba-Arcella 1.jpg', slug: 'ameba-testacea' },
   { archivo: '5 Activated sludge microscopy floc protozoaGastrotrichia-Chaetonotus 12.JPG', slug: 'gastrotrico' },
-  { archivo: '5 Activated sludge microscopy floc protozoaHongos-Hifas 12.JPG', slug: 'bacterias-filamentosas' },
+  // Capture_117: filamentos / estructura filamentosa (revisar en admin si se quiere otra foto).
+  { archivo: '5 Activated sludge microscopy floc protozoaCapture_117.JPG', slug: 'bacterias-filamentosas' },
+  { archivo: '5 Activated sludge microscopy floc protozoaHongos-Hifas 12.JPG', slug: 'hongos-hifas' },
   { archivo: '5 Activated sludge microscopy floc protozoa Punto 1 aireación.jpg', slug: 'crecimiento-disperso' },
 ]
 

@@ -96,10 +96,10 @@ export async function CourseSidebar({ curso }: { curso: Curso }) {
         ) : null}
 
         <Button href={rutaContacto(email, 'curso', { nombre: curso.titulo })} size="lg" className="mt-6 w-full">
-          Quiero inscribirme
+          Solicitar información
         </Button>
         <p className="mt-3 text-center text-xs text-foreground/50">
-          Te contactamos para coordinar la próxima convocatoria.
+          Te respondemos con detalles del curso y próximas convocatorias.
         </p>
       </Card>
 

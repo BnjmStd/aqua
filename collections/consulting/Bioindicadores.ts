@@ -60,6 +60,7 @@ export const Bioindicadores: CollectionConfig = {
         { label: 'Amebas y flagelados', value: 'ameba' },
         { label: 'Metazoos', value: 'metazoo' },
         { label: 'Bacterias filamentosas', value: 'filamentosa' },
+        { label: 'Hongos', value: 'hongo' },
       ],
     },
     {

@@ -655,6 +655,10 @@ const SERVICIOS_CONSULTING: {
     resumen: string
     tipo: 'auditoria' | 'diagnostico' | 'implementacion' | 'asesoria'
     orden: number
+    entregables?: string[]
+    beneficios?: string[]
+    imagen?: string
+    imagenAlt?: string
 }[] = [
     {
         slug: 'consulting-process-assessment',
@@ -663,6 +667,18 @@ const SERVICIOS_CONSULTING: {
             'Auditorías, diagnósticos, revisión de diseño, KPI, balances, análisis histórico, causa raíz y roadmap de mejoramiento.',
         tipo: 'auditoria',
         orden: 1,
+        imagen: 'hero-consulting.jpg',
+        imagenAlt:
+            'Reactor biológico de lodos activados en operación, con espuma superficial y pasarela metálica.',
+        entregables: [
+            'Diagnóstico de proceso y causa raíz documentada',
+            'KPI y balances de masa/energía',
+            'Roadmap de mejoramiento priorizado',
+        ],
+        beneficios: [
+            'Decidir con datos antes de invertir',
+            'Alinear operación, diseño y cumplimiento',
+        ],
     },
     {
         slug: 'process-optimization-troubleshooting',
@@ -671,6 +687,17 @@ const SERVICIOS_CONSULTING: {
             'Estabilización, recuperación de capacidad, aireación, nutrientes, sedimentación, costos, calidad del efluente y contingencias.',
         tipo: 'diagnostico',
         orden: 2,
+        imagen: 'bioindicador-floculo-sano.jpg',
+        imagenAlt: 'Flóculo de lodo activado sano observado al microscopio.',
+        entregables: [
+            'Plan de estabilización y ajustes operacionales',
+            'Recomendaciones de aireación, nutrientes y sedimentación',
+            'Seguimiento de calidad de efluente y costos',
+        ],
+        beneficios: [
+            'Recuperar capacidad y estabilidad',
+            'Reducir contingencias y sobrecostos',
+        ],
     },
     {
         slug: 'commissioning-start-up',
@@ -679,6 +706,18 @@ const SERVICIOS_CONSULTING: {
             'Design review, pre-commissioning, puesta en marcha, inoculación, ramp-up, pruebas de capacidad y optimización post partida.',
         tipo: 'implementacion',
         orden: 3,
+        imagen: 'hero-planta.jpg',
+        imagenAlt:
+            'Planta de tratamiento de aguas industriales con estanques, tableros de control y laboratorio.',
+        entregables: [
+            'Design review y checklist de pre-commissioning',
+            'Protocolo de inoculación y ramp-up',
+            'Pruebas de capacidad y optimización post partida',
+        ],
+        beneficios: [
+            'Partida ordenada y verificable',
+            'Menor riesgo en el arranque biológico',
+        ],
     },
     {
         slug: 'water-wastewater-excellence',
@@ -687,6 +726,45 @@ const SERVICIOS_CONSULTING: {
             'Tratamiento de agua, eficiencia hídrica, reúso, instrumentación, control de procesos y excelencia técnica de PTAR/PTA.',
         tipo: 'asesoria',
         orden: 4,
+        imagen: 'hero-academy.jpg',
+        imagenAlt:
+            'Parrilla de difusores en operación en un reactor biológico de lodos activados.',
+        entregables: [
+            'Diagnóstico de PTA/PTAR y oportunidades de reúso',
+            'Recomendaciones de instrumentación y control',
+            'Plan de excelencia técnica operativa',
+        ],
+        beneficios: [
+            'Mejorar eficiencia hídrica y control de proceso',
+            'Elevar confiabilidad de la planta',
+        ],
+    },
+    {
+        slug: 'asset-process-reliability-assessment',
+        titulo: 'Auditoría de mantenimiento orientada al proceso',
+        resumen:
+            'AquaBioProcess Asset & Process Reliability Assessment: evalúa si los activos críticos están disponibles, confiables y operando en condiciones compatibles con el proceso, la continuidad operacional, la eficiencia energética y la calidad del efluente. No sustituye la inspección mecánica especializada.',
+        tipo: 'auditoria',
+        orden: 5,
+        imagen: 'corrosion-estructura-consumida.jpg',
+        imagenAlt:
+            'Soporte de acero de una planta de tratamiento casi completamente consumido por la corrosión.',
+        entregables: [
+            'Matriz de criticidad y riesgo proceso-activo',
+            'Listado de hallazgos y desviaciones observadas',
+            'Priorización de acciones: inmediata, corto plazo, mediano plazo y proyecto de inversión',
+            'Recomendaciones de mantenimiento, monitoreo, instrumentación, operación o rediseño',
+            'Identificación de estudios especializados requeridos (vibraciones, termografía, alineamiento, END, inspección eléctrica u otros)',
+            'Reunión ejecutiva de cierre y transferencia de hallazgos',
+        ],
+        beneficios: [
+            'Reducir el riesgo de paradas imprevistas y pérdida de capacidad de tratamiento',
+            'Detectar fallas incipientes y recurrencias antes de que afecten el proceso',
+            'Priorizar mantenimiento e inversiones según criticidad operacional y ambiental',
+            'Mejorar eficiencia energética y desempeño de equipos asociados al tratamiento',
+            'Fortalecer trazabilidad, planes preventivos y confiabilidad de la instrumentación',
+            'Conectar mantenimiento, operación, proceso y cumplimiento ambiental en una sola evaluación',
+        ],
     },
 ]
 
@@ -702,7 +780,7 @@ const BIOINDICADORES: {
     alt: string;
     nombre: string;
     nombreCientifico?: string;
-    grupo: "floculo" | "ciliado" | "ameba" | "metazoo" | "filamentosa";
+    grupo: "floculo" | "ciliado" | "ameba" | "metazoo" | "filamentosa" | "hongo";
     condicion: "buena" | "alerta" | "problema";
     queIndica: string;
     orden: number;
@@ -774,8 +852,19 @@ const BIOINDICADORES: {
         grupo: "filamentosa",
         condicion: "problema",
         queIndica:
-            "En exceso puentean los flóculos e impiden que compacten: bulking filamentoso, SVI alto y arrastre de sólidos al efluente. Causas típicas: oxígeno disuelto bajo, déficit de nutrientes, pH bajo o septicidad.",
+            "El crecimiento de bacterias filamentosas en el lodo activado significa que existe un desequilibrio en la biología del sistema, el cual puede ser normal y beneficioso en pequeñas cantidades, o perjudicial si hay una proliferación excesiva, provocando bulking filamentoso, arrastre de sólidos, aumento de consumo de polímero en desaguado de lodos, entre otros problemas.",
         orden: 6,
+    },
+    {
+        slug: "hongos-hifas",
+        archivo: "bioindicador-hongos-hifas.jpg",
+        alt: "Crecimiento de hifas de hongos en una muestra de lodo activado observada al microscopio.",
+        nombre: "Hongos (hifas)",
+        grupo: "hongo",
+        condicion: "problema",
+        queIndica:
+            "Crecimiento de hifas de hongos en el lodo activado es un indicador biológico de que el sistema está perdiendo su equilibrio operativo. Los hongos proliferan con bajo pH, deficiencia de nutrientes, alzas de cargas orgánicas basadas en carbohidratos, bajo oxígeno disuelto (OD) y edad del lodo elevada.",
+        orden: 7,
     },
     {
         slug: "crecimiento-disperso",
@@ -786,7 +875,7 @@ const BIOINDICADORES: {
         condicion: "problema",
         queIndica:
             "Bacterias que no se agregan en flóculo: efluente turbio y mala sedimentación. Suele indicar lodo muy joven (SRT corto), choque tóxico o sobrecarga orgánica.",
-        orden: 7,
+        orden: 8,
     },
 ];
 
@@ -960,9 +1049,13 @@ async function upsertArticulo(
         lexImagen(imagenesBio["gastrotrico"]),
         lexEncabezado("Las senales de alarma"),
         lexParrafo(
-            "El exceso de bacterias filamentosas es el problema mas frecuente. Los filamentos se extienden desde el flóculo y lo puentean, impidiendo que compacte: el indice volumetrico de lodos (SVI) sube, el manto crece y los solidos se van con el efluente. La causa esta detras del filamento dominante —oxigeno disuelto bajo, deficit de nutrientes, pH bajo, septicidad, sustrato muy biodegradable— y por eso identificarlo orienta la correccion.",
+            "El crecimiento de bacterias filamentosas en el lodo activado significa que existe un desequilibrio en la biologia del sistema: puede ser normal y beneficioso en pequenas cantidades, o perjudicial si hay una proliferacion excesiva, provocando bulking filamentoso, arrastre de solidos, aumento de consumo de polimero en desaguado de lodos, entre otros problemas.",
         ),
         lexImagen(imagenesBio["bacterias-filamentosas"]),
+        lexParrafo(
+            "El crecimiento de hifas de hongos en el lodo activado indica que el sistema esta perdiendo su equilibrio operativo. Los hongos proliferan con bajo pH, deficiencia de nutrientes, alzas de cargas organicas basadas en carbohidratos, bajo oxigeno disuelto y edad del lodo elevada.",
+        ),
+        lexImagen(imagenesBio["hongos-hifas"]),
         lexParrafo(
             "En el otro extremo esta el crecimiento disperso: bacterias que no llegan a agregarse en flóculo. El efluente sale turbio y la sedimentacion es mala. Suele indicar un lodo muy joven, un choque toxico o una sobrecarga organica reciente.",
         ),
@@ -1082,8 +1175,10 @@ async function upsertArticuloCorrosion(payload: Payload) {
     ]);
 
     const data = {
-        titulo: "Corrosion en plantas de tratamiento: leer el deterioro antes de la falla",
-        bajada: "El efluente, la condensacion y el biogas hacen de una planta de tratamiento uno de los ambientes mas agresivos para el acero y el hormigon. Una guia visual de lo que se busca en una inspeccion de integridad.",
+        titulo:
+            "Corrosión en plantas de tratamiento de efluentes y en cañerías de distribución de aguas industriales: ¿sabes por qué ocurre y cómo evitarlo?",
+        bajada:
+            "El efluente, las condiciones ambientales y químicas de los líquidos son agresivos para el acero y el hormigón. Conocimientos y guía visual de lo que se busca en una inspección integral y de control para evitar pérdidas y cuidar la continuidad operativa.",
         contenido: contenido as unknown as NonNullable<Articulo["contenido"]>,
         tipo: "analisis" as const,
         fechaPublicacion: new Date("2026-08-29T12:00:00Z").toISOString(),
@@ -1126,6 +1221,72 @@ async function upsertArticuloCorrosion(payload: Payload) {
     }
 }
 
+async function descripcionAuditoriaMantenimiento(payload: Payload) {
+    const imgProceso = await upsertMedia(
+        payload,
+        "corrosion-zona-de-dificil-acceso.jpg",
+        "Zona de dificil acceso con corrosion generalizada en soportes y bridas de una planta de tratamiento.",
+    )
+    const imgFuga = await upsertMedia(
+        payload,
+        "corrosion-fuga-en-union.jpg",
+        "Fuga activa en una union bridada por corrosion avanzada.",
+    )
+
+    return lexDocumento([
+        lexParrafo(
+            "AquaBioProcess incorpora una linea de auditoria tecnico-operacional del mantenimiento de equipos e instalaciones de tratamiento de aguas y efluentes. El servicio no pretende sustituir la inspeccion mecanica especializada ni certificar la integridad interna de un equipo. Su foco es evaluar si los activos criticos estan disponibles, confiables y operando en condiciones compatibles con las necesidades del proceso, la continuidad operacional, la eficiencia energetica y la calidad del agua o efluente.",
+        ),
+        lexParrafo(
+            "El valor diferencial es conectar la condicion del activo con su consecuencia sobre el proceso: una bomba, soplador, agitador, sistema de aireacion, dosificadora, filtro, membrana o instrumento se evalua no solo por su funcionamiento aparente, sino por su capacidad de entregar el caudal, presion, mezcla, transferencia, dosificacion o senal que el tratamiento requiere.",
+        ),
+        lexImagen(imgProceso),
+        lexEncabezado("Alcance de la auditoria"),
+        lexParrafo(
+            "Auditoria de suficiencia y desempeno: contraste entre condiciones de diseno, condicion operacional y demanda actual del proceso.",
+        ),
+        lexParrafo(
+            "Equipos criticos: bombas, sopladores, agitadores, motores, reductores, sistemas de aireacion, dosificacion, valvulas y equipos de separacion.",
+        ),
+        lexParrafo(
+            "Instrumentacion y control: revision de estado, trazabilidad y planes de calibracion de pH, conductividad, caudal, nivel, presion, oxigeno disuelto y otras variables criticas.",
+        ),
+        lexParrafo(
+            "Filtros y membranas: analisis de presion diferencial, caudales, ensuciamiento, incrustacion, limpiezas quimicas/CIP y tendencias de desempeno.",
+        ),
+        lexParrafo(
+            "Corrosion, incrustaciones y compatibilidad de materiales: identificacion de senales asociadas a pH, cloruros, sulfatos, reactivos y condiciones del fluido.",
+        ),
+        lexParrafo(
+            "Eficiencia de transferencia y energia: revision de aireacion y relacion entre demanda de oxigeno, desempeno del proceso y consumo energetico.",
+        ),
+        lexParrafo(
+            "Gestion del mantenimiento: analisis de historial de fallas, mantenimiento preventivo/correctivo, backlog, criticidad, repuestos, bitacoras y recurrencia de eventos.",
+        ),
+        lexParrafo(
+            "Interfaz operacion-mantenimiento: identificacion de fallas repetitivas cuya causa pueda estar asociada a condiciones de proceso, seleccion, operacion o control.",
+        ),
+        lexImagen(imgFuga),
+        lexEncabezado("Metodologia en tres fases"),
+        lexParrafo(
+            "FASE 1 | Datos y documentos — diseno, historial de fallas, ordenes de trabajo, tendencias, consumos, calibraciones y mantenimiento.",
+        ),
+        lexParrafo(
+            "FASE 2 | Inspeccion operacional — inspeccion visual y funcional, observacion de senales, contraste equipo-proceso y entrevistas con operacion/mantenimiento.",
+        ),
+        lexParrafo(
+            "FASE 3 | Riesgos y roadmap — matriz activo-proceso, criticidad, hallazgos, acciones inmediatas, recomendaciones y necesidades de especialista.",
+        ),
+        lexEncabezado("Modelo de trabajo interdisciplinario"),
+        lexParrafo(
+            "Cuando el alcance requiera diagnostico mecanico, electrico o predictivo especializado, AquaBioProcess puede coordinar profesionales o empresas partner. El especialista emite su diagnostico dentro de su disciplina y AquaBioProcess integra los resultados con la condicion de proceso, el riesgo ambiental y la continuidad operacional.",
+        ),
+        lexParrafo(
+            "Posicionamiento: no reemplazamos al especialista mecanico. Integramos mantenimiento y proceso para determinar si los activos criticos estan entregando lo que la planta necesita y que riesgo representa una desviacion para la operacion y el efluente.",
+        ),
+    ])
+}
+
 async function upsertServicio(
     payload: Payload,
     datos: (typeof SERVICIOS_CONSULTING)[number],
@@ -1136,6 +1297,16 @@ async function upsertServicio(
         limit: 1,
         depth: 0,
     })
+
+    const imagenDestacada = datos.imagen
+        ? await upsertMedia(payload, datos.imagen, datos.imagenAlt ?? datos.titulo)
+        : undefined
+
+    const descripcion =
+        datos.slug === "asset-process-reliability-assessment"
+            ? await descripcionAuditoriaMantenimiento(payload)
+            : undefined
+
     const data = {
         titulo: datos.titulo,
         resumen: datos.resumen,
@@ -1143,6 +1314,12 @@ async function upsertServicio(
         unidad: "consulting" as const,
         slug: datos.slug,
         orden: datos.orden,
+        entregables: (datos.entregables ?? []).map((entregable) => ({ entregable })),
+        beneficios: (datos.beneficios ?? []).map((beneficio) => ({ beneficio })),
+        ...(imagenDestacada ? { imagenDestacada } : {}),
+        ...(descripcion
+            ? { descripcion: descripcion as never }
+            : {}),
         _status: "published" as const,
     }
     const existente = existentes.docs[0]
@@ -1165,6 +1342,188 @@ async function upsertServicio(
             overrideAccess: true,
         })
         console.log(`  servicio ${datos.slug}: creado`)
+    }
+}
+
+/** Catalogo base de Academia (pedido en docs/CAMBIOS). */
+const CURSOS_ACADEMIA: {
+    slug: string
+    codigo: string
+    titulo: string
+    resumen: string
+    duracionHoras: number
+    nivel: "introductorio" | "intermedio" | "avanzado"
+    imagen: string
+    imagenAlt: string
+}[] = [
+    {
+        slug: "fundamentos-sistemas-tratamiento-efluentes",
+        codigo: "ACAD-001",
+        titulo: "Fundamentos de Sistemas de Tratamiento de Efluentes",
+        resumen:
+            "Bases de proceso, operación y control de sistemas de tratamiento de efluentes industriales y municipales.",
+        duracionHoras: 12,
+        nivel: "introductorio",
+        imagen: "hero-planta.jpg",
+        imagenAlt:
+            "Planta de tratamiento de aguas industriales con estanques y tableros de control.",
+    },
+    {
+        slug: "observacion-microscopica-lodos-activados",
+        codigo: "ACAD-002",
+        titulo: "Observación Microscópica y de Lodos Activados",
+        resumen:
+            "Lectura operacional del microscopio: flóculo, bioindicadores y señales tempranas del proceso biológico.",
+        duracionHoras: 8,
+        nivel: "intermedio",
+        imagen: "bioindicador-ciliados-pedunculados.jpg",
+        imagenAlt: "Colonia de ciliados pedunculados en lodo activado al microscopio.",
+    },
+    {
+        slug: "control-avanzado-procesos-tratamiento-efluentes",
+        codigo: "ACAD-003",
+        titulo: "Control Avanzado de Procesos Sistema de Tratamiento de Efluentes",
+        resumen:
+            "Control de aireación, nutrientes, edad del lodo y variables críticas para estabilizar el efluente.",
+        duracionHoras: 6,
+        nivel: "avanzado",
+        imagen: "hero-consulting.jpg",
+        imagenAlt: "Reactor biológico de lodos activados en operación.",
+    },
+    {
+        slug: "estudio-resolucion-casos",
+        codigo: "ACAD-004",
+        titulo: "Estudio y Resolución de Casos",
+        resumen:
+            "Metodología de causa raíz aplicada a fallas reales de PTAR/PTA y planes de acción verificables.",
+        duracionHoras: 8,
+        nivel: "intermedio",
+        imagen: "hero-academy.jpg",
+        imagenAlt: "Parrilla de difusores en un reactor biológico vista desde arriba.",
+    },
+    {
+        slug: "estrategias-condiciones-alteradas-tratamiento-efluentes",
+        codigo: "ACAD-005",
+        titulo: "Estrategias para condiciones alteradas en Sistema de Tratamientos de Efluentes",
+        resumen:
+            "Respuesta ante sobrecargas, toxicidad, bulking, foaming y otras condiciones alteradas del proceso.",
+        duracionHoras: 6,
+        nivel: "avanzado",
+        imagen: "bioindicador-bacterias-filamentosas.jpg",
+        imagenAlt: "Bacterias filamentosas en una muestra de lodo activado.",
+    },
+]
+
+async function upsertCurso(
+    payload: Payload,
+    datos: (typeof CURSOS_ACADEMIA)[number],
+) {
+    const imagenDestacada = await upsertMedia(payload, datos.imagen, datos.imagenAlt)
+    const existentes = await payload.find({
+        collection: "cursos",
+        where: { slug: { equals: datos.slug } },
+        limit: 1,
+        depth: 0,
+    })
+    const data = {
+        titulo: datos.titulo,
+        resumen: datos.resumen,
+        slug: datos.slug,
+        codigo: datos.codigo,
+        duracionHoras: datos.duracionHoras,
+        asistenciaMinima: 75,
+        nivel: datos.nivel,
+        imagenDestacada,
+        modalidadesDisponibles: ["presencial", "online_vivo", "incompany"] as (
+            | "presencial"
+            | "online_vivo"
+            | "incompany"
+        )[],
+        estadoProducto: "activo" as const,
+        _status: "published" as const,
+    }
+    const existente = existentes.docs[0]
+    if (existente) {
+        if (force) {
+            await payload.update({
+                collection: "cursos",
+                id: existente.id,
+                data,
+                overrideAccess: true,
+            })
+            console.log(`  curso ${datos.slug}: actualizado`)
+        } else {
+            console.log(`  curso ${datos.slug}: ya existe`)
+        }
+    } else {
+        await payload.create({
+            collection: "cursos",
+            data,
+            overrideAccess: true,
+        })
+        console.log(`  curso ${datos.slug}: creado`)
+    }
+}
+
+/** Newsletter tecnico Edicion 01 — titulo fijo: Salud del Lodo.
+ *  El layout visual vive en components/insights/EdicionSaludDelLodo.tsx
+ *  (content/newsletter-salud-del-lodo.ts). Aqui solo el registro CMS. */
+async function upsertNewsletterSaludDelLodo(payload: Payload) {
+    const SLUG = "salud-del-lodo"
+
+    const contenido = lexDocumento([
+        lexParrafo(
+            "Edicion 01 | 2026. El pulso biologico que define el desempeno del tratamiento. La presentacion completa de esta edicion se muestra en la pagina publica del newsletter (layout editorial).",
+        ),
+        lexParrafo(
+            "Temas: vision integral de la Salud del Lodo, ocho dimensiones, diagnostico integrado (microscopia + signos vitales) y lectura segun tecnologia (lodos activados, MBBR, IFAS, RAS).",
+        ),
+    ])
+
+    const data = {
+        numero: 1,
+        titulo: "Salud del Lodo",
+        slug: SLUG,
+        asunto: "Salud del Lodo — el pulso biologico del tratamiento",
+        preheader:
+            "El pulso biologico que define el desempeno del tratamiento. Edicion 01 | 2026.",
+        contenido: contenido as never,
+        segmentacion: ["insights", "academy"] as ("insights" | "academy")[],
+        estadoEnvio: "enviada" as const,
+        fechaEnvio: new Date("2026-01-15T12:00:00Z").toISOString(),
+        destinatarios: 0,
+    }
+
+    const existentes = await payload.find({
+        collection: "newsletter-ediciones",
+        where: { slug: { equals: SLUG } },
+        limit: 1,
+        depth: 0,
+    })
+    const existente = existentes.docs[0]
+    if (existente) {
+        if (force) {
+            await payload.delete({
+                collection: "newsletter-ediciones",
+                id: existente.id,
+                overrideAccess: true,
+            })
+            await payload.create({
+                collection: "newsletter-ediciones",
+                data,
+                overrideAccess: true,
+            })
+            console.log(`  newsletter ${SLUG}: recreada`)
+        } else {
+            console.log(`  newsletter ${SLUG}: ya existe`)
+        }
+    } else {
+        await payload.create({
+            collection: "newsletter-ediciones",
+            data,
+            overrideAccess: true,
+        })
+        console.log(`  newsletter ${SLUG}: creada`)
     }
 }
 
@@ -1293,8 +1652,9 @@ async function main() {
                 { email: "msalinas@aquabioprocess.cl", etiqueta: "Fundador" },
             ],
             logo: logoMarca,
+            telefono: "+56 9 6218 8751",
             whatsapp: {
-                numero: "+56 9 6849 0768",
+                numero: "+56 9 6218 8751",
                 mensajePorDefecto:
                     "Hola Dr. Salinas, le escribo desde aquabioprocess.cl. Me gustaría conversar sobre un desafío en tratamiento de aguas o efluentes.",
             },
@@ -1310,6 +1670,11 @@ async function main() {
         await upsertServicio(payload, servicio);
     }
 
+    console.log("Cursos Academia...");
+    for (const curso of CURSOS_ACADEMIA) {
+        await upsertCurso(payload, curso);
+    }
+
     console.log("Bioindicadores...");
     const imagenesBio: Record<string, string> = {};
     for (const datos of BIOINDICADORES) {
@@ -1319,6 +1684,7 @@ async function main() {
     console.log("Insights...");
     await upsertArticulo(payload, imagenesBio);
     await upsertArticuloCorrosion(payload);
+    await upsertNewsletterSaludDelLodo(payload);
 
     console.log("Paginas...");
     for (const datos of PAGINAS) {

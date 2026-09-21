@@ -14,6 +14,8 @@
     "db:seed:contenido": "tsx --env-file=.env scripts/seed.ts",
     "db:snapshot": "tsx --env-file=.env scripts/db-snapshot.ts",
     "db:datos-prueba": "tsx --env-file=.env scripts/datos-prueba-cuenta.ts",
+    "cambios:extraer": "python scripts/extract-cambios-pdfs.py",
+    "cambios:public": "python scripts/preparar-public-cambios.py",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap"
   },
